@@ -1,0 +1,109 @@
+<HTML>
+
+<TABLE cellSpacing=0 cellPadding=0 width=760 align=center bgColor=#666666 border=0>
+<FORM name=formbill action="chinabank/Send.aspx" method=post>
+    <TBODY>
+      <TR> 
+        <TD bgColor=#ffffff> <TABLE cellSpacing=0 cellPadding=2 width=750 bgColor=#666666 border=0>
+            <TBODY>
+              <TR> 
+                <TD width="480" bgColor=#ffffff><B>付款方式：</B>
+                  <table width="760" cellpadding="4" cellspacing="1" align="center" bordercolor="#000000" >
+                    <TBODY>
+					<TR> 
+                        <TD height=23 align=right>订单号：</TD>
+                        <TD height=23 ><input name="v_oid" type="text" maxlength="64" value="">
+                          &nbsp;&nbsp; <font color="#FF0000">//</font>选填项，订单号</TD>
+                      </TR>
+                      <TR> 
+                        <TD height=23 align=right>收货人姓名：</TD>
+                        <TD height=23 ><input name="v_rcvname" type="text" value="张三">
+                          &nbsp;&nbsp; <font color="#FF0000">//</font>选填项，总长不超过80字符</TD>
+                      </TR>
+                      <TR> 
+                        <TD align=right height=23>收货人地址：</TD>
+                        <TD height=23><input name="v_rcvaddr" type="text" id="v_rcvaddr"  value="北京海淀1">
+                          &nbsp;&nbsp; <font color="#FF0000">//</font>选填项，总长不超过200个字符</TD>
+                      </TR>
+                      <TR> 
+                        <TD align=right height=23>收货人电话：</TD>
+                        <TD height=23><input name="v_rcvtel" type="text" id="v_rcvtel"  value="588156661">
+                          &nbsp;&nbsp; <font color="#FF0000">//</font>选填项，总长不超过50个字符</TD>
+                      </TR>
+                      <TR> 
+                        <TD align=right height=23>收货人邮编：</TD>
+                        <TD height=23><input name="v_rcvpost" type="text" id="v_rcvpost"  value="1000891a"> 
+                          &nbsp;&nbsp; <font color="#FF0000">//</font>选填项，总长不超过10个字符</TD>
+                      </TR>
+                      <TR>
+                        <TD align=right height=23>收货人邮件：</TD>
+                        <TD height=23><input type="text" name="v_rcvemail" value="test1@test.com">
+                        &nbsp;&nbsp; <font color="#FF0000">//</font>选填项，总长不超过100个字符</TD>
+                      </TR>
+                      <TR>
+                        <TD align=right height=23>收货人手机号：</TD>
+                        <TD height=23><input type="text" name="v_rcvmobile" value="1311311311311">
+                        &nbsp;&nbsp; <font color="#FF0000">//</font>选填项，总长不超过13个字符</TD>
+                      </TR>
+                      <TR>
+                        <TD align=right height=24>备注1：</TD>
+                        <TD valign="top"><input name="remark1" type=text id="remark1" value="备注1">
+                          &nbsp;&nbsp; <font color="#FF0000">//</font>选填项，总长不超过150个字符</TD>
+                      </TR>
+                      <TR>
+                        <TD height=23 align=right>订货人姓名：</TD>
+                        <TD height=23 ><input name="v_ordername" type="text" id="v_ordername" value="李四">
+                          &nbsp;&nbsp; <font color="#FF0000">//</font>选填项，总长不超过80字符</TD>
+                      </TR>
+                      <TR>
+                        <TD align=right height=23>订货人地址：</TD>
+                        <TD height=23><input name="v_orderaddr" type="text" id="v_orderaddr"  value="北京海淀2">
+                          &nbsp;&nbsp; <font color="#FF0000">//</font>选填项，总长不超过200个字符</TD>
+                      </TR>
+                      <TR>
+                        <TD align=right height=23>订货人电话：</TD>
+                        <TD height=23><input name="v_ordertel" type="text" id="v_ordertel"  value="588156662">
+                          &nbsp;&nbsp; <font color="#FF0000">//</font>选填项，总长不超过50个字符</TD>
+                      </TR>
+                      <TR>
+                        <TD align=right height=23>订货人邮编：</TD>
+                        <TD height=23><input name="v_orderpost" type="text" id="v_orderpost"  value="1000892b">
+                          &nbsp;&nbsp; <font color="#FF0000">//</font>选填项，总长不超过10个字符</TD>
+                      </TR>
+                      <TR>
+                        <TD align=right height=23>订货人邮件：</TD>
+                        <TD height=23><input name="v_orderemail" type="text" id="v_orderemail" value="test2@test.com">
+                          &nbsp;&nbsp; <font color="#FF0000">//</font>选填项，总长不超过100个字符</TD>
+                      </TR>
+                      <TR>
+                        <TD align=right height=23>订货人手机号：</TD>
+                        <TD height=23><input name="v_ordermobile" type="text" id="v_ordermobile" value="1311311311312">
+                          &nbsp;&nbsp; <font color="#FF0000">//</font>选填项，总长不超过13个字符</TD>
+                      </TR>
+                      <TR>
+                        <TD align=right height=24>备注2：</TD>
+                        <TD valign="top"><input name="remark2" type=text id="remark2" value="备注2">
+&nbsp;&nbsp; <font color="#FF0000">//</font>选填项，总长不超过150个字符</TD>
+                      </TR>
+                      <TR>
+                        <TD align=right height=24>订单总金额（元）：</TD>
+                        <TD height=24><input name="v_amount" type=text value="0.01"  onkeyup="if(isNaN(value))execCommand('undo')">
+                          &nbsp;&nbsp; <font color="#FF0000">*</font>必填项，譬如：<font color="#FF0000">0.01</font></TD>
+                      </TR>
+                      <TR> 
+                        <TD align=right height=24>&nbsp;</TD>
+                        <TD valign="top"><input type="submit" name="Submit" value=" 开始支付 "></TD>
+                      </TR>
+                  </TABLE>
+                </TD>
+              </TR>
+			  <tr>
+			    <td bgColor=#ffffff height=50 ><br>说明: 订单号项如果填写我们将按照您提交的订单号为准，如果此项为空，我们将按照网银在线的标准格式 年月日-号商户号-号小时分钟秒 来自动生成订单号。</td>
+			  </tr>
+            </TBODY>
+          </TABLE>
+        </TD>
+      </TR>
+  </FORM></TBODY>
+</TABLE>
+</BODY></HTML>

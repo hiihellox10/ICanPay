@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortSampleForDotNet", "http://localhost/PortSampleForDotNet/PortSampleForDotNet.csproj", "{CCD75555-10B1-4ADC-9D55-C909091519B9}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{CCD75555-10B1-4ADC-9D55-C909091519B9}.Debug.ActiveCfg = Debug|.NET
+		{CCD75555-10B1-4ADC-9D55-C909091519B9}.Debug.Build.0 = Debug|.NET
+		{CCD75555-10B1-4ADC-9D55-C909091519B9}.Release.ActiveCfg = Release|.NET
+		{CCD75555-10B1-4ADC-9D55-C909091519B9}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
