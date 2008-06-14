@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICanPay", "ICanPay\ICanPay.csproj", "{8CC9F719-2537-4B54-BAD7-268057B946FA}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "Demo\Demo.csproj", "{1A3D9970-3E5C-4B9B-ABC9-D39767C861F1}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8CC9F719-2537-4B54-BAD7-268057B946FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CC9F719-2537-4B54-BAD7-268057B946FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CC9F719-2537-4B54-BAD7-268057B946FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CC9F719-2537-4B54-BAD7-268057B946FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A3D9970-3E5C-4B9B-ABC9-D39767C861F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A3D9970-3E5C-4B9B-ABC9-D39767C861F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A3D9970-3E5C-4B9B-ABC9-D39767C861F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A3D9970-3E5C-4B9B-ABC9-D39767C861F1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
