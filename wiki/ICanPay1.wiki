@@ -10,6 +10,7 @@
 
 
 = 简单的例子 =
+ *生成付款的订单*
 {{{
 using ICanPay;
 using ICanPay.Providers;
