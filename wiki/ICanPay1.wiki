@@ -3,14 +3,15 @@
 
 
  * 简单的例子 
-
+   # 使用ICanPay生成付款的订单Url
+   # 处理网关订单支付通知
  * 可能遇到的问题 
 
 ----
 
 
 = 简单的例子 =
- *生成付款的订单*
+ === 使用ICanPay生成付款的订单Url===
 {{{
 using ICanPay;
 using ICanPay.Providers;
@@ -42,7 +43,7 @@ namespace Demo
 }
 }}}
 
-在上面的代码我们使用了易宝YeepayGateway的支付网关，并设置了商户的密钥跟订单的数据。
+在上面的代码我们使用了易宝YeepayGateway的支付网关，并设置了商户的密钥跟订单的数据。*在生成订单所需的数据中Merchant、Order是必需的。*
 {{{
 PaymentSetting<YeepayGateway> ps = new PaymentSetting<YeepayGateway>();
 }}}
@@ -54,6 +55,103 @@ ps.PayGateway.BuildPaymentUrl();
 
 如果你使用的是其他的网关，可能没有BuildPaymentUrl方法。因为并不是所有网关都可以支持Url提交订单，可能是只能使用Form提交订单，如果是这样的话那么你可以找到BuildPaymentForm方法，并使用它来创建一个包含订单数据form提交给网关。
 
+----
+ === 处理网关订单支付通知 ===
+
+在同一个页面接收多个不同的网关返回的付款通知，如下代码：
+{{{
+using ICanPay;
+
+namespace Demo
+{
+    public partial class Notify : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            GetNotify();
+        }
+
+        private void GetNotify()
+        {
+            // 商户的帐号跟密钥
+            Merchant yeepayMerchant = new Merchant();
+            yeepayMerchant.UserName = "10000432521";
+            yeepayMerchant.Key = "8UPp0KE8sq73zVP370vko7C39403rtK1YwX40Td6irH216036H27Eb12792t";
+
+
+            Merchant chinabankMerchat = new Merchant();
+            chinabankMerchat.UserName = "00000000000";
+            chinabankMerchat.Key = "0000000000000000000000000000000000000000000";
+
+            PaymentNotify paymentNotify = PayGatewayFactory.GetGatewayNotify();
+
+            // 没有收到可识别的网关通知
+            if (paymentNotify == null)
+            {
+                return;
+            }
+
+            // 使用相应网关的商户数据以验证通知数据是否正确
+            switch (paymentNotify.PayGateway.GatewayName)
+            {
+                case GatewayType.ChinaBank:
+                    paymentNotify.PayGateway.Merchant = chinabankMerchat;
+
+                    // 如果你知道服务器的网关IP，并且想加强安全性。
+                    // 可以设置验证发送通知服务器的IP地址，并添加允许的服务器IP地址。
+                    paymentNotify.PayGateway.ValidateNotifyHostServerAddress = true;
+                    paymentNotify.PayGateway.SafeAddress.Add("129.1.12.52");
+                    paymentNotify.PayGateway.SafeAddress.Add("129.1.12.51");
+                    paymentNotify.PayGateway.SafeAddress.Add("129.1.12.50");
+                    break;
+                case GatewayType.YeePay:
+                    paymentNotify.PayGateway.Merchant = yeepayMerchant;
+                    break;
+            }
+
+            if (paymentNotify.HasNotify)
+            {
+                double amount = paymentNotify.PayGateway.Order.Amount;
+                string orderId = paymentNotify.PayGateway.Order.OrderId;
+
+                // 判断amount、orderId跟数据库订单记录是否符合，再处理付款。
+            }
+        }
+    }
+}
+
+}}}
+
+首先需要不同网关的不同商户数据，将用于核对订单的签名是否正确。
+
+PayGatewayFactory的GetGatewayNotify方法将识别并创建正确的网关实现类。
+{{{
+PaymentNotify paymentNotify = PayGatewayFactory.GetGatewayNotify();
+}}}
+
+在使用之前需要知道是否接收到了可支持的网关返回的通知，如果没有接收到可识别的通知paymentNotify将为null 
+{{{
+paymentNotify == null
+}}}
+
+添加允许的IP地址，验证通知服务器的IP是否在内，以加强安全性。
+{{{
+paymentNotify.PayGateway.ValidateNotifyHostServerAddress = true;
+paymentNotify.PayGateway.SafeAddress.Add("129.1.12.52");
+paymentNotify.PayGateway.SafeAddress.Add("129.1.12.51");
+paymentNotify.PayGateway.SafeAddress.Add("129.1.12.50");
+}}}
+
+
+验证接收到的网关通知是否正确，通知正确在这里做收到付款的逻辑处理。
+{{{
+if (paymentNotify.HasNotify)
+{
+    double amount = paymentNotify.PayGateway.Order.Amount;
+    string orderId = paymentNotify.PayGateway.Order.OrderId;
+    // 判断amount、orderId跟数据库订单记录是否符合，再处理付款。
+}
+}}}
 
 ----
 = 可能遇到的问题 =
