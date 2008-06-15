@@ -1,0 +1,88 @@
+#labels 实现基类支持其他网关
+= 实现基类支持其他网关 =
+
+这里将会讲述ICanPay的原理，你可以通过扩展基类来支持更多的网关。
+
+
+  * 从最简单的开始
+    # 新建一个通过Form提交订单的新网关
+    # 查询、生成订单使用的其他接口
+  * 接收网关服务器的通知
+
+----
+
+== 从最简单的开始 ==
+ ==== 新建一个通过Form提交订单的新网关 ====
+
+我们将新的需要实现的网关命名为DemoPay，首先要做的就是在GatewayType枚举中增加DemoPay枚举成员
+{{{
+namespace ICanPay
+{
+    public enum GatewayType
+    {
+        // ...省略已有代码
+        DemoPay = 5
+    }
+}
+}}}
+
+然后我们要做的事情就是让他尽快可以用来生成一个Form提交的订单。
+{{{
+namespace ICanPay.Providers
+{
+    public class DemoPayGateway : PayGateway, IPaymentForm
+    {
+        const string payGatewayUrl = @"https://pay.DemoPay.com/PayGate";
+        Dictionary<string, string> parma;
+
+        public override GatewayType GatewayName
+        {
+            get
+            {
+                return GatewayType.DemoPay ;
+            }
+        }
+
+        protected override bool CheckNotifyData()
+        {
+            // 暂时未实现通知的处理
+            return false;
+        }
+
+        public string BuildPaymentForm()
+        {
+            parma = new Dictionary<string, string>();
+            parma.Add("mid", Merchant.UserName);
+            parma.Add("oid", Order.OrderId);
+            parma.Add("amount", Order.Amount.ToString());
+            parma.Add("moneytype", "CNY");
+            parma.Add("url", Merchant.NotifyUrl);
+
+            return GetForm(parma, payGatewayUrl);
+        }
+    }
+}
+}}}
+
+在这里我们需要提交到的Url是https://pay.DemoPay.com/PayGate，因为不同的网关可能只能使用POST或者GET方式的一种来提交订单，所以根据网关支持的提交方式来选择继承并实现IPaymentForm接口或者IPaymentUrl接口。上面的例子我们是实现了IPaymentForm接口。
+
+在BuildPaymentForm方法中我们添加了订单中所需要的参数跟值，最后使用GetForm方法产生如下的HTML Form代码
+{{{
+<form name='Gateway' method='post' action =https://pay.DemoPay.com/PayGate>
+<input type='hidden' name='mid' value='10000432521'>
+<input type='hidden' name='oid' value='1564515'>
+<input type='hidden' name='amount' value='0.01'>
+<input type='hidden' name='moneytype' value='CNY'>
+<input type='hidden' name='url' value='http://yousite.com/Notify.aspx'>
+</form>
+<script type='text/javascript'>window.document.Gateway.submit();</script>
+}}}
+
+
+----
+  ==== 查询、生成订单使用的其他接口 ====
+用于建立订单的接口是IPaymentForm、IPaymentUrl。
+
+用于建立查询订单的接口是IQueryForm、IQueryUrl。
+
+因为有的网关是通过POST查询数据给网关，网关返回的HTTP流中将包含订单的数据，而不是网关给指定的Url返回数据。ICheckPayment接口用于处理这种类型的实现，相当于PayGateway的CheckNotifyData方法。
