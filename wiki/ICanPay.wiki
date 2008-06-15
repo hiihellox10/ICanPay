@@ -1,0 +1,12 @@
+#labels Featured
+ICanPay介绍
+
+ICanPay统一了网上支付支付网关的接口，使得网关订单的生成、查询跟网关返回支付通知的处理更容易。你可以通过实现ICanPay的基类以支持更多的网关。
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
