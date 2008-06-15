@@ -8,6 +8,8 @@
     # 新建一个通过Form提交订单的新网关
     # 查询、生成订单使用的其他接口
   * 接收网关服务器的通知
+    # 识别网关类型
+    # 实现网关通知的检查
 
 ----
 
@@ -26,7 +28,7 @@ namespace ICanPay
 }
 }}}
 
-然后我们要做的事情就是让他尽快可以用来生成一个Form提交的订单。
+然后我们要做的事情就是让他尽快可以用来生成一个Form提交的订单。建立一个新的网关首先要实现PayGateway的GatewayName属性跟CheckNotifyData方法。
 {{{
 namespace ICanPay.Providers
 {
@@ -64,7 +66,7 @@ namespace ICanPay.Providers
 }
 }}}
 
-在这里我们需要提交到的Url是https://pay.DemoPay.com/PayGate，因为不同的网关可能只能使用POST或者GET方式的一种来提交订单，所以根据网关支持的提交方式来选择继承并实现IPaymentForm接口或者IPaymentUrl接口。上面的例子我们是实现了IPaymentForm接口。
+在这里我们需要提交到的Url是https://pay.DemoPay.com/PayGate， 因为不同的网关可能只能使用POST或者GET方式的一种来提交订单，所以根据网关支持的提交方式来选择继承并实现IPaymentForm接口或者IPaymentUrl接口。上面的例子我们是实现了IPaymentForm接口。
 
 在BuildPaymentForm方法中我们添加了订单中所需要的参数跟值，最后使用GetForm方法产生如下的HTML Form代码
 {{{
@@ -86,3 +88,72 @@ namespace ICanPay.Providers
 用于建立查询订单的接口是IQueryForm、IQueryUrl。
 
 因为有的网关是通过POST查询数据给网关，网关返回的HTTP流中将包含订单的数据，而不是网关给指定的Url返回数据。ICheckPayment接口用于处理这种类型的实现，相当于PayGateway的CheckNotifyData方法。
+
+----
+
+  == 接收网关服务器的通知 ==
+   ==== 识别网关类型 ====
+
+要让DemoPay可以用于处理网关的通知，首先要能够识别是哪一个网关以便创建相应的实现。
+
+网关通知的识别，并建立相应的网关是由ProcessNotify类的GetGateway方法来完成的。在ICanPay中通过对网关通知数据参数的检查来识别是哪一个网关。
+
+{{{
+        public PayGateway GetGateway()
+        {
+            if (IsDemoPayGateway)
+            {
+                return new DemoPayGateway();
+            }
+            return null;
+        }
+
+        private bool IsDemoPayGateway
+        {
+            get
+            {
+                  string[] verifyKeys = { "r0_Cmd", "r1_Code", "r2_TrxId", "r3_Amt" };
+                  return PayUtility.ContainsKey(verifyKeys, notifyData);
+            }
+        }
+}}}
+
+你可以将通知中需要包含的参数添加到verifyKeys数组中，尽量多添加通知中必须包含的参数已跟其他网关区别，以便不被识别为其他网关。
+
+PayUtility.ContainsKey(verifyKeys, notifyData)方法将检查verifyKeys中的参数是否在接收到的通知notifyData中。notifyData保存的是网关通过GET或者POST发送过来的参数。
+
+----
+
+   ==== 实现网关通知的检查 ====
+
+在完成上面的步骤后，已经可以正确的识别网关的通知了，余下的就是检查网关的通知是否正确。
+
+PayGateway的CheckNotifyData方法用于检查网关通知的正确性。
+
+{{{
+        protected override bool CheckNotifyData()
+        {
+            // 通知数据中必须包含的Key，如果没有表示数据可能非法
+            string[] checkParma = { "cmdno", "pay_result", "pay_info", "date", "transaction_id", "sp_billno", "total_fee", "fee_type", "attach" };
+
+            if (!PayUtility.ContainsKey(checkParma, OtherData))
+            {
+                return false;
+            }
+
+            // 检查订单是否支付成功，订单签名是否正确，货币类型是否为RMB
+            if (OtherData["sign"] == NotifySign() && OtherData["fee_type"] == "1" && OtherData["pay_result"] == "0" && OtherData["pay_info"] == "OK")
+            {
+                Order.Amount = Convert.ToDouble(OtherData["total_fee"]) * 0.01;
+                Order.OrderId = OtherData["sp_billno"];
+
+                return true;
+            }
+
+            return false;
+        }
+}}}
+
+网关通过GET或者POST发送过来的通知都是保存在OtherData中。首先要做的是验证将要使用到的数据跟一些必须的数据数否在OtherData中，在checkParma数组中设置了通知中必须包含的参数。如果缺少参数则返回false。
+
+接下来的步骤将是判断签名、货币类型、支付成功标识是否都正确，这里是最重要的用来判断网关通知是否合法的代码。没有问题的话则将网关通知中的订单金额跟订单编号赋值给Order，在处理订单的逻辑代码中将通过检查订单编号跟金额跟数据库中是否符合已做下一步处理。
