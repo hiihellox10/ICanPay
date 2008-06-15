@@ -1,0 +1,67 @@
+= 如何使用 =
+
+
+ == 简单的例子 ==
+
+ == 可能遇到的问题 ==
+
+
+= 简单的例子 =
+{{{
+using ICanPay;
+using ICanPay.Providers;
+
+
+namespace Demo
+{
+    public partial class Pay : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            // 设置付款数据
+            PaymentSetting<YeepayGateway> ps = new PaymentSetting<YeepayGateway>();
+            ps.PayGateway.Merchant.UserName = "10000432521";
+            ps.PayGateway.Merchant.Key = "8UPp0KE8sq73zVP370vko7C39403rtK1YwX40Td6irH216036H27Eb12792t";
+            ps.PayGateway.Merchant.NotifyUrl = "http://yousite.com/Notify.aspx";
+            ps.PayGateway.Order.OrderId = "1564515";
+            ps.PayGateway.Order.Amount = 0.01;
+            ps.PayGateway.Customer.Name = "name";
+            ps.PayGateway.Customer.Email = "name@address.com";
+            ps.PayGateway.Customer.Address = "my address"; ;
+            ps.PayGateway.Customer.Post = "4564565";
+            ps.PayGateway.Customer.Telephone = "1568847888";
+
+            // 创建付款的Url
+            Response.Redirect(ps.PayGateway.BuildPaymentUrl());
+        }
+    }
+}
+}}}
+
+在上面的代码我们使用了易宝YeepayGateway的支付网关，并设置了商户的密钥跟订单的数据。
+{{{
+PaymentSetting<YeepayGateway> ps = new PaymentSetting<YeepayGateway>();
+}}}
+
+然后我们通过BuildPaymentUrl方法来生成订单的Url。
+{{{
+ps.PayGateway.BuildPaymentUrl();
+}}}
+
+如果你使用的是其他的网关，可能没有BuildPaymentUrl方法。因为并不是所有网关都可以支持Url提交订单，可能是只能使用Form提交订单，如果是这样的话那么你可以找到BuildPaymentForm方法，并使用它来创建一个包含订单数据form提交给网关。
+
+
+
+
+= 可能遇到的问题 =
+
+如果你提交的订单出现乱码，可能是你的页面不是GB2312编码导致的。因为国内的网关普遍是使用GB2312编码，所以你也要使用GB2312编码来提交订单跟接受网关返回的通知，如果你使用的是其他编码就会出现乱码。
+
+*解决方法*
+
+你可以通过在Web.config文件的configuration/system.web节点增加以下代码，可以设置默认编码为GB2312
+{{{
+<globalization requestEncoding="gb2312" responseEncoding="gb2312" />
+}}}
+
+如果你的系统需要使用其它编码而不能使用GB2312编码，你可以新建一个用于提交订单跟接受网关通知的新文件夹。并在这个文件夹中增加一个web.config文件，并将提交订单跟接受网关通知的页面放置在这个文件夹中，然后跟上面的解决方法一样在这个web.config文件的configuration/system.web节点中增加上面的代码，这样就可以使得只有这个文件夹中的页面使用GB2312编码，而其他页面将使用其他的编码。
