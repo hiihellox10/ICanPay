@@ -6,6 +6,6 @@ ICanPay统一了网上支付网关的接口，使得网关订单的生成、查�
 
  ===一、[http://code.google.com/p/icanpay/wiki/ICanPay1 如何使用]===
 
- ===二、实现基类支持其他网关===
+ ===二、[http://code.google.com/p/icanpay/wiki/ICanPay2 实现基类支持其他网关]===
 
- ===三、可能遇见的问题===
+ ===三、更多的其他问题===
