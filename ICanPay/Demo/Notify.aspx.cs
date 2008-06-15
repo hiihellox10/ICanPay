@@ -33,7 +33,7 @@ namespace Demo
             PaymentNotify paymentNotify = PayGatewayFactory.GetGatewayNotify();
 
             // 没有收到可识别的网关通知
-            if (paymentNotify.PayGateway == null)
+            if (paymentNotify == null)
             {
                 return;
             }

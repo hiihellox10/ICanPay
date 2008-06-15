@@ -12,7 +12,7 @@ namespace ICanPay
     public static class PayGatewayFactory
     {
         /// <summary>
-        /// 获取网关的通知，并创建相应的网关实现
+        /// 获取网关的通知，并创建相应的网关实现。如果是无法识别的网关返回null。
         /// </summary>
         /// <returns>判断网关类别，创建相应网关实现。如果没有收到可识别网关通知返回Null</returns>
         public static PaymentNotify GetGatewayNotify()
@@ -23,11 +23,13 @@ namespace ICanPay
             ProcessNotify validate = new ProcessNotify(notifyData);
             notify.PayGateway = validate.GetGateway();
 
-            if (notify.PayGateway != null)
+            // 网关的通知无法识别。
+            if (notify.PayGateway == null)
             {
-                notify.PayGateway.OtherData = notifyData;
+                return null; 
             }
 
+            notify.PayGateway.OtherData = notifyData;
             return notify;
         }
 
