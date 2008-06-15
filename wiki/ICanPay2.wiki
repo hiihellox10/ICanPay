@@ -134,7 +134,8 @@ PayGateway的CheckNotifyData方法用于检查网关通知的正确性。
         protected override bool CheckNotifyData()
         {
             // 通知数据中必须包含的Key，如果没有表示数据可能非法
-            string[] checkParma = { "cmdno", "pay_result", "pay_info", "date", "transaction_id", "sp_billno", "total_fee", "fee_type", "attach" };
+            string[] checkParma = { "cmdno", "pay_result", "pay_info", "date", "transaction_id", 
+                                 "sp_billno", "total_fee", "fee_type", "attach" };
 
             if (!PayUtility.ContainsKey(checkParma, OtherData))
             {
@@ -142,7 +143,8 @@ PayGateway的CheckNotifyData方法用于检查网关通知的正确性。
             }
 
             // 检查订单是否支付成功，订单签名是否正确，货币类型是否为RMB
-            if (OtherData["sign"] == NotifySign() && OtherData["fee_type"] == "1" && OtherData["pay_result"] == "0" && OtherData["pay_info"] == "OK")
+            if (OtherData["sign"] == NotifySign() && OtherData["fee_type"] == "1" &&
+                  OtherData["pay_result"] == "0" && OtherData["pay_info"] == "OK")
             {
                 Order.Amount = Convert.ToDouble(OtherData["total_fee"]) * 0.01;
                 Order.OrderId = OtherData["sp_billno"];
