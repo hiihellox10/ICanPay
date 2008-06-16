@@ -4,6 +4,7 @@
 
  * 简单的例子
   *  使用ICanPay生成付款的订单Url
+  *  查询订单
   *  处理网关订单支付通知
  * 可能遇到的问题 
 
@@ -57,6 +58,45 @@ ps.PayGateway.BuildPaymentUrl();
 如果你使用的是其他的网关，可能没有BuildPaymentUrl方法。因为并不是所有网关都可以支持Url提交订单，可能是只能使用Form提交订单，如果是这样的话那么你可以找到BuildPaymentForm方法，并使用它来创建一个包含订单数据form提交给网关。
 
 ----
+
+ === 查询订单 ===
+
+ 查询订单有2种不同的方式。
+
+第一种，查询订单跟提交订单的使用类似。同上，因为不同的网关可能支持Form或者Url提交查询，然后网关服务器给指定页面返回查询结果，然后你可以使用处理网关服务器返回付款通知一样的方法来处理订单的查询。
+
+如下代码演示了提交一个查询
+{{{
+// 设置需要查询的订单
+PaymentSetting<ChinabankGateway> ps = new PaymentSetting<ChinabankGateway>();
+ps.PayGateway.Merchant.UserName = "10000432521";
+ps.PayGateway.Merchant.Key = "8UPp0KE8sq73zVP370vko7C39403rtK1YwX40Td6irH216036H27Eb12792t";
+ps.PayGateway.Merchant.NotifyUrl = "http://yousite.com/Notify.aspx";
+ps.PayGateway.Order.OrderId = "1564515";
+
+// 创建查询订单的Form提交查询
+Response.Write(ps.PayGateway.BuildQueryForm());
+}}}
+
+第二种，因为有的网关服务器是通过向网关服务器POST数据后，网关通过返回HTTP流的方式来返回结果。这种类型的网关都实现了ICheckPayment接口。
+
+实现了ICheckPayment接口的网关，这么查询订单的状态
+{{{
+PaymentSetting<YeepayGateway> ps = new PaymentSetting<YeepayGateway>();
+ps.PayGateway.Merchant.UserName = "10000432521";
+ps.PayGateway.Merchant.Key = "8UPp0KE8sq73zVP370vko7C39403rtK1YwX40Td6irH216036H27Eb12792t";
+ps.PayGateway.Order.OrderId = "1564515";
+ps.PayGateway.Order.Amount = 0.01;
+
+if(ps.PayGateway.CheckPayment())
+{
+    // 订单已支付
+}
+}}}
+
+----
+
+
  === 处理网关订单支付通知 ===
 
 在同一个页面接收多个不同的网关返回的付款通知，如下代码：
