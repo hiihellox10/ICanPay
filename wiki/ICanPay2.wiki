@@ -98,16 +98,16 @@ ICheckPayment接口用于处理这种类型的实现，相当于PayGateway的Che
 
 例如YeepayGateway就是使用ICheckPayment来查询订单的状态，而不是实现IQueryForm、IQueryUrl接口。它的使用如下：
 {{{
-            PaymentSetting<YeepayGateway> ps = new PaymentSetting<YeepayGateway>();
-            ps.PayGateway.Merchant.UserName = "10000432521";
-            ps.PayGateway.Merchant.Key = "8UPp0KE8sq73zVP370vko7C39403rtK1YwX40Td6irH216036H27Eb12792t";
-            ps.PayGateway.Order.OrderId = "1564515";
-            ps.PayGateway.Order.Amount = 0.01;
+PaymentSetting<YeepayGateway> ps = new PaymentSetting<YeepayGateway>();
+ps.PayGateway.Merchant.UserName = "10000432521";
+ps.PayGateway.Merchant.Key = "8UPp0KE8sq73zVP370vko7C39403rtK1YwX40Td6irH216036H27Eb12792t";
+ps.PayGateway.Order.OrderId = "1564515";
+ps.PayGateway.Order.Amount = 0.01;
 
-            if(ps.PayGateway.CheckPayment())
-            {
-                // 订单已支付
-            }
+if(ps.PayGateway.CheckPayment())
+{
+    // 订单已支付
+}
 }}}
 
 ----
