@@ -66,7 +66,9 @@ namespace ICanPay.Providers
 }
 }}}
 
-在这里我们需要提交到的Url是https://pay.DemoPay.com/PayGate， 因为不同的网关可能只能使用POST或者GET方式的一种来提交订单，所以根据网关支持的提交方式来选择继承并实现IPaymentForm接口或者IPaymentUrl接口。上面的例子我们是实现了IPaymentForm接口。
+在这里我们需要提交到的Url是https://pay.DemoPay.com/PayGate， 因为不同的网关可能只能使用POST或者GET方式的一种来提交订单，所以根据网关支持的提交方式来选择继承并实现IPaymentForm接口或者IPaymentUrl接口。
+
+上面的例子我们是实现了IPaymentForm接口。在BuildPaymentForm方法中，你需要参考相应网关的开发文档添加订单所需要的参数跟值。
 
 在BuildPaymentForm方法中我们添加了订单中所需要的参数跟值，最后使用GetForm方法产生如下的HTML Form代码
 {{{
@@ -83,11 +85,30 @@ namespace ICanPay.Providers
 
 ----
   ==== 查询、生成订单使用的其他接口 ====
+
 用于建立订单的接口是IPaymentForm、IPaymentUrl。
 
 用于建立查询订单的接口是IQueryForm、IQueryUrl。
 
-因为有的网关是通过POST查询数据给网关，网关返回的HTTP流中将包含订单的数据，而不是网关给指定的Url返回数据。ICheckPayment接口用于处理这种类型的实现，相当于PayGateway的CheckNotifyData方法。
+IQueryForm、IQueryUrl接口实现的查询跟IPaymentForm、IPaymentUrl接口的实现类似，都是向服务器提交数据然后网关服务器返回查询的结果。在已有的4个支付网关的实现中CheckNotifyData方法可以处理订单支付结果的通知跟订单查询结果的通知。
+
+因为有的网关是通过POST查询数据给网关，网关返回的HTTP流中将包含订单的数据，而不是网关给指定的Url返回数据。
+
+ICheckPayment接口用于处理这种类型的实现，相当于PayGateway的CheckNotifyData方法。
+
+例如YeepayGateway就是使用ICheckPayment来查询订单的状态，而不是实现IQueryForm、IQueryUrl接口。它的使用如下：
+{{{
+            PaymentSetting<YeepayGateway> ps = new PaymentSetting<YeepayGateway>();
+            ps.PayGateway.Merchant.UserName = "10000432521";
+            ps.PayGateway.Merchant.Key = "8UPp0KE8sq73zVP370vko7C39403rtK1YwX40Td6irH216036H27Eb12792t";
+            ps.PayGateway.Order.OrderId = "1564515";
+            ps.PayGateway.Order.Amount = 0.01;
+
+            if(ps.PayGateway.CheckPayment())
+            {
+                // 订单已支付
+            }
+}}}
 
 ----
 
