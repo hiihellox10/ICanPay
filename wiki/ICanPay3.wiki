@@ -4,9 +4,9 @@
 这里将对前面的一些没有讲述的问题做补充。
 
 
-  * 提交、查询订单，网关返回通知时更多其他的数据保存在哪里
-  * 网关通知的确认
-  * 订单编号的建议
+  * [http://code.google.com/p/icanpay/wiki/ICanPay3#提交、查询订单，网关返回通知时更多其他的数据保存在哪里 提交、查询订单，网关返回通知时更多其他的数据保存在哪里]
+  * [http://code.google.com/p/icanpay/wiki/ICanPay3#网关通知的确认 网关通知的确认]
+  * [http://code.google.com/p/icanpay/wiki/ICanPay3#订单编号的建议 订单编号的建议]
 
 ----
 
