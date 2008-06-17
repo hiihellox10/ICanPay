@@ -1,34 +1,34 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ICanPay
 {
     /// <summary>
-    /// Íø¹ØÀàĞÍ
+    /// ç½‘å…³ç±»å‹
     /// </summary>
     public enum GatewayType
     {
         /// <summary>
-        /// ²Æ¸¶Í¨
+        /// è´¢ä»˜é€š
         /// </summary>
         TenPay = 1,
 
 
         /// <summary>
-        /// ÖĞ¹úÍøÒø
+        /// ä¸­å›½ç½‘é“¶
         /// </summary>
         ChinaBank = 2,
 
 
         /// <summary>
-        /// Ò×±¦
+        /// æ˜“å®
         /// </summary>
         YeePay = 3,
 
 
         /// <summary>
-        /// ÔÆÍø
+        /// äº‘ç½‘
         /// </summary>
         Cloudnet = 4
     }

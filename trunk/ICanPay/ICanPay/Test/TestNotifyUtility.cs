@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
@@ -6,12 +6,12 @@ using System.Web;
 namespace ICanPay.Test
 {
     /// <summary>
-    /// Íø¹ØÍ¨Öª²âÊÔ¹¤¾ß
+    /// ç½‘å…³é€šçŸ¥æµ‹è¯•å·¥å…·
     /// </summary>
     public static class TestNotifyUtility
     {
         /// <summary>
-        /// »ñÈ¡Íø¹ØÍ¨ÖªÊı¾İ
+        /// è·å–ç½‘å…³é€šçŸ¥æ•°æ®
         /// </summary>
         public static TestNotifyData GetNotify()
         {
@@ -26,7 +26,7 @@ namespace ICanPay.Test
 
 
         /// <summary>
-        /// ¶ÁÈ¡Íø¹Ø·¢»ØµÄÊı¾İ
+        /// è¯»å–ç½‘å…³å‘å›çš„æ•°æ®
         /// </summary>
         private static Dictionary<string, string> ReadNotifyData()
         {
@@ -34,7 +34,7 @@ namespace ICanPay.Test
             System.Collections.Specialized.NameValueCollection coll;
             string[] keys;
 
-            // ¶ÁÈ¡Í¨¹ıGet´«ÈëµÄÖµ
+            // è¯»å–é€šè¿‡Getä¼ å…¥çš„å€¼
             coll = HttpContext.Current.Request.QueryString;
             keys = coll.AllKeys;
             for (int i = 0; i < keys.Length; i++)
@@ -42,7 +42,7 @@ namespace ICanPay.Test
                 notifyData[keys[i]] = coll[keys[i]];
             }
 
-            // ¶ÁÈ¡Í¨¹ıPost´«ÈëµÄÖµ
+            // è¯»å–é€šè¿‡Postä¼ å…¥çš„å€¼
             coll = HttpContext.Current.Request.Form;
             keys = coll.AllKeys;
             for (int i = 0; i < keys.Length; i++)

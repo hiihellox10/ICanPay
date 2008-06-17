@@ -1,11 +1,11 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ICanPay
 {
     /// <summary>
-    /// ¶©µ¥µÄ½ğ¶î¡¢±àºÅ
+    /// è®¢å•çš„é‡‘é¢ã€ç¼–å·
     /// </summary>
     public class Order
     {
@@ -13,7 +13,7 @@ namespace ICanPay
         string orderid;
 
         /// <summary>
-        /// ¶©µ¥×Ü½ğ¶î£¬ÒÔÔªÎªµ¥Î»¡£ÀıÈç£º1.00£¬1ÔªÈËÃñ±Ò¡£0.01£¬1½ÇÈËÃñ±Ò¡£
+        /// è®¢å•æ€»é‡‘é¢ï¼Œä»¥å…ƒä¸ºå•ä½ã€‚ä¾‹å¦‚ï¼š1.00ï¼Œ1å…ƒäººæ°‘å¸ã€‚0.01ï¼Œ1è§’äººæ°‘å¸ã€‚
         /// </summary>
         public double Amount
         {
@@ -25,7 +25,7 @@ namespace ICanPay
                 }
                 else
                 {
-                    throw new ArgumentNullException("Amount", "¶©µ¥½ğ¶îÃ»ÓĞÉèÖÃ");
+                    throw new ArgumentNullException("Amount", "è®¢å•é‡‘é¢æ²¡æœ‰è®¾ç½®");
                 }
                 
             }
@@ -38,13 +38,13 @@ namespace ICanPay
                 }
                 else
                 {
-                    throw new ArgumentException("¶©µ¥½ğ¶î±ØĞë´óÓÚ»òµÈÓÚ0.01", "Amount");
+                    throw new ArgumentException("è®¢å•é‡‘é¢å¿…é¡»å¤§äºæˆ–ç­‰äº0.01", "Amount");
                 }
             }
         }
 
         /// <summary>
-        /// ¶©µ¥±àºÅ»òÃû³Æ
+        /// è®¢å•ç¼–å·æˆ–åç§°
         /// </summary>
         public string OrderId
         {
@@ -56,7 +56,7 @@ namespace ICanPay
                 }
                 else
                 {
-                    throw new ArgumentNullException("OrderId", "¶©µ¥¶©µ¥±àºÅÃ»ÓĞÉèÖÃ");
+                    throw new ArgumentNullException("OrderId", "è®¢å•è®¢å•ç¼–å·æ²¡æœ‰è®¾ç½®");
                 }
             }
             set
@@ -67,7 +67,7 @@ namespace ICanPay
                 }
                 else
                 {
-                    throw new ArgumentNullException("OrderId", "¶©µ¥¶©µ¥±àºÅ²»ÄÜÎª¿Õ");
+                    throw new ArgumentNullException("OrderId", "è®¢å•è®¢å•ç¼–å·ä¸èƒ½ä¸ºç©º");
                 }
             }
         }

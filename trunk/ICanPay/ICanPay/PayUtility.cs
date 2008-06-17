@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -6,14 +6,14 @@ using System.Text.RegularExpressions;
 namespace ICanPay
 {
     /// <summary>
-    /// Ö§¸¶µÄÏà¹Ø²Ù×÷
+    /// æ”¯ä»˜çš„ç›¸å…³æ“ä½œ
     /// </summary>
     internal static class PayUtility
     {
         /// <summary>
-        /// »ñµÃ×Ö·û´®µÄMD5Öµ
+        /// è·å¾—å­—ç¬¦ä¸²çš„MD5å€¼
         /// </summary>
-        /// <param name="text">ĞèÒª»ñµÃMD5ÖµµÄÖ§¸¶´®</param>
+        /// <param name="text">éœ€è¦è·å¾—MD5å€¼çš„æ”¯ä»˜ä¸²</param>
         public static string MD5(string text)
         {
             return System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(text, "md5");
@@ -21,9 +21,9 @@ namespace ICanPay
 
 
         /// <summary>
-        /// ×Ö·û´®ÊÇ·ñÈ«ÊÇÊı×Ö£¬È«ÓÉÊı×Ö×é³É·µ»Øtrue
+        /// å­—ç¬¦ä¸²æ˜¯å¦å…¨æ˜¯æ•°å­—ï¼Œå…¨ç”±æ•°å­—ç»„æˆè¿”å›true
         /// </summary>
-        /// <param name="text">ĞèÒªÑéÖ¤µÄ×Ö·û´®</param>
+        /// <param name="text">éœ€è¦éªŒè¯çš„å­—ç¬¦ä¸²</param>
         public static bool IsNumeric(string text)
         {
             return Regex.IsMatch(text, "^[0-9]*$");
@@ -31,10 +31,10 @@ namespace ICanPay
 
 
         /// <summary>
-        /// ¸ù¾İ²ÎÊıË³Ğò£¬»ñÈ¡ÆäËûÊı¾İÏîÖĞµÄÖµ
+        /// æ ¹æ®å‚æ•°é¡ºåºï¼Œè·å–å…¶ä»–æ•°æ®é¡¹ä¸­çš„å€¼
         /// </summary>
-        /// <param name="parma">²ÎÊıË³Ğò</param>
-        /// <param name="otherData">ËûÊı¾İÏî</param>
+        /// <param name="parma">å‚æ•°é¡ºåº</param>
+        /// <param name="otherData">ä»–æ•°æ®é¡¹</param>
         public static string GetOtherDataValue(string[] parma, Dictionary<string, string> otherData)
         {
             StringBuilder value = new StringBuilder();
@@ -51,10 +51,10 @@ namespace ICanPay
         }
 
         /// <summary>
-        /// Êı¾İÏîÖĞÊÇ·ñ°üº¬²ÎÊıÖĞµÄËùÓĞ¼ü
+        /// æ•°æ®é¡¹ä¸­æ˜¯å¦åŒ…å«å‚æ•°ä¸­çš„æ‰€æœ‰é”®
         /// </summary>
-        /// <param name="parma">²ÎÊı</param>
-        /// <param name="otherData">Êı¾İÏî</param>
+        /// <param name="parma">å‚æ•°</param>
+        /// <param name="otherData">æ•°æ®é¡¹</param>
         public static bool ContainsKey(string[] parma, Dictionary<string, string> otherData)
         {
             foreach (string s in parma)

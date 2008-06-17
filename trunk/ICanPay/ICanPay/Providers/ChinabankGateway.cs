@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 namespace ICanPay.Providers
 {
     /// <summary>
-    /// ÖĞ¹úÍøÒø
+    /// ä¸­å›½ç½‘é“¶
     /// </summary>
     public class ChinabankGateway : PayGateway, IPaymentForm, IQueryForm
     {
@@ -15,7 +15,7 @@ namespace ICanPay.Providers
         Dictionary<string, string> parma;
 
         /// <summary>
-        /// Íø¹ØÃû
+        /// ç½‘å…³å
         /// </summary>
         public override GatewayType GatewayName
         {
@@ -27,11 +27,11 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// ¼ì²éÍø¹ØÖ§¸¶Í¨Öª£¬ÊÇ·ñÖ§¸¶³É¹¦
+        /// æ£€æŸ¥ç½‘å…³æ”¯ä»˜é€šçŸ¥ï¼Œæ˜¯å¦æ”¯ä»˜æˆåŠŸ
         /// </summary>
         protected override bool CheckNotifyData()
         {
-            // Í¨ÖªÊı¾İÖĞ±ØĞë°üº¬µÄKey£¬Èç¹ûÃ»ÓĞ±íÊ¾Êı¾İ¿ÉÄÜ·Ç·¨
+            // é€šçŸ¥æ•°æ®ä¸­å¿…é¡»åŒ…å«çš„Keyï¼Œå¦‚æœæ²¡æœ‰è¡¨ç¤ºæ•°æ®å¯èƒ½éæ³•
             string[] checkParma = { "v_oid", "v_pstatus", "v_pstring", "v_pmode", "v_md5str", "v_amount", "v_moneytype" };
 
             if (!PayUtility.ContainsKey(checkParma, OtherData))
@@ -39,8 +39,8 @@ namespace ICanPay.Providers
                 return false;
             }
 
-            // ¼ì²é¶©µ¥ÊÇ·ñÖ§¸¶³É¹¦£¬¶©µ¥Ç©ÃûÊÇ·ñÕıÈ·£¬»õ±ÒÀàĞÍÊÇ·ñÎªRMB
-            if (OtherData["v_md5str"] == NotifySign() && OtherData["v_moneytype"] == "CNY" && OtherData["v_pstatus"] == "20" || OtherData["v_pstring"] == "Ö§¸¶Íê³É")
+            // æ£€æŸ¥è®¢å•æ˜¯å¦æ”¯ä»˜æˆåŠŸï¼Œè®¢å•ç­¾åæ˜¯å¦æ­£ç¡®ï¼Œè´§å¸ç±»å‹æ˜¯å¦ä¸ºRMB
+            if (OtherData["v_md5str"] == NotifySign() && OtherData["v_moneytype"] == "CNY" && OtherData["v_pstatus"] == "20" || OtherData["v_pstring"] == "æ”¯ä»˜å®Œæˆ")
             {
                 Order.Amount = Convert.ToDouble(OtherData["v_amount"]);
                 Order.OrderId = OtherData["v_oid"];
@@ -53,7 +53,7 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// Í¨ÖªÇ©Ãû
+        /// é€šçŸ¥ç­¾å
         /// </summary>
         private string NotifySign()
         {
@@ -64,13 +64,13 @@ namespace ICanPay.Providers
         }
 
         /// <summary>
-        /// ´´½¨Ö§¸¶HTML´úÂë
+        /// åˆ›å»ºæ”¯ä»˜HTMLä»£ç 
         /// </summary>
         public string BuildPaymentForm()
         {
             if (!IsRightOrderId(Order.OrderId))
             {
-                throw new ArgumentException("¶©µ¥Ö»ÄÜÓÉÓ¢ÎÄÊı×Ö¸úÓ¢ÎÄ·ûºÅ×é³É¡£", "OrderId");
+                throw new ArgumentException("è®¢å•åªèƒ½ç”±è‹±æ–‡æ•°å­—è·Ÿè‹±æ–‡ç¬¦å·ç»„æˆã€‚", "OrderId");
             }
 
             parma = new Dictionary<string, string>();
@@ -92,7 +92,7 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// Ö§¸¶Ç©Ãû
+        /// æ”¯ä»˜ç­¾å
         /// </summary>
         private string PaySign()
         {
@@ -109,23 +109,23 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// ÊÇ·ñÊÇÕıÈ·µÄ¶©µ¥±àºÅ¸ñÊ½¡£¶©µ¥Ö»ÄÜÓÉÓ¢ÎÄÊı×Ö¸ú_-#$():;,.·ûºÅ×é³É¡£
+        /// æ˜¯å¦æ˜¯æ­£ç¡®çš„è®¢å•ç¼–å·æ ¼å¼ã€‚è®¢å•åªèƒ½ç”±è‹±æ–‡æ•°å­—è·Ÿ_-#$():;,.ç¬¦å·ç»„æˆã€‚
         /// </summary>
-        /// <param name="orderId">¶©µ¥±àºÅ</param>
-        private bool IsRightOrderId(string orderId)
+        /// <param name="orderId">è®¢å•ç¼–å·</param>
+        private static bool IsRightOrderId(string orderId)
         {
             return Regex.IsMatch(orderId, @"^[a-zA-Z_\-0-9#$():;,.]+$");
         }
 
 
         /// <summary>
-        /// ´´½¨²éÑ¯HTML´úÂë
+        /// åˆ›å»ºæŸ¥è¯¢HTMLä»£ç 
         /// </summary>
         public string BuildQueryForm()
         {
             if (!IsRightOrderId(Order.OrderId))
             {
-                throw new ArgumentException("¶©µ¥Ö»ÄÜÓÉÓ¢ÎÄÊı×Ö¸ú_-#$():;,.·ûºÅ×é³É¡£", "OrderId");
+                throw new ArgumentException("è®¢å•åªèƒ½ç”±è‹±æ–‡æ•°å­—è·Ÿ_-#$():;,.ç¬¦å·ç»„æˆã€‚", "OrderId");
             }
 
             parma = new Dictionary<string, string>();
@@ -139,7 +139,7 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// ²éÑ¯Ç©Ãû
+        /// æŸ¥è¯¢ç­¾å
         /// </summary>
         private string QuerySign()
         {
@@ -156,11 +156,11 @@ namespace ICanPay.Providers
 
 
 /*
-·şÎñÆ÷·µ»ØµÄÍ¨ÖªÖĞFormÖĞµÄÊı¾İ¸ñÊ½
+æœåŠ¡å™¨è¿”å›çš„é€šçŸ¥ä¸­Formä¸­çš„æ•°æ®æ ¼å¼
 v_oid, 1
 v_pstatus, 20
-v_pstring, Ö§¸¶³É¹¦
-v_pmode, ½¨ÉèÒøĞĞ
+v_pstring, æ”¯ä»˜æˆåŠŸ
+v_pmode, å»ºè®¾é“¶è¡Œ
 v_md5str, D4502468C877AA4F801AAD128CBC6134
 v_md5info, 73d390268ab382ca8a693901cc69dba1
 v_md5money, 6606290f1faf96e3c5df2cfd36c96f15

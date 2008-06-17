@@ -1,16 +1,16 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ICanPay
 {
     /// <summary>
-    /// ½¨Á¢Ö§¸¶¶©µ¥Form HTML´úÂëµÄ½Ó¿Ú
+    /// å»ºç«‹æ”¯ä»˜è®¢å•Form HTMLä»£ç çš„æ¥å£
     /// </summary>
     internal interface IPaymentForm
     {
         /// <summary>
-        /// ½¨Á¢FormÌá½»Ö§¸¶¶©µ¥HTML´úÂë
+        /// å»ºç«‹Formæäº¤æ”¯ä»˜è®¢å•HTMLä»£ç 
         /// </summary>
         string BuildPaymentForm();
     }

@@ -1,16 +1,16 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ICanPay
 {
     /// <summary>
-    /// Ö§¸¶UrlµÄ½Ó¿Ú
+    /// æ”¯ä»˜Urlçš„æ¥å£
     /// </summary>
     internal interface IPaymentUrl
     {
         /// <summary>
-        /// Ö§¸¶¶©µ¥Êı¾İµÄUrl¼ü½Ó
+        /// æ”¯ä»˜è®¢å•æ•°æ®çš„Urlé”®æ¥
         /// </summary>
         string BuildPaymentUrl();
     }

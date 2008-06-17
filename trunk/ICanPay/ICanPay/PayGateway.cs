@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Collections;
@@ -7,7 +7,7 @@ using System.Web;
 namespace ICanPay
 {
     /// <summary>
-    /// Ö§¸¶Íø¹ØµÄ³éÏó½Ó¿Ú
+    /// æ”¯ä»˜ç½‘å…³çš„æŠ½è±¡æ¥å£
     /// </summary>
     public abstract class PayGateway
     {
@@ -20,20 +20,19 @@ namespace ICanPay
         private const string formItem = "<input type='hidden' name='{0}' value='{1}'>";
 
         /// <summary>
-        /// ³õÊ¼»¯Ë½ÓĞÊı¾İ
+        /// åˆå§‹åŒ–ç§æœ‰æ•°æ®
         /// </summary>
-        public PayGateway()
+        protected PayGateway()
         {
             customer = new Customer();
             merchant = new Merchant();
             order = new Order();
             otherData = new Dictionary<string, string>();
             safeAddress = new List<string>();
-            validateServer = false;
         }
 
         /// <summary>
-        /// ¿Í»§Êı¾İ
+        /// å®¢æˆ·æ•°æ®
         /// </summary>
         public Customer Customer
         {
@@ -49,7 +48,7 @@ namespace ICanPay
         }
 
         /// <summary>
-        /// ÉÌ¼ÒÊı¾İ
+        /// å•†å®¶æ•°æ®
         /// </summary>
         public Merchant Merchant
         {
@@ -65,7 +64,7 @@ namespace ICanPay
         }
 
         /// <summary>
-        /// ¶©µ¥Êı¾İ
+        /// è®¢å•æ•°æ®
         /// </summary>
         public Order Order
         {
@@ -81,7 +80,7 @@ namespace ICanPay
         }
 
         /// <summary>
-        /// Ö§¸¶Íø¹ØµÄÃû³Æ
+        /// æ”¯ä»˜ç½‘å…³çš„åç§°
         /// </summary>
         abstract public GatewayType GatewayName
         {
@@ -89,7 +88,7 @@ namespace ICanPay
         }
 
         /// <summary>
-        /// Íø¹ØÖĞµÄÆäËûÊı¾İÏî
+        /// ç½‘å…³ä¸­çš„å…¶ä»–æ•°æ®é¡¹
         /// </summary>
         public Dictionary<string, string> OtherData
         {
@@ -104,7 +103,7 @@ namespace ICanPay
         }
 
         /// <summary>
-        /// Íø¹Ø·şÎñÆ÷IP¡£¿ÉÒÔÍ¨¹ı¼ì²é·¢ËÍÍ¨ÖªÊı¾İµÄIPÊÇ·ñÔÚÁĞ±íÖĞÒÔ¼ÓÇ¿°²È«ĞÔ
+        /// ç½‘å…³æœåŠ¡å™¨IPã€‚å¯ä»¥é€šè¿‡æ£€æŸ¥å‘é€é€šçŸ¥æ•°æ®çš„IPæ˜¯å¦åœ¨åˆ—è¡¨ä¸­ä»¥åŠ å¼ºå®‰å…¨æ€§
         /// </summary>
         public IList<string> SafeAddress
         {
@@ -116,7 +115,7 @@ namespace ICanPay
 
 
         /// <summary>
-        /// ÑéÖ¤·¢ËÍÍ¨Öª·şÎñÆ÷µÄIPÊÇ·ñÔÚÍø¹ØIPÁĞ±íÖĞ£¬ÒÔ¼ÓÇ¿°²È«ĞÔ¡£Ä¬ÈÏfalse
+        /// éªŒè¯å‘é€é€šçŸ¥æœåŠ¡å™¨çš„IPæ˜¯å¦åœ¨ç½‘å…³IPåˆ—è¡¨ä¸­ï¼Œä»¥åŠ å¼ºå®‰å…¨æ€§ã€‚é»˜è®¤false
         /// </summary>
         public bool ValidateNotifyHostServerAddress
         {
@@ -132,7 +131,7 @@ namespace ICanPay
 
 
         /// <summary>
-        /// ÑéÖ¤·¢ËÍÍ¨ÖªµÄÍø¹ØÊÇ·ñÔÚ°²È«·şÎñÆ÷IPÁĞ±íÖĞ
+        /// éªŒè¯å‘é€é€šçŸ¥çš„ç½‘å…³æ˜¯å¦åœ¨å®‰å…¨æœåŠ¡å™¨IPåˆ—è¡¨ä¸­
         /// </summary>
         private bool ValidateServerIP()
         {
@@ -156,11 +155,11 @@ namespace ICanPay
 
 
         /// <summary>
-        /// ´´½¨Form HTML´úÂë
+        /// åˆ›å»ºForm HTMLä»£ç 
         /// </summary>
-        /// <param name="parma">ĞèÒªÌí¼ÓµÄ²ÎÊı</param>
-        /// <param name="url">Íø¹ØµÄUrl</param>
-        protected string GetForm(Dictionary<string, string> parma, string url)
+        /// <param name="parma">éœ€è¦æ·»åŠ çš„å‚æ•°</param>
+        /// <param name="url">ç½‘å…³çš„Url</param>
+        protected static string GetForm(Dictionary<string, string> parma, string url)
         {
             StringBuilder html = new StringBuilder();
 
@@ -179,7 +178,7 @@ namespace ICanPay
 
 
         /// <summary>
-        /// ÑéÖ¤¶©µ¥ÊÇ·ñÖ§¸¶³É¹¦
+        /// éªŒè¯è®¢å•æ˜¯å¦æ”¯ä»˜æˆåŠŸ
         /// </summary>
         public bool ValidateNotify()
         {
@@ -192,7 +191,7 @@ namespace ICanPay
         }
 
         /// <summary>
-        /// ¼ìÑéÍø¹Ø·µ»ØµÄÍ¨Öª£¬È·ÈÏ¶©µ¥ÊÇ·ñÖ§¸¶³É¹¦
+        /// æ£€éªŒç½‘å…³è¿”å›çš„é€šçŸ¥ï¼Œç¡®è®¤è®¢å•æ˜¯å¦æ”¯ä»˜æˆåŠŸ
         /// </summary>
         abstract protected bool CheckNotifyData();
     }
