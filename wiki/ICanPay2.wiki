@@ -4,13 +4,13 @@
 这里将会讲述ICanPay的原理，你可以通过扩展基类来支持更多的网关。
 
 
-  * 从最简单的开始
-    * 新建一个通过Form提交订单的新网关
-    * 查询、生成订单使用的其他接口
-  * 接收网关服务器的通知
-    * 识别网关类型
-    * 实现网关通知的检查
-  * 主要接口介绍
+  * [http://code.google.com/p/icanpay/wiki/ICanPay2#从最简单的开始 从最简单的开始]
+    * [http://code.google.com/p/icanpay/wiki/ICanPay2#新建一个通过Form提交订单的新网关 新建一个通过Form提交订单的新网关]
+    * [http://code.google.com/p/icanpay/wiki/ICanPay2#查询、生成订单使用的其他接口 查询、生成订单使用的其他接口]
+  * [http://code.google.com/p/icanpay/wiki/ICanPay2#接收网关服务器的通知 接收网关服务器的通知]
+    * [http://code.google.com/p/icanpay/wiki/ICanPay2#识别网关类型 识别网关类型]
+    * [http://code.google.com/p/icanpay/wiki/ICanPay2#实现网关通知的检查 实现网关通知的检查]
+  * [http://code.google.com/p/icanpay/wiki/ICanPay2#主要接口介绍 主要接口介绍]
 
 ----
 
