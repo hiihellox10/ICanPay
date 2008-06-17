@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Text;
@@ -7,7 +7,7 @@ using System.Web;
 namespace ICanPay
 {
     /// <summary>
-    /// Íø¹Ø·µ»ØµÄÊı¾İ
+    /// ç½‘å…³è¿”å›çš„æ•°æ®
     /// </summary>
     public class PaymentNotify
     {
@@ -15,7 +15,7 @@ namespace ICanPay
 
 
         /// <summary>
-        /// Íø¹Ø´¦Àí³ÌĞò
+        /// ç½‘å…³å¤„ç†ç¨‹åº
         /// </summary>
         public PaymentNotify()
         {
@@ -23,7 +23,7 @@ namespace ICanPay
 
 
         /// <summary>
-        /// ·¢ËÍÍ¨ÖªµÄÍø¹ØµÄ´¦ÀíÀà
+        /// å‘é€é€šçŸ¥çš„ç½‘å…³çš„å¤„ç†ç±»
         /// </summary>
         public PayGateway PayGateway
         {
@@ -38,7 +38,7 @@ namespace ICanPay
         }
 
         /// <summary>
-        /// ÊÇ·ñÓĞ½ÓÊÕµ½ÕıÈ·µÄÍø¹ØÍ¨Öª
+        /// æ˜¯å¦æœ‰æ¥æ”¶åˆ°æ­£ç¡®çš„ç½‘å…³é€šçŸ¥
         /// </summary>
         public bool HasNotify
         {

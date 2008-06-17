@@ -1,11 +1,11 @@
-using System;
+锘縰sing System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ICanPay
 {
     /// <summary>
-    /// 商户数据
+    /// 鍟嗘埛鏁版嵁
     /// </summary>
     public class Merchant
     {
@@ -18,7 +18,7 @@ namespace ICanPay
         {
         }
         /// <summary>
-        /// 商户帐号
+        /// 鍟嗘埛甯愬彿
         /// </summary>
         public string UserName
         {
@@ -30,7 +30,7 @@ namespace ICanPay
                 }
                 else
                 {
-                    throw new ArgumentNullException("UserName", "商户帐号没有设置");
+                    throw new ArgumentNullException("UserName", "鍟嗘埛甯愬彿娌℃湁璁剧疆");
                 }
             }
             set
@@ -41,13 +41,13 @@ namespace ICanPay
                 }
                 else
                 {
-                    throw new ArgumentNullException("UserName", "商户帐号不能为空");
+                    throw new ArgumentNullException("UserName", "鍟嗘埛甯愬彿涓嶈兘涓虹┖");
                 }
             }
         }
 
         /// <summary>
-        /// 商户密钥
+        /// 鍟嗘埛瀵嗛挜
         /// </summary>
         public string Key
         {
@@ -59,7 +59,7 @@ namespace ICanPay
                 }
                 else
                 {
-                    throw new ArgumentNullException("Key", "商户密钥没有设置");
+                    throw new ArgumentNullException("Key", "鍟嗘埛瀵嗛挜娌℃湁璁剧疆");
                 }
             }
             set
@@ -70,13 +70,13 @@ namespace ICanPay
                 }
                 else
                 {
-                    throw new ArgumentNullException("Key", "商户密钥不能为空");
+                    throw new ArgumentNullException("Key", "鍟嗘埛瀵嗛挜涓嶈兘涓虹┖");
                 }
             }
         }
 
         /// <summary>
-        /// 网关回发通知URL
+        /// 缃戝叧鍥炲彂閫氱煡URL
         /// </summary>
         public string NotifyUrl
         {
@@ -88,7 +88,7 @@ namespace ICanPay
                 }
                 else
                 {
-                    throw new ArgumentNullException("NotifyUrl", "网关通知Url没有设置");
+                    throw new ArgumentNullException("NotifyUrl", "缃戝叧閫氱煡Url娌℃湁璁剧疆");
                 }
             }
             set
@@ -99,7 +99,7 @@ namespace ICanPay
                 }
                 else
                 {
-                    throw new ArgumentNullException("NotifyUrl", "网关通知Url不能为空");
+                    throw new ArgumentNullException("NotifyUrl", "缃戝叧閫氱煡Url涓嶈兘涓虹┖");
                 }
             }
         }

@@ -1,11 +1,11 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ICanPay.Test
 {
     /// <summary>
-    /// Íø¹ØÍ¨ÖªÊı¾İ
+    /// ç½‘å…³é€šçŸ¥æ•°æ®
     /// </summary>
     public class TestNotifyData
     {
@@ -14,7 +14,7 @@ namespace ICanPay.Test
         string notifyIP;
         string notifyUrl;
 
-        /// <remarks>³õÊ¼»¯</remarks>
+        /// <remarks>åˆå§‹åŒ–</remarks>
         public TestNotifyData()
         {
             notifyData = new Dictionary<string, string>();
@@ -22,7 +22,7 @@ namespace ICanPay.Test
 
 
         /// <summary>
-        /// Form¡¢UrlÍ¨ÖªÊı¾İ
+        /// Formã€Urlé€šçŸ¥æ•°æ®
         /// </summary>
         public Dictionary<string, string> NotifyData
         {
@@ -38,7 +38,7 @@ namespace ICanPay.Test
 
 
         /// <summary>
-        /// Í¨ÖªÊ±¼ä
+        /// é€šçŸ¥æ—¶é—´
         /// </summary>
         public DateTime DateTime
         {
@@ -54,7 +54,7 @@ namespace ICanPay.Test
 
 
         /// <summary>
-        /// Í¨ÖªIP
+        /// é€šçŸ¥IP
         /// </summary>
         public string IP
         {
@@ -70,7 +70,7 @@ namespace ICanPay.Test
 
 
         /// <summary>
-        /// Í¨ÖªUrl
+        /// é€šçŸ¥Url
         /// </summary>
         public string Url
         {

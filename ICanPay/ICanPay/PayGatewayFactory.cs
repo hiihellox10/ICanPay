@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
@@ -7,14 +7,14 @@ using ICanPay.Providers;
 namespace ICanPay
 {
     /// <summary>
-    /// ½ÓÊÜÍø¹ØÍ¨Öª²¢´´½¨ÏàÓ¦µÄÖ§¸¶Íø¹ØµÄÊµÏÖ
+    /// æ¥å—ç½‘å…³é€šçŸ¥å¹¶åˆ›å»ºç›¸åº”çš„æ”¯ä»˜ç½‘å…³çš„å®ç°
     /// </summary>
     public static class PayGatewayFactory
     {
         /// <summary>
-        /// »ñÈ¡Íø¹ØµÄÍ¨Öª£¬²¢´´½¨ÏàÓ¦µÄÍø¹ØÊµÏÖ¡£Èç¹ûÊÇÎŞ·¨Ê¶±ğµÄÍø¹Ø·µ»Ønull¡£
+        /// è·å–ç½‘å…³çš„é€šçŸ¥ï¼Œå¹¶åˆ›å»ºç›¸åº”çš„ç½‘å…³å®ç°ã€‚å¦‚æœæ˜¯æ— æ³•è¯†åˆ«çš„ç½‘å…³è¿”å›nullã€‚
         /// </summary>
-        /// <returns>ÅĞ¶ÏÍø¹ØÀà±ğ£¬´´½¨ÏàÓ¦Íø¹ØÊµÏÖ¡£Èç¹ûÃ»ÓĞÊÕµ½¿ÉÊ¶±ğÍø¹ØÍ¨Öª·µ»ØNull</returns>
+        /// <returns>åˆ¤æ–­ç½‘å…³ç±»åˆ«ï¼Œåˆ›å»ºç›¸åº”ç½‘å…³å®ç°ã€‚å¦‚æœæ²¡æœ‰æ”¶åˆ°å¯è¯†åˆ«ç½‘å…³é€šçŸ¥è¿”å›Null</returns>
         public static PaymentNotify GetGatewayNotify()
         {
             Dictionary<string, string> notifyData = ReadNotifyData();
@@ -23,7 +23,7 @@ namespace ICanPay
             ProcessNotify validate = new ProcessNotify(notifyData);
             notify.PayGateway = validate.GetGateway();
 
-            // Íø¹ØµÄÍ¨ÖªÎŞ·¨Ê¶±ğ¡£
+            // ç½‘å…³çš„é€šçŸ¥æ— æ³•è¯†åˆ«ã€‚
             if (notify.PayGateway == null)
             {
                 return null; 
@@ -37,7 +37,7 @@ namespace ICanPay
 
 
         /// <summary>
-        /// ¶ÁÈ¡Íø¹Ø·¢»ØµÄÊı¾İ
+        /// è¯»å–ç½‘å…³å‘å›çš„æ•°æ®
         /// </summary>
         private static Dictionary<string, string> ReadNotifyData()
         {
@@ -45,7 +45,7 @@ namespace ICanPay
             System.Collections.Specialized.NameValueCollection coll;
             string[] keys;
 
-            // ¶ÁÈ¡Í¨¹ıGet´«ÈëµÄÖµ
+            // è¯»å–é€šè¿‡Getä¼ å…¥çš„å€¼
             coll = HttpContext.Current.Request.QueryString;
             keys = coll.AllKeys;
             for (int i = 0; i < keys.Length; i++)
@@ -53,7 +53,7 @@ namespace ICanPay
                 notifyData[keys[i]] = coll[keys[i]];
             }
 
-            // ¶ÁÈ¡Í¨¹ıPost´«ÈëµÄÖµ
+            // è¯»å–é€šè¿‡Postä¼ å…¥çš„å€¼
             coll = HttpContext.Current.Request.Form;
             keys = coll.AllKeys;
             for (int i = 0; i < keys.Length; i++)

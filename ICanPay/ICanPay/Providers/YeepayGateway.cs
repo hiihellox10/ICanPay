@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Net;
@@ -8,14 +8,14 @@ using ICanPay;
 namespace ICanPay.Providers
 {
     /// <summary>
-    /// Ò×±¦
+    /// æ˜“å®
     /// </summary>
     sealed public class YeepayGateway : PayGateway, IPaymentForm, IPaymentUrl, ICheckPayment
     {
         const string payGatewayUrl = @"https://www.yeepay.com/app-merchant-proxy/node";
 
         /// <summary>
-        /// Íø¹ØÃû³Æ
+        /// ç½‘å…³åç§°
         /// </summary>
         public override GatewayType GatewayName
         {
@@ -27,7 +27,7 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// Ö§¸¶¶©µ¥µÄForm HTML´úÂë
+        /// æ”¯ä»˜è®¢å•çš„Form HTMLä»£ç 
         /// </summary>
         public string BuildPaymentForm()
         {
@@ -48,7 +48,7 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// Ö§¸¶Ç©Ãû
+        /// æ”¯ä»˜ç­¾å
         /// </summary>
         private string PaySign()
         {
@@ -60,8 +60,8 @@ namespace ICanPay.Providers
             sign.Append("CNY");
             sign.Append(Order.OrderId);
             sign.Append(Merchant.NotifyUrl);
-            sign.Append("0");   // p9_SAF Öµ
-            sign.Append("1");   // pr_NeedResponse Öµ
+            sign.Append("0");   // p9_SAF å€¼
+            sign.Append("1");   // pr_NeedResponse å€¼
 
             string hmacSign = YeepayHmacMD5.HmacSign(sign.ToString(), Merchant.Key);
             return hmacSign;
@@ -69,7 +69,7 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        ///  Ö§¸¶¶©µ¥Êı¾İµÄUrl
+        ///  æ”¯ä»˜è®¢å•æ•°æ®çš„Url
         /// </summary>
         public string BuildPaymentUrl()
         {
@@ -92,11 +92,11 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// ÑéÖ¤¶©µ¥ÊÇ·ñÖ§¸¶³É¹¦
+        /// éªŒè¯è®¢å•æ˜¯å¦æ”¯ä»˜æˆåŠŸ
         /// </summary>
         protected override bool CheckNotifyData()
         {
-            // Í¨ÖªÊı¾İÖĞ±ØĞë°üº¬µÄKey£¬Èç¹ûÃ»ÓĞ±íÊ¾Êı¾İ¿ÉÄÜ·Ç·¨
+            // é€šçŸ¥æ•°æ®ä¸­å¿…é¡»åŒ…å«çš„Keyï¼Œå¦‚æœæ²¡æœ‰è¡¨ç¤ºæ•°æ®å¯èƒ½éæ³•
             string[] checkParma = { "hmac", "r1_Code", "r4_Cur", "r3_Amt", "r6_Order" };
 
             string sign = NotifySign();
@@ -106,7 +106,7 @@ namespace ICanPay.Providers
                 return false;
             }
 
-            // ¼ì²é¶©µ¥ÊÇ·ñÖ§¸¶³É¹¦£¬¶©µ¥Ç©ÃûÊÇ·ñÕıÈ·£¬»õ±ÒÀàĞÍÊÇ·ñÎªRMB
+            // æ£€æŸ¥è®¢å•æ˜¯å¦æ”¯ä»˜æˆåŠŸï¼Œè®¢å•ç­¾åæ˜¯å¦æ­£ç¡®ï¼Œè´§å¸ç±»å‹æ˜¯å¦ä¸ºRMB
             if (OtherData["hmac"] == sign && OtherData["r1_Code"] == "1" && OtherData["r4_Cur"] == "RMB")
             {
                 Order.Amount = Convert.ToDouble(OtherData["r3_Amt"]);
@@ -120,11 +120,11 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// Í¨ÖªÊı¾İµÄÇ©Ãû
+        /// é€šçŸ¥æ•°æ®çš„ç­¾å
         /// </summary>
         private string NotifySign()
         {
-            // Éú³ÉÇ©Ãû²ÎÊıµÄË³Ğò
+            // ç”Ÿæˆç­¾åå‚æ•°çš„é¡ºåº
             string[] notifyParma = {"p1_MerId", "r0_Cmd", "r1_Code", "r2_TrxId", "r3_Amt", "r4_Cur", "r5_Pid", "r6_Order", "r7_Uid",
                                     "r8_MP", "r9_BType"};
 
@@ -135,7 +135,7 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// ²éÑ¯¶©µ¥ÊÇ·ñÖ§¸¶³É¹¦
+        /// æŸ¥è¯¢è®¢å•æ˜¯å¦æ”¯ä»˜æˆåŠŸ
         /// </summary>
         public bool CheckPayment()
         {
@@ -172,7 +172,7 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// ´´½¨²éÑ¯¶©µ¥µÄUrl
+        /// åˆ›å»ºæŸ¥è¯¢è®¢å•çš„Url
         /// </summary>
         private string GetQueryUrl()
         {
@@ -184,7 +184,7 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// ¶ÁÈ¡·şÎñÆ÷·µ»ØµÄ¶©µ¥µÄÊı¾İ
+        /// è¯»å–æœåŠ¡å™¨è¿”å›çš„è®¢å•çš„æ•°æ®
         /// </summary>
         private bool ReadReturnStream(StreamReader reader)
         {
@@ -197,7 +197,7 @@ namespace ICanPay.Providers
                 returnData.Add(data[0], data[1]);
             }
 
-            // ¶©µ¥ÊÇ·ñÖ§¸¶³É¹¦
+            // è®¢å•æ˜¯å¦æ”¯ä»˜æˆåŠŸ
             if (returnData["r1_Code"] != "1" && returnData["rb_PayStatus"] != "SUCCESS")
             {
                 return false;
@@ -214,15 +214,15 @@ namespace ICanPay.Providers
 
 /*
  * 
-Ö§¸¶³É¹¦Íø¹Ø·µ»ØÊı¾İ
+æ”¯ä»˜æˆåŠŸç½‘å…³è¿”å›æ•°æ®
 http://www.sina.com/?p1_MerId=10000432521&r0_Cmd=Buy&r1_Code=1&r2_TrxId=9130402221282816&r3_Amt=0.01&r4_Cur=RMB&r5_Pid=3721002&r6_Order=3721002&r7_Uid=&r8_MP=&r9_BType=1&ru_Trxtime=20080328190019&ro_BankOrderId=23412909&rb_BankId=1000000-NET&rp_PayDate=20080328190018&hmac=98323b53efeb78c3c2f1bbd1e2cc81f1
 
 
-²éÑ¯Êı¾İ£¬ËùÓĞÊı¾İ×é³ÉÇ©Ãû
+æŸ¥è¯¢æ•°æ®ï¼Œæ‰€æœ‰æ•°æ®ç»„æˆç­¾å
 https://www.yeepay.com/app-merchant-proxy/node?p0_Cmd=QueryOrdDetail&p1_MerId=10000432521&p2_Order=3721002&hmac=c20bcda467cb2f42d382acf42b41421f
 
 
-·µ»ØÊı¾İ£¬ËùÓĞÊı×é×é³ÉÇ©Ãû
+è¿”å›æ•°æ®ï¼Œæ‰€æœ‰æ•°ç»„ç»„æˆç­¾å
 r0_Cmd=QueryOrdDetail
 r1_Code=1
 r2_TrxId=9130402221282816

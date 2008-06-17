@@ -1,16 +1,16 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ICanPay
 {
     /// <summary>
-    /// ÉèÖÃĞèÒªÖ§¸¶µÄ¶©µ¥µÄÊı¾İ£¬´´½¨Ö§¸¶¶©µ¥HTML´úÂë»òURLµØÖ·
+    /// è®¾ç½®éœ€è¦æ”¯ä»˜çš„è®¢å•çš„æ•°æ®ï¼Œåˆ›å»ºæ”¯ä»˜è®¢å•HTMLä»£ç æˆ–URLåœ°å€
     /// </summary>
     /// <remarks>
-    /// ÄãĞèÒª±£Ö¤Êä³öHTML´úÂëµÄÒ³ÃæÎªGB2312±àÂë£¬·ñÔòÍø¹Ø½ÓÊÕµ½µÄÊı¾İ½«»á²úÉúÂÒÂë¡£
-    /// ÔÚWeb.configÖĞµÄconfiguration/system.web½ÚµãÉèÖÃ<globalization requestEncoding="gb2312" responseEncoding="gb2312" />
-    /// Ä¿Ç°Ö»ÄÜÊ¹ÓÃRMBÖ§¸¶£¬ÆäËû»õ±ÒÖ§¸¶ÇëÔÄ¶ÁÏà¹ØÍø¹Ø½Ó¿ÚÎÄµµĞŞ¸Ä¡£
+    /// ä½ éœ€è¦ä¿è¯è¾“å‡ºHTMLä»£ç çš„é¡µé¢ä¸ºGB2312ç¼–ç ï¼Œå¦åˆ™ç½‘å…³æ¥æ”¶åˆ°çš„æ•°æ®å°†ä¼šäº§ç”Ÿä¹±ç ã€‚
+    /// åœ¨Web.configä¸­çš„configuration/system.webèŠ‚ç‚¹è®¾ç½®<globalization requestEncoding="gb2312" responseEncoding="gb2312" />
+    /// ç›®å‰åªèƒ½ä½¿ç”¨RMBæ”¯ä»˜ï¼Œå…¶ä»–è´§å¸æ”¯ä»˜è¯·é˜…è¯»ç›¸å…³ç½‘å…³æ¥å£æ–‡æ¡£ä¿®æ”¹ã€‚
     /// </remarks>
     public class PaymentSetting<T> where T : PayGateway, new()
     {
@@ -18,7 +18,7 @@ namespace ICanPay
 
 
         /// <summary>
-        /// ´«ÈëÍø¹Ø½Ó¿ÚµÄÊµÏÖÀà
+        /// ä¼ å…¥ç½‘å…³æ¥å£çš„å®ç°ç±»
         /// </summary>
         public PaymentSetting()
         {
@@ -26,7 +26,7 @@ namespace ICanPay
         }
 
         /// <summary>
-        /// Íø¹ØÊı¾İ
+        /// ç½‘å…³æ•°æ®
         /// </summary>
         public T PayGateway
         {

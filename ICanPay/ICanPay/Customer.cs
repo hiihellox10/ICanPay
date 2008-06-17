@@ -1,11 +1,11 @@
-using System;
+锘縰sing System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ICanPay
 {
     /// <summary>
-    /// 支付客户资料
+    /// 鏀粯瀹㈡埛璧勬枡
     /// </summary>
     public class Customer
     {
@@ -16,7 +16,7 @@ namespace ICanPay
         string telephone;
 
         /// <summary>
-        /// 姓名
+        /// 濮撳悕
         /// </summary>
         public string Name
         {
@@ -31,7 +31,7 @@ namespace ICanPay
         }
 
         /// <summary>
-        /// 通讯地址
+        /// 閫氳鍦板潃
         /// </summary>
         public string Address
         {
@@ -61,7 +61,7 @@ namespace ICanPay
         }
 
         /// <summary>
-        /// 邮编
+        /// 閭紪
         /// </summary>
         public string Post
         {
@@ -76,7 +76,7 @@ namespace ICanPay
         }
 
         /// <summary>
-        /// 联系电话
+        /// 鑱旂郴鐢佃瘽
         /// </summary>
         public string Telephone
         {

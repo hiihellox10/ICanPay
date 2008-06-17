@@ -1,4 +1,4 @@
-using System;
+锘縰sing System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,7 +7,7 @@ namespace ICanPay
     internal interface IQueryForm
     {
         /// <summary>
-        /// 建立Form提交的订单查询HTML代码
+        /// 寤虹珛Form鎻愪氦鐨勮鍗曟煡璇TML浠ｇ爜
         /// </summary>
         string BuildQueryForm();
     }

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Net;
@@ -8,7 +8,7 @@ using ICanPay;
 namespace ICanPay.Providers
 {
     /// <summary>
-    /// ÔÆÍø
+    /// äº‘ç½‘
     /// </summary>
     sealed public class CloudnetGateway : PayGateway, IPaymentForm, IQueryForm
     {
@@ -18,7 +18,7 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// Íø¹ØÃû³Æ
+        /// ç½‘å…³åç§°
         /// </summary>
         public override GatewayType GatewayName
         {
@@ -30,12 +30,12 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// ÑéÖ¤¶©µ¥ÊÇ·ñÖ§¸¶³É¹¦
+        /// éªŒè¯è®¢å•æ˜¯å¦æ”¯ä»˜æˆåŠŸ
         /// </summary>
-        /// <remarks>ÕâÀï´¦Àí²éÑ¯¶©µ¥µÄÍø¹ØÍ¨Öª¸úÖ§¸¶¶©µ¥µÄÍø¹ØÍ¨Öª</remarks>
+        /// <remarks>è¿™é‡Œå¤„ç†æŸ¥è¯¢è®¢å•çš„ç½‘å…³é€šçŸ¥è·Ÿæ”¯ä»˜è®¢å•çš„ç½‘å…³é€šçŸ¥</remarks>
         protected override bool CheckNotifyData()
         {
-            // Í¨ÖªÊı¾İÖĞ±ØĞë°üº¬µÄKey£¬Èç¹ûÃ»ÓĞ±íÊ¾Êı¾İ¿ÉÄÜ·Ç·¨
+            // é€šçŸ¥æ•°æ®ä¸­å¿…é¡»åŒ…å«çš„Keyï¼Œå¦‚æœæ²¡æœ‰è¡¨ç¤ºæ•°æ®å¯èƒ½éæ³•
             string[] checkParma = { "c_signstr", "c_moneytype", "c_succmark", "c_order", "c_orderamount" };
 
             if (!PayUtility.ContainsKey(checkParma, OtherData))
@@ -43,7 +43,7 @@ namespace ICanPay.Providers
                 return false;
             }
 
-            // ¼ì²é¶©µ¥ÊÇ·ñÖ§¸¶³É¹¦£¬¶©µ¥Ç©ÃûÊÇ·ñÕıÈ·£¬»õ±ÒÀàĞÍÊÇ·ñÎªRMB
+            // æ£€æŸ¥è®¢å•æ˜¯å¦æ”¯ä»˜æˆåŠŸï¼Œè®¢å•ç­¾åæ˜¯å¦æ­£ç¡®ï¼Œè´§å¸ç±»å‹æ˜¯å¦ä¸ºRMB
             if (OtherData["c_signstr"] == NotifySign() && OtherData["c_moneytype"] == "0")
             {
                 if (OtherData["c_succmark"] == "Y" || OtherData["c_succmark"] == "001")
@@ -60,11 +60,11 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// Íø¹ØÍ¨ÖªµÄÊı¾İÇ©Ãû
+        /// ç½‘å…³é€šçŸ¥çš„æ•°æ®ç­¾å
         /// </summary>
         private string NotifySign()
         {
-            // Éú³ÉÇ©Ãû²ÎÊıµÄË³Ğò
+            // ç”Ÿæˆç­¾åå‚æ•°çš„é¡ºåº
             string[] notifyParma = {"c_mid", "c_order", "c_orderamount", "c_ymd", "c_transnum", 
                                     "c_succmark", "c_moneytype", "c_memo1", "c_memo2"};
             string sign = PayUtility.GetOtherDataValue(notifyParma, OtherData) + Merchant.Key;
@@ -74,13 +74,13 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// ´´½¨FormÖ§¸¶¶©µ¥HTML´úÂë
+        /// åˆ›å»ºFormæ”¯ä»˜è®¢å•HTMLä»£ç 
         /// </summary>
         public string BuildPaymentForm()
         {
             if (!PayUtility.IsNumeric(Order.OrderId))
             {
-                throw new ArgumentException("¶©µ¥±àºÅÖ»ÄÜÊÇÊı×Ö", "OrderId");
+                throw new ArgumentException("è®¢å•ç¼–å·åªèƒ½æ˜¯æ•°å­—", "OrderId");
             }
 
             parma = new Dictionary<string, string>();
@@ -104,7 +104,7 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// Ö§¸¶Ç©Ãû
+        /// æ”¯ä»˜ç­¾å
         /// </summary>
         private string PaySign()
         {
@@ -125,7 +125,7 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// ²éÑ¯Ç©Ãû
+        /// æŸ¥è¯¢ç­¾å
         /// </summary>
         private string QuerySign()
         {
@@ -142,25 +142,25 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// ´´½¨Form²éÑ¯¶©µ¥HTML´úÂë¡£ÔÆÍø²éÑ¯¶©µ¥ĞèÒªc_ymd²ÎÊı£¬c_ymdÎª¶©µ¥µÄ½»Ò×ÈÕÆÚ¡£
-        /// Í¨¹ıOtherData["c_ymd"]ÉèÖÃ¶©µ¥½»Ò×ÈÕÆÚ¡£
+        /// åˆ›å»ºFormæŸ¥è¯¢è®¢å•HTMLä»£ç ã€‚äº‘ç½‘æŸ¥è¯¢è®¢å•éœ€è¦c_ymdå‚æ•°ï¼Œc_ymdä¸ºè®¢å•çš„äº¤æ˜“æ—¥æœŸã€‚
+        /// é€šè¿‡OtherData["c_ymd"]è®¾ç½®è®¢å•äº¤æ˜“æ—¥æœŸã€‚
         /// </summary>
         public string BuildQueryForm()
         {
             if (!PayUtility.IsNumeric(Order.OrderId))
             {
-                throw new ArgumentException("¶©µ¥±àºÅÖ»ÄÜÊÇÊı×Ö", "OrderId");
+                throw new ArgumentException("è®¢å•ç¼–å·åªèƒ½æ˜¯æ•°å­—", "OrderId");
             }
 
-            // ÊÇ·ñÓĞ¸½¼ÓµÄc_ymd²ÎÊı
+            // æ˜¯å¦æœ‰é™„åŠ çš„c_ymdå‚æ•°
             if (!OtherData.ContainsKey("c_ymd"))
             {
-                throw new ArgumentException("ÔÆÍø²éÑ¯¶©µ¥ĞèÒªc_ymd²ÎÊı£¬c_ymdÎª¶©µ¥µÄ½»Ò×ÈÕÆÚ¡£Í¨¹ıOtherData[" + "c_ymd" + "]ÉèÖÃ¶©µ¥½»Ò×ÈÕÆÚ¡£",
+                throw new ArgumentException("äº‘ç½‘æŸ¥è¯¢è®¢å•éœ€è¦c_ymdå‚æ•°ï¼Œc_ymdä¸ºè®¢å•çš„äº¤æ˜“æ—¥æœŸã€‚é€šè¿‡OtherData[" + "c_ymd" + "]è®¾ç½®è®¢å•äº¤æ˜“æ—¥æœŸã€‚",
                                             "OtherData[" + "c_ymd" + "]");
             }
             else if (!PayUtility.IsNumeric(OtherData["c_ymd"]) && OtherData["c_ymd"].Length != 8)
             {
-                throw new ArgumentException("½»Ò×ÈÕÆÚ±ØĞëÎªÊı×Ö£¬¸ñÊ½ÎªyyyyMMdd", "OtherData[" + "c_ymd" + "]");
+                throw new ArgumentException("äº¤æ˜“æ—¥æœŸå¿…é¡»ä¸ºæ•°å­—ï¼Œæ ¼å¼ä¸ºyyyyMMdd", "OtherData[" + "c_ymd" + "]");
             }
 
             parma = new Dictionary<string, string>();
@@ -181,10 +181,10 @@ namespace ICanPay.Providers
 /*
  * 
  * 
- * Ö§¸¶Ê±Íø¹Ø·µ»ØÊı¾İ¸ñÊ½²Î¿¼£º
+ * æ”¯ä»˜æ—¶ç½‘å…³è¿”å›æ•°æ®æ ¼å¼å‚è€ƒï¼š
  * /Pay/notify.aspx?c_mid=1020440&c_order=1&c_orderamount=.01&c_ymd=20080412&c_transnum=9052704&c_succmark=Y&c_cause=succ&c_moneytype=0&c_memo1=&c_memo2=&c_signstr=a21230bfc92bd73d70e6a8e2bd8d7867&c_paygate=2000
  * 
- * ²éÑ¯Ê±Íø¹ØµÄ·µ»ØÊı¾İ¸ñÊ½²Î¿¼£º
+ * æŸ¥è¯¢æ—¶ç½‘å…³çš„è¿”å›æ•°æ®æ ¼å¼å‚è€ƒï¼š
  * /Pay/notify.aspx?c_mid=1020440&c_order=1&c_orderamount=.01&c_ymd=20080412&c_moneytype=0&c_succmark=001&c_cause=&c_memo1=&c_memo2=&c_signstr=88256b63dd5d41b8094b37f8a0428c1d&c_name=%B9%FE&c_address=&c_email=&c_tel=&c_post=
  * 
 */

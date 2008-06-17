@@ -1,4 +1,4 @@
-using System;
+锘縰sing System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,7 +7,7 @@ namespace ICanPay
     internal interface IQueryUrl
     {
         /// <summary>
-        /// 订单查询数据的Url键接
+        /// 璁㈠崟鏌ヨ鏁版嵁鐨刄rl閿帴
         /// </summary>
         string BuildQueryUrl();
     }

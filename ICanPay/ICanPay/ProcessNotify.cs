@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using ICanPay.Providers;
@@ -6,7 +6,7 @@ using ICanPay.Providers;
 namespace ICanPay
 {
     /// <summary>
-    /// ÑéÖ¤Íø¹ØµÄÀàĞÍ£¬Í¨¹ı¶Ô·µ»ØÊı¾İµÄÊ¶±ğÅĞ¶ÏÍø¹ØÀàĞÍ
+    /// éªŒè¯ç½‘å…³çš„ç±»å‹ï¼Œé€šè¿‡å¯¹è¿”å›æ•°æ®çš„è¯†åˆ«åˆ¤æ–­ç½‘å…³ç±»å‹
     /// </summary>
     internal class ProcessNotify
     {
@@ -19,7 +19,7 @@ namespace ICanPay
 
 
         /// <summary>
-        /// ÑéÖ¤Íø¹ØµÄÀàĞÍ£¬Èç¹ûÃ»ÓĞÍ¨¹ıÑéÖ¤·µ»Ønull
+        /// éªŒè¯ç½‘å…³çš„ç±»å‹ï¼Œå¦‚æœæ²¡æœ‰é€šè¿‡éªŒè¯è¿”å›null
         /// </summary>
         public PayGateway GetGateway()
         {
@@ -48,13 +48,13 @@ namespace ICanPay
 
 
         /// <summary>
-        /// ÑéÖ¤ÊÇ·ñÊÇYeepayÍø¹Ø
+        /// éªŒè¯æ˜¯å¦æ˜¯Yeepayç½‘å…³
         /// </summary>
         private bool IsYeepayGateway
         {
             get
             {
-                // ÑéÖ¤µÄKey£¬¼ì²éÊÇ·ñÔÚ·¢»ØµÄÊı¾İÖĞ£¬ĞèÒª±£Ö¤KeyÔÚ¸÷¸öÍø¹ØµÄ·¢ËÍÊı¾İÖĞµÄµÄÎ¨Ò»ĞÔ£¬²¢ÇÒÒ»¶¨´æÔÚ¡£
+                // éªŒè¯çš„Keyï¼Œæ£€æŸ¥æ˜¯å¦åœ¨å‘å›çš„æ•°æ®ä¸­ï¼Œéœ€è¦ä¿è¯Keyåœ¨å„ä¸ªç½‘å…³çš„å‘é€æ•°æ®ä¸­çš„çš„å”¯ä¸€æ€§ï¼Œå¹¶ä¸”ä¸€å®šå­˜åœ¨ã€‚
                 string[] verifyKeys = { "r0_Cmd", "r1_Code", "r2_TrxId", "r3_Amt" };
                 return PayUtility.ContainsKey(verifyKeys, notifyData);
             }
@@ -62,13 +62,13 @@ namespace ICanPay
 
 
         /// <summary>
-        /// ÊÇ·ñÊÇCloudnetÍø¹Ø
+        /// æ˜¯å¦æ˜¯Cloudnetç½‘å…³
         /// </summary>
         private bool IsCloudnetGateway
         {
             get
             {
-                // ÑéÖ¤µÄKey£¬¼ì²éÊÇ·ñÔÚ·¢»ØµÄÊı¾İÖĞ£¬ĞèÒª±£Ö¤KeyÔÚ¸÷¸öÍø¹ØµÄ·¢ËÍÊı¾İÖĞµÄµÄÎ¨Ò»ĞÔ£¬²¢ÇÒÒ»¶¨´æÔÚ¡£
+                // éªŒè¯çš„Keyï¼Œæ£€æŸ¥æ˜¯å¦åœ¨å‘å›çš„æ•°æ®ä¸­ï¼Œéœ€è¦ä¿è¯Keyåœ¨å„ä¸ªç½‘å…³çš„å‘é€æ•°æ®ä¸­çš„çš„å”¯ä¸€æ€§ï¼Œå¹¶ä¸”ä¸€å®šå­˜åœ¨ã€‚
                 string[] verifyKeys = { "c_mid", "c_order", "c_orderamount", "c_ymd", "c_succmark" };
                 return PayUtility.ContainsKey(verifyKeys, notifyData);
             }
@@ -76,7 +76,7 @@ namespace ICanPay
 
 
         /// <summary>
-        /// ÊÇ·ñÊÇTenpayÍø¹Ø
+        /// æ˜¯å¦æ˜¯Tenpayç½‘å…³
         /// </summary>
         private bool IsTenpayGateway
         {
@@ -89,7 +89,7 @@ namespace ICanPay
 
 
         /// <summary>
-        /// ÊÇ·ñÊÇChinabankÍø¹Ø
+        /// æ˜¯å¦æ˜¯Chinabankç½‘å…³
         /// </summary>
         private bool IsChinabankGateway
         {

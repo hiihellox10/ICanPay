@@ -1,4 +1,4 @@
-using System;
+锘縰sing System;
 using System.Data;
 using System.Configuration;
 using System.Collections;
@@ -17,7 +17,7 @@ namespace Demo
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // 设置付款数据
+            // 璁剧疆浠樻鏁版嵁
             PaymentSetting<YeepayGateway> ps = new PaymentSetting<YeepayGateway>();
             ps.PayGateway.Merchant.UserName = "10000432521";
             ps.PayGateway.Merchant.Key = "8UPp0KE8sq73zVP370vko7C39403rtK1YwX40Td6irH216036H27Eb12792t";
@@ -30,7 +30,7 @@ namespace Demo
             ps.PayGateway.Customer.Post = "4564565";
             ps.PayGateway.Customer.Telephone = "1568847888";
 
-            // 创建付款的Url
+            // 鍒涘缓浠樻鐨刄rl
             Response.Redirect(ps.PayGateway.BuildPaymentUrl());
         }
     }

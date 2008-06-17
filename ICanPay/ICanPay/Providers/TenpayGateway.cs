@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using ICanPay;
@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 namespace ICanPay.Providers
 {
     /// <summary>
-    /// ²Æ¸¶Í¨
+    /// è´¢ä»˜é€š
     /// </summary>
     sealed public class TenpayGateway : PayGateway, IPaymentUrl, IQueryUrl
     {
@@ -16,7 +16,7 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// Íø¹ØÃû³Æ
+        /// ç½‘å…³åç§°
         /// </summary>
         public override GatewayType GatewayName
         {
@@ -28,18 +28,18 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// Ö§¸¶¶©µ¥Êı¾İµÄUrl
+        /// æ”¯ä»˜è®¢å•æ•°æ®çš„Url
         /// </summary>
         public string BuildPaymentUrl()
         {
             if(Order.OrderId.Length > 10)
             {
-                throw new ArgumentException("¶©µ¥±àºÅ±ØĞëÉÙÓÚ10Î»Êı", "OrderId");
+                throw new ArgumentException("è®¢å•ç¼–å·å¿…é¡»å°‘äº10ä½æ•°", "OrderId");
             }
 
             if(!PayUtility.IsNumeric(Order.OrderId))
             {
-                throw new ArgumentException("¶©µ¥±àºÅÖ»ÄÜÊÇÊı×Ö", "OrderId");
+                throw new ArgumentException("è®¢å•ç¼–å·åªèƒ½æ˜¯æ•°å­—", "OrderId");
             }
 
             StringBuilder url = new StringBuilder();
@@ -63,7 +63,7 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// Ö§¸¶¶©µ¥µÄÇ©Ãû
+        /// æ”¯ä»˜è®¢å•çš„ç­¾å
         /// </summary>
         private string PaySign()
         {
@@ -84,19 +84,19 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// ¶©µ¥²éÑ¯Url
+        /// è®¢å•æŸ¥è¯¢Url
         /// </summary>
         public string BuildQueryUrl()
         {
-            // ÊÇ·ñÓĞ¸½¼ÓµÄc_ymd²ÎÊı
+            // æ˜¯å¦æœ‰é™„åŠ çš„c_ymdå‚æ•°
             if (!OtherData.ContainsKey("date"))
             {
-                throw new ArgumentException("²Æ¸¶Í¨²éÑ¯¶©µ¥ĞèÒª½»Ò×ÈÕÆÚ£¬dateÎª¶©µ¥µÄ½»Ò×ÈÕÆÚ¡£Í¨¹ıOtherData[" + "date" + "]ÉèÖÃ¶©µ¥½»Ò×ÈÕÆÚ£¬¸ñÊ½ÎªyyyyMMdd",
+                throw new ArgumentException("è´¢ä»˜é€šæŸ¥è¯¢è®¢å•éœ€è¦äº¤æ˜“æ—¥æœŸï¼Œdateä¸ºè®¢å•çš„äº¤æ˜“æ—¥æœŸã€‚é€šè¿‡OtherData[" + "date" + "]è®¾ç½®è®¢å•äº¤æ˜“æ—¥æœŸï¼Œæ ¼å¼ä¸ºyyyyMMdd",
                                             "OtherData[" + "date" + "]");
             }
             else if (!PayUtility.IsNumeric(OtherData["date"]) && OtherData["date"].Length != 8)
             {
-                throw new ArgumentException("½»Ò×ÈÕÆÚ±ØĞëÎªÊı×Ö£¬¸ñÊ½ÎªyyyyMMdd", "OtherData[" + "date" + "]");
+                throw new ArgumentException("äº¤æ˜“æ—¥æœŸå¿…é¡»ä¸ºæ•°å­—ï¼Œæ ¼å¼ä¸ºyyyyMMdd", "OtherData[" + "date" + "]");
             }
 
             StringBuilder url = new StringBuilder();
@@ -115,7 +115,7 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// ²éÑ¯¶©µ¥UrlµÄÇ©Ãû
+        /// æŸ¥è¯¢è®¢å•Urlçš„ç­¾å
         /// </summary>
         private string QuerySign()
         {
@@ -134,12 +134,12 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// ÑéÖ¤¶©µ¥ÊÇ·ñÖ§¸¶³É¹¦
+        /// éªŒè¯è®¢å•æ˜¯å¦æ”¯ä»˜æˆåŠŸ
         /// </summary>
-        /// <remarks>ÕâÀï´¦Àí²éÑ¯¶©µ¥µÄÍø¹ØÍ¨Öª¸úÖ§¸¶¶©µ¥µÄÍø¹ØÍ¨Öª</remarks>
+        /// <remarks>è¿™é‡Œå¤„ç†æŸ¥è¯¢è®¢å•çš„ç½‘å…³é€šçŸ¥è·Ÿæ”¯ä»˜è®¢å•çš„ç½‘å…³é€šçŸ¥</remarks>
         protected override bool CheckNotifyData()
         {
-            // Í¨ÖªÊı¾İÖĞ±ØĞë°üº¬µÄKey£¬Èç¹ûÃ»ÓĞ±íÊ¾Êı¾İ¿ÉÄÜ·Ç·¨
+            // é€šçŸ¥æ•°æ®ä¸­å¿…é¡»åŒ…å«çš„Keyï¼Œå¦‚æœæ²¡æœ‰è¡¨ç¤ºæ•°æ®å¯èƒ½éæ³•
             string[] checkParma = { "cmdno", "pay_result", "pay_info", "date", "transaction_id", "sp_billno", "total_fee", "fee_type", "attach" };
 
             if (!PayUtility.ContainsKey(checkParma, OtherData))
@@ -147,7 +147,7 @@ namespace ICanPay.Providers
                 return false;
             }
 
-            // ¼ì²é¶©µ¥ÊÇ·ñÖ§¸¶³É¹¦£¬¶©µ¥Ç©ÃûÊÇ·ñÕıÈ·£¬»õ±ÒÀàĞÍÊÇ·ñÎªRMB
+            // æ£€æŸ¥è®¢å•æ˜¯å¦æ”¯ä»˜æˆåŠŸï¼Œè®¢å•ç­¾åæ˜¯å¦æ­£ç¡®ï¼Œè´§å¸ç±»å‹æ˜¯å¦ä¸ºRMB
             if (OtherData["sign"] == NotifySign() && OtherData["fee_type"] == "1" && OtherData["pay_result"] == "0" && OtherData["pay_info"] == "OK")
             {
                 Order.Amount = Convert.ToDouble(OtherData["total_fee"]) * 0.01;
@@ -161,7 +161,7 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// ·şÎñÆ÷Í¨ÖªÇ©Ãû
+        /// æœåŠ¡å™¨é€šçŸ¥ç­¾å
         /// </summary>
         private string NotifySign()
         {
@@ -183,6 +183,6 @@ namespace ICanPay.Providers
 
 
 /*
- * ½ÓÊÕµ½µÄÍ¨ÖªµÄÊı¾İ¸ñÊ½
+ * æ¥æ”¶åˆ°çš„é€šçŸ¥çš„æ•°æ®æ ¼å¼
  * /Pay/notify.aspx?attach=&bargainor_id=1202550401&cmdno=1&date=20080413&fee_type=1&pay_info=OK&pay_result=0&pay_time=1208059299&sign=45EB8FFC7363F8ECB6BA0610F4B7F0BA&sp_billno=2&total_fee=1&transaction_id=1202550401200804130000000002
 */

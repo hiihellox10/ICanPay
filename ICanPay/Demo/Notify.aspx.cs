@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Data;
 using System.Configuration;
 using System.Collections;
@@ -21,7 +21,7 @@ namespace Demo
 
         private void GetNotify()
         {
-            // ÉÌ»§µÄÕÊºÅ¸úÃÜÔ¿
+            // å•†æˆ·çš„å¸å·è·Ÿå¯†é’¥
             Merchant yeepayMerchant = new Merchant();
             yeepayMerchant.UserName = "10000432521";
             yeepayMerchant.Key = "8UPp0KE8sq73zVP370vko7C39403rtK1YwX40Td6irH216036H27Eb12792t";
@@ -32,20 +32,20 @@ namespace Demo
 
             PaymentNotify paymentNotify = PayGatewayFactory.GetGatewayNotify();
 
-            // Ã»ÓĞÊÕµ½¿ÉÊ¶±ğµÄÍø¹ØÍ¨Öª
+            // æ²¡æœ‰æ”¶åˆ°å¯è¯†åˆ«çš„ç½‘å…³é€šçŸ¥
             if (paymentNotify == null)
             {
                 return;
             }
 
-            // Ê¹ÓÃÏàÓ¦Íø¹ØµÄÉÌ»§Êı¾İÒÔÑéÖ¤Í¨ÖªÊı¾İÊÇ·ñÕıÈ·
+            // ä½¿ç”¨ç›¸åº”ç½‘å…³çš„å•†æˆ·æ•°æ®ä»¥éªŒè¯é€šçŸ¥æ•°æ®æ˜¯å¦æ­£ç¡®
             switch (paymentNotify.PayGateway.GatewayName)
             {
                 case GatewayType.ChinaBank:
                     paymentNotify.PayGateway.Merchant = chinabankMerchat;
 
-                    // Èç¹ûÄãÖªµÀ·şÎñÆ÷µÄÍø¹ØIP£¬²¢ÇÒÏë¼ÓÇ¿°²È«ĞÔ¡£
-                    // ¿ÉÒÔÉèÖÃÑéÖ¤·¢ËÍÍ¨Öª·şÎñÆ÷µÄIPµØÖ·£¬²¢Ìí¼ÓÔÊĞíµÄ·şÎñÆ÷IPµØÖ·¡£
+                    // å¦‚æœä½ çŸ¥é“æœåŠ¡å™¨çš„ç½‘å…³IPï¼Œå¹¶ä¸”æƒ³åŠ å¼ºå®‰å…¨æ€§ã€‚
+                    // å¯ä»¥è®¾ç½®éªŒè¯å‘é€é€šçŸ¥æœåŠ¡å™¨çš„IPåœ°å€ï¼Œå¹¶æ·»åŠ å…è®¸çš„æœåŠ¡å™¨IPåœ°å€ã€‚
                     paymentNotify.PayGateway.ValidateNotifyHostServerAddress = true;
                     paymentNotify.PayGateway.SafeAddress.Add("129.1.12.52");
                     paymentNotify.PayGateway.SafeAddress.Add("129.1.12.51");
@@ -61,7 +61,7 @@ namespace Demo
                 double amount = paymentNotify.PayGateway.Order.Amount;
                 string orderId = paymentNotify.PayGateway.Order.OrderId;
 
-                // ÅĞ¶Ïamount¡¢orderId¸úÊı¾İ¿â¶©µ¥¼ÇÂ¼ÊÇ·ñ·ûºÏ£¬ÔÙ´¦Àí¸¶¿î¡£
+                // åˆ¤æ–­amountã€orderIdè·Ÿæ•°æ®åº“è®¢å•è®°å½•æ˜¯å¦ç¬¦åˆï¼Œå†å¤„ç†ä»˜æ¬¾ã€‚
             }
         }
     }

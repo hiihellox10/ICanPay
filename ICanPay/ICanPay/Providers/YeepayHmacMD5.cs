@@ -1,19 +1,19 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ICanPay.Providers
 {
     /// <summary>
-    /// Ò×±¦Ç©ÃûËã·¨
+    /// æ˜“å®ç­¾åç®—æ³•
     /// </summary>
     internal static class YeepayHmacMD5
     {
         /// <summary>
-        /// Éú³ÉÒ×±¦Ç©Ãû
+        /// ç”Ÿæˆæ˜“å®ç­¾å
         /// </summary>
-        /// <param name="signString">É¢ÁĞ×Ö·û´®</param>
-        /// <param name="key">ÉÌ»§ÃÜÔ¿</param>
+        /// <param name="signString">æ•£åˆ—å­—ç¬¦ä¸²</param>
+        /// <param name="key">å•†æˆ·å¯†é’¥</param>
         public static string HmacSign(string signString, string key)
         {
             byte[] k_ipad = new byte[64];
@@ -70,7 +70,7 @@ namespace ICanPay.Providers
         }
 
         /// <summary>
-        /// HmacMD5¼ÓÃÜ
+        /// HmacMD5åŠ å¯†
         /// </summary>
         private class HmacMD5
         {
