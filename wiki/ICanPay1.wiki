@@ -2,8 +2,8 @@
 = 如何使用 =
 
 
- * 简单的例子
-  *  使用ICanPay生成付款的订单Url
+ * [http://code.google.com/p/icanpay/wiki/ICanPay1#简单的例子 简单的例子]
+  *  [http://code.google.com/p/icanpay/wiki/ICanPay1#使用ICanPay生成付款的订单Url 使用ICanPay生成付款的订单Url]
   *  查询订单
   *  处理网关订单支付通知
  * 可能遇到的问题 
@@ -13,7 +13,7 @@
 
 
 = 简单的例子 =
- === 使用ICanPay生成付款的订单Url===
+ === 使用ICanPay生成付款的订单Url ===
 {{{
 using ICanPay;
 using ICanPay.Providers;
