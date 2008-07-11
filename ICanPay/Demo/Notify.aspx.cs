@@ -41,6 +41,10 @@ namespace Demo
             // 使用相应网关的商户数据以验证通知数据是否正确
             switch (paymentNotify.PayGateway.GatewayName)
             {
+                case GatewayType.YeePay:
+                    paymentNotify.PayGateway.Merchant = yeepayMerchant;
+                    break;
+
                 case GatewayType.ChinaBank:
                     paymentNotify.PayGateway.Merchant = chinabankMerchat;
 
@@ -50,9 +54,6 @@ namespace Demo
                     paymentNotify.PayGateway.SafeAddress.Add("129.1.12.52");
                     paymentNotify.PayGateway.SafeAddress.Add("129.1.12.51");
                     paymentNotify.PayGateway.SafeAddress.Add("129.1.12.50");
-                    break;
-                case GatewayType.YeePay:
-                    paymentNotify.PayGateway.Merchant = yeepayMerchant;
                     break;
             }
 

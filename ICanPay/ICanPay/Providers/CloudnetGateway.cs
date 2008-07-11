@@ -173,6 +173,12 @@ namespace ICanPay.Providers
             return GetForm(parma, queryGatewayUrl);
         }
 
+
+        protected override void WriteSucceedFlag()
+        {
+            string resultPage = "http://" + System.Web.HttpContext.Current.Request.Url.Host;
+            System.Web.HttpContext.Current.Response.Write("<result>1</result><reURL>" + resultPage + "</reURL>");
+        }
     }
 }
 
