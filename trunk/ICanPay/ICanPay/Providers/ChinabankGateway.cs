@@ -150,6 +150,11 @@ namespace ICanPay.Providers
             return PayUtility.MD5(sign.ToString()).ToUpper();
         }
 
+
+        protected override void WriteSucceedFlag()
+        {
+            System.Web.HttpContext.Current.Response.Write("ok");
+        }
     }
 }
 

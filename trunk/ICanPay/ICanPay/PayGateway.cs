@@ -184,7 +184,11 @@ namespace ICanPay
         {
             if (ValidateServerIP())
             {
-                return CheckNotifyData();
+                if (CheckNotifyData())
+                {
+                    WriteSucceedFlag();
+                    return true;
+                }
             }
 
             return false;
@@ -194,5 +198,13 @@ namespace ICanPay
         /// 检验网关返回的通知，确认订单是否支付成功
         /// </summary>
         abstract protected bool CheckNotifyData();
+
+
+        /// <summary>
+        /// 按网关要求格式，输出成功接收到网关通知的标记字符
+        /// </summary>
+        protected virtual void WriteSucceedFlag()
+        {
+        }
     }
 }

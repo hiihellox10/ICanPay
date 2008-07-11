@@ -178,6 +178,19 @@ namespace ICanPay.Providers
 
             return PayUtility.MD5(sign.ToString());
         }
+
+        protected override void WriteSucceedFlag()
+        {
+            string resultPage = "http://" + System.Web.HttpContext.Current.Request.Url.Host;
+
+            StringBuilder flag = new StringBuilder();
+            flag.AppendLine("<meta name=\"TENCENT_ONELINE_PAYMENT\" content=\"China TENCENT\">");
+            flag.AppendLine("<script language=javascript>");
+            flag.AppendLine("window.location.href='" + resultPage + "';");
+            flag.AppendLine("</script>");
+
+            System.Web.HttpContext.Current.Response.Write(flag.ToString());
+        }
     }
 }
 

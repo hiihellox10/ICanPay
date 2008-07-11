@@ -208,6 +208,12 @@ namespace ICanPay.Providers
 
             return true;
         }
+
+
+        protected override void WriteSucceedFlag()
+        {
+            System.Web.HttpContext.Current.Response.Write("success");
+        }
     }
 }
 
