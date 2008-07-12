@@ -38,8 +38,8 @@ namespace Demo
             ps.PayGateway.Customer.Post = "4564565";
             ps.PayGateway.Customer.Telephone = "1568847888";
 
-            // 创建付款的Url
-            Response.Redirect(ps.PayGateway.BuildPaymentUrl());
+            // 转到支付网站付款
+              ps.Payment();
         }
     }
 }
