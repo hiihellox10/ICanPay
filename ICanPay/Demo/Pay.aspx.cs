@@ -21,8 +21,8 @@ namespace Demo
             PaymentSetting<YeepayGateway> ps = new PaymentSetting<YeepayGateway>();
             ps.PayGateway.Merchant.UserName = "10000432521";
             ps.PayGateway.Merchant.Key = "8UPp0KE8sq73zVP370vko7C39403rtK1YwX40Td6irH216036H27Eb12792t";
-            ps.PayGateway.Merchant.NotifyUrl = "http://yousite.com/Notify.aspx";
-            ps.PayGateway.Order.OrderId = "1564515";
+            ps.PayGateway.Merchant.NotifyUrl = "http://yousite.com/Pay/notify.aspx";
+            ps.PayGateway.Order.OrderId = "1411515";
             ps.PayGateway.Order.Amount = 0.01;
             ps.PayGateway.Customer.Name = "name";
             ps.PayGateway.Customer.Email = "name@address.com";
@@ -30,8 +30,8 @@ namespace Demo
             ps.PayGateway.Customer.Post = "4564565";
             ps.PayGateway.Customer.Telephone = "1568847888";
 
-            // 创建付款的Url
-            Response.Redirect(ps.PayGateway.BuildPaymentUrl());
+            // 转到支付网站付款
+            ps.Payment();
         }
     }
 }
