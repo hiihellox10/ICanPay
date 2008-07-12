@@ -2,6 +2,9 @@
 = 版本更新 =
 
 
+=== 0.1.2 ===
+  * 将生成订单的支付接口统一为PaymentSetting.Payment() 而不是使用以前的 PaymentSetting.PayGateway.BuildPaymentUrl() 方法。
+
+
 === 0.1.1 ===
   * PayGateway抽象基类增加WriteSucceedFlag方法，通过覆盖WriteSucceedFlag输出网关需要的，标记成功收到网关通知的字符串
-
