@@ -39,7 +39,7 @@ namespace Demo
             ps.PayGateway.Customer.Telephone = "1568847888";
 
             // 转到支付网站付款
-              ps.Payment();
+            ps.Payment();
         }
     }
 }
