@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Web;
 
 namespace ICanPay
 {
@@ -33,6 +34,28 @@ namespace ICanPay
             get
             {
                 return this.t;
+            }
+        }
+
+
+        /// <summary>
+        /// 转到支付网站支付
+        /// </summary>
+        public void Payment()
+        {
+            // 判断网关实现了哪一个产生支付数据的接口，调用相应接口输出订单数据。
+            if (t is IPaymentForm)
+            {
+                IPaymentForm form = t as IPaymentForm;
+                HttpContext.Current.Response.Write(form.BuildPaymentForm());
+                return;
+            }
+
+            if (t is IPaymentUrl)
+            {
+                IPaymentUrl url = t as IPaymentUrl;
+                HttpContext.Current.Response.Redirect(url.BuildPaymentUrl());
+                return;
             }
         }
     }
