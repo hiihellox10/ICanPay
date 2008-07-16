@@ -58,5 +58,26 @@ namespace ICanPay
                 return;
             }
         }
+
+        /// <summary>
+        /// 查询订单，订单的数据通过跟支付通知一样的形式发回。
+        /// </summary>
+        public void QueryOrder()
+        {
+            // 判断网关实现了哪一个产生支付数据的接口，调用相应接口输出订单数据。
+            if (t is IQueryForm)
+            {
+                IQueryForm form = t as IQueryForm;
+                HttpContext.Current.Response.Write(form.BuildQueryForm());
+                return;
+            }
+
+            if (t is IQueryUrl)
+            {
+                IQueryUrl url = t as IQueryUrl;
+                HttpContext.Current.Response.Redirect(url.BuildQueryUrl());
+                return;
+            }
+        }
     }
 }
