@@ -77,6 +77,9 @@ ps.PayGateway.Order.OrderId = "1564515";
 ps.QueryOrder();
 }}}
 
+如果当前的ChinabankGateway网关不支持查询订单或者没有实现查询订单，QueryOrder将不会有任何效果，支持查询订单的网关都实现了IQueryForm或者IQueryUrl接口。
+
+
 第二种，因为有的网关服务器是通过向网关服务器POST数据后，网关通过返回HTTP流的方式来返回结果。这种类型的网关都实现了ICheckPayment接口。
 
 实现了ICheckPayment接口的网关，这么查询订单的状态
