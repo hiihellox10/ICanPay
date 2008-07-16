@@ -74,7 +74,7 @@ ps.PayGateway.Merchant.NotifyUrl = "http://yousite.com/Notify.aspx";
 ps.PayGateway.Order.OrderId = "1564515";
 
 // 创建查询订单的Form提交查询
-Response.Write(ps.PayGateway.BuildQueryForm());
+ps.QueryOrder();
 }}}
 
 第二种，因为有的网关服务器是通过向网关服务器POST数据后，网关通过返回HTTP流的方式来返回结果。这种类型的网关都实现了ICheckPayment接口。
