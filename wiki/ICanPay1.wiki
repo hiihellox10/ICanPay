@@ -3,7 +3,7 @@
 
 
  * [http://code.google.com/p/icanpay/wiki/ICanPay1#简单的例子 简单的例子]
-  *  [http://code.google.com/p/icanpay/wiki/ICanPay1#使用ICanPay生成付款的订单Url 使用ICanPay生成付款的订单Url]
+  *  [http://code.google.com/p/icanpay/wiki/ICanPay1#使用ICanPay生成付款的订单 使用ICanPay生成付款的订单]
   *  [http://code.google.com/p/icanpay/wiki/ICanPay1#查询订单 查询订单]
   *  [http://code.google.com/p/icanpay/wiki/ICanPay1#处理网关订单支付通知 处理网关订单支付通知]
  * [http://code.google.com/p/icanpay/wiki/ICanPay1#可能遇到的问题 可能遇到的问题]
@@ -13,7 +13,7 @@
 
 
 = 简单的例子 =
- === 使用ICanPay生成付款的订单Url ===
+ === 使用ICanPay生成付款的订单 ===
 {{{
 using ICanPay;
 using ICanPay.Providers;
@@ -50,12 +50,11 @@ namespace Demo
 PaymentSetting<YeepayGateway> ps = new PaymentSetting<YeepayGateway>();
 }}}
 
-然后我们通过BuildPaymentUrl方法来生成订单的Url。
+然后我们通过Payment方法来生成订单，并转移到支付网关的网站付款。
 {{{
-ps.PayGateway.BuildPaymentUrl();
+ps.Payment();
 }}}
 
-如果你使用的是其他的网关，可能没有BuildPaymentUrl方法。因为并不是所有网关都可以支持Url提交订单，可能是只能使用Form提交订单，如果是这样的话那么你可以找到BuildPaymentForm方法，并使用它来创建一个包含订单数据form提交给网关。
 
 ----
 
