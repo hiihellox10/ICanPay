@@ -2,6 +2,9 @@
 = 版本更新 =
 
 
+=== 0.1.3 ===
+  * 将生成订单的BuildQueryUrl、BuildQueryForm方法统一为PaymentSetting.QueryOrder方法。只有实现IQueryUrl、IQueryForm接口的网关才能使用PaymentSetting.QueryOrder方法查询订单，没有实现这2个接口的网关将无法查询订单。实现ICheckPayment接口的网关依然使用PaymentSetting.PayGateway.CheckPayment方法来查询订单。
+
 === 0.1.2 ===
   * 将生成订单的支付接口统一为PaymentSetting.Payment() 而不是使用以前的 PaymentSetting.PayGateway.BuildPaymentUrl() 方法。
 
