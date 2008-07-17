@@ -73,11 +73,11 @@ ps.PayGateway.Merchant.Key = "8UPp0KE8sq73zVP370vko7C39403rtK1YwX40Td6irH216036H
 ps.PayGateway.Merchant.NotifyUrl = "http://yousite.com/Notify.aspx";
 ps.PayGateway.Order.OrderId = "1564515";
 
-// 创建查询订单的Form提交查询
-ps.QueryOrder();
+// 创建查询订单，并提交查询
+ps.Query();
 }}}
 
-如果当前的ChinabankGateway网关不支持查询订单或者没有实现查询订单，QueryOrder将不会有任何效果，支持查询订单的网关都实现了IQueryForm或者IQueryUrl接口。
+如果当前的ChinabankGateway网关不支持查询订单或者没有实现查询订单，使用Query方法将不会有任何效果，支持查询订单的网关都实现了IQueryForm或者IQueryUrl接口。
 
 
 第二种，因为有的网关服务器是通过向网关服务器POST数据后，网关通过返回HTTP流的方式来返回结果。这种类型的网关都实现了ICheckPayment接口。
