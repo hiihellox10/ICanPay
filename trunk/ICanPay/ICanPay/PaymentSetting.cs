@@ -60,9 +60,10 @@ namespace ICanPay
         }
 
         /// <summary>
-        /// 查询订单，订单的数据通过跟支付通知一样的形式发回。
+        /// 查询订单
         /// </summary>
-        public void QueryOrder()
+        /// <remarks>订单的数据通过跟支付通知一样的形式发回。用处理网关通知一样的方法接受查询订单的数据</remarks>
+        public void Query()
         {
             // 判断网关实现了哪一个产生支付数据的接口，调用相应接口输出订单数据。
             if (t is IQueryForm)
