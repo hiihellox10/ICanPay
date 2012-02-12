@@ -1,9 +1,9 @@
 = 如何使用 =
 
- * [http://code.google.com/p/icanpay/wiki/ICanPay1#介绍 介绍]
- * [http://code.google.com/p/icanpay/wiki/ICanPay1#使用ICanPay创建付款的订单 使用ICanPay创建付款的订单]
- * [http://code.google.com/p/icanpay/wiki/ICanPay1#处理网关订单支付通知 处理网关订单支付通知]
- * [http://code.google.com/p/icanpay/wiki/ICanPay1#查询订单 查询订单]
+ * [http://code.google.com/p/icanpay/wiki/GettingStarted#介绍 介绍]
+ * [http://code.google.com/p/icanpay/wiki/GettingStarted#使用ICanPay创建付款的订单 使用ICanPay创建付款的订单]
+ * [http://code.google.com/p/icanpay/wiki/GettingStarted#处理网关订单支付通知 处理网关订单支付通知]
+ * [http://code.google.com/p/icanpay/wiki/GettingStarted#查询订单 查询订单]
 
 
 ----
