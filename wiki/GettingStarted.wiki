@@ -101,7 +101,7 @@ private void notify_PaymentSucceed(object sender, PaymentSucceedEventArgs e)
     // 支付成功时的处理代码
     if (e.PaymentNotifyMethod == PaymentNotifyMethod.AutoReturn)
     {
-        // 充值成功提示
+        // 用户通过浏览器自动返回时充值成功提示
     }
 }
 
