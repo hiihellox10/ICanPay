@@ -62,7 +62,13 @@ private void CreateAlipayOrder()
 ----
 = 接收支付网关的支付通知 =
 
-首先你新建之前创建订单中用来接收支付网关通知的名为PaymentNotify的Web窗体。在这个页面将接收并处理多个不同的网关返回的支付通知，代码如下：
+首先你新建之前创建订单中用来接收支付网关通知的名为ServerNotify的Web窗体，并在ServerNotify.aspx页面仅保留如下代码：
+{{{
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ServerNotify.aspx.cs" Inherits="Demo.ServerNotify" %>
+}}}
+这样做的原因是因为接收支付网关通知的页面可能需要输出一些字符表示已接收到支付网关的通知，如果有其他页面内容会造成干扰。
+
+在这个页面将接收并处理多个不同的网关返回的支付通知，代码如下：
 
 {{{
 protected void Page_Load(object sender, EventArgs e)
@@ -92,7 +98,11 @@ protected void Page_Load(object sender, EventArgs e)
 
 private void notify_PaymentSucceed(object sender, PaymentSucceedEventArgs e)
 {
-    // 支付成功时时的处理代码
+    // 支付成功时的处理代码
+    if (e.PaymentNotifyMethod == PaymentNotifyMethod.AutoReturn)
+    {
+        // 充值成功提示
+    }
 }
 
 
@@ -109,6 +119,8 @@ private void notify_UnknownGateway(object sender, UnknownGatewayEventArgs e)
 }}}
 
 首先创建支付网关的商户数据，然后将他们添加到集合。在创建PaymentNotify对象时将商户数据的集合传入构造函数中。接着PaymentNotify在支付成功、失败、无法识别支付网关时事件上注册回调方法，最后使用Received方法来接收支付网关返回的支付通知，它将完成支付通知的处理并引发相应的事件。
+
+在回调函数中你可以通过e.PaymentNotifyMethod属性来获得支付通知是用户通过浏览器自动返回还是由网关服务器发送。如果是用户通过浏览器自动返回这时你可以在页面提示充值以便让用户获得更好的体验。
 
 ----
 
@@ -149,7 +161,7 @@ private void QueryYeepayOrder()
 
     if (setting.Gateway.QueryPayment())
     {
-        // 订单已支付
+        // 订单已支付时的处理代码
     }
 }
 }}}
