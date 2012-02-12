@@ -89,15 +89,18 @@ protected void Page_Load(object sender, EventArgs e)
     notify.Received();
 }
 
+
 private void notify_PaymentSucceed(object sender, PaymentSucceedEventArgs e)
 {
     // 支付成功时时的处理代码
 }
 
+
 private void notify_PaymentFailed(object sender, PaymentFailedEventArgs e)
 {
     // 支付失败时的处理代码
 }
+
 
 private void notify_UnknownGateway(object sender, UnknownGatewayEventArgs e)
 {
