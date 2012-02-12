@@ -9,5 +9,3 @@ ICanPay是一个能够提供多个网关支付处理的类库，使用ICanPay可
  * [http://code.google.com/p/icanpay/wiki/ImplementAnGateway 实现基类支持其他网关]
 
  * [http://code.google.com/p/icanpay/wiki/OtherQuestion 更多的其他问题]
-
- * [http://code.google.com/p/icanpay/wiki/UpdateLog 更新日志]
