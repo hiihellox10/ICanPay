@@ -1,11 +1,9 @@
 = 如何使用 =
 
  * [http://code.google.com/p/icanpay/wiki/ICanPay1#介绍 介绍]
- * [http://code.google.com/p/icanpay/wiki/ICanPay1#简单的例子 简单的例子]
-  *  [http://code.google.com/p/icanpay/wiki/ICanPay1#使用ICanPay生成付款的订单 使用ICanPay生成付款的订单]
-  *  [http://code.google.com/p/icanpay/wiki/ICanPay1#查询订单 查询订单]
-  *  [http://code.google.com/p/icanpay/wiki/ICanPay1#处理网关订单支付通知 处理网关订单支付通知]
- * [http://code.google.com/p/icanpay/wiki/ICanPay1#可能遇到的问题 可能遇到的问题]
+ * [http://code.google.com/p/icanpay/wiki/ICanPay1#使用ICanPay创建付款的订单 使用ICanPay创建付款的订单]
+ * [http://code.google.com/p/icanpay/wiki/ICanPay1#处理网关订单支付通知 处理网关订单支付通知]
+ * [http://code.google.com/p/icanpay/wiki/ICanPay1#查询订单 查询订单]
 
 
 ----
@@ -20,8 +18,7 @@ ICanPay仅支持人民币支付。为了能够支持多个支付网关，创建�
 
 ----
 
-
-= 简单的例子 =
+= 使用ICanPay创建付款的订单 =
 
 下面将演示如使用ICanPay创建一个支付订单。首先你需要创建一个名为Payment的Web 窗体，Payment.aspx页面仅保留如下代码：
 {{{
@@ -29,94 +26,41 @@ ICanPay仅支持人民币支付。为了能够支持多个支付网关，创建�
 }}}
 这样的目的是因为实现了IPaymentForm接口的支付网关在创建订单时会生成并输出完整的Form表单，如果当前页面包含其他内容会造成无法提交订单。
 
-下面将使用易宝、支付宝来创建订单
+下面的代码将演示如何使用易宝、支付宝来创建订单
 
 {{{
-using ICanPay;
-using ICanPay.Providers;
-
-
-namespace Demo
+private void CreateYeepayOrder()
 {
-    public partial class Pay : System.Web.UI.Page
-    {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            // 设置付款数据
-            PaymentSetting<YeepayGateway> ps = new PaymentSetting<YeepayGateway>();
-            ps.PayGateway.Merchant.UserName = "10000432521";
-            ps.PayGateway.Merchant.Key = "8UPp0KE8sq73zVP370vko7C39403rtK1YwX40Td6irH216036H27Eb12792t";
-            ps.PayGateway.Merchant.NotifyUrl = "http://yousite.com/Notify.aspx";
-            ps.PayGateway.Order.OrderId = "1564515";
-            ps.PayGateway.Order.Amount = 0.01;
-            ps.PayGateway.Customer.Name = "name";
-            ps.PayGateway.Customer.Email = "name@address.com";
-            ps.PayGateway.Customer.Address = "my address"; ;
-            ps.PayGateway.Customer.Post = "4564565";
-            ps.PayGateway.Customer.Telephone = "1568847888";
+    PaymentSetting<YeepayGateway> setting = new PaymentSetting<YeepayGateway>();
+    setting.Merchant.UserName = "0000000000";
+    setting.Merchant.Key = "00000000000000000000000000";
+    setting.Merchant.NotifyUrl = new Uri("http://yousite.com/Payment/PaymentNotify.aspx");
+    setting.Order.Amount = 0.01;
+    setting.Order.OrderId = "104";
 
-            // 转到支付网站付款
-            ps.Payment();
-        }
-    }
+    setting.Payment();
+}
+
+
+private void CreateAlipayOrder()
+{
+    PaymentSetting<AlipayGateway> setting = new PaymentSetting<AlipayGateway>();
+    setting.Gateway.SellerEmail = "name@address.com";
+    setting.Merchant.UserName = "0000000000";
+    setting.Merchant.Key = "00000000000000000000000000";
+    setting.Merchant.NotifyUrl = new Uri("http://yousite.com/Payment/PaymentNotify.aspx");
+    setting.Order.Amount = 0.01;
+    setting.Order.OrderId = "104";
+
+    setting.Payment();
 }
 }}}
 
-在上面的代码我们使用了易宝YeepayGateway的支付网关，并设置了商户的密钥跟订单的数据。*在生成订单所需的数据中Merchant、Order是必需的。*
-{{{
-PaymentSetting<YeepayGateway> ps = new PaymentSetting<YeepayGateway>();
-}}}
-
-然后我们通过Payment方法来生成订单，并转移到支付网关的网站付款。
-{{{
-ps.Payment();
-}}}
+在上面的代码我们使用了易宝YeepayGateway的支付网关，并设置了商户的密钥、订单的数据、接收网关支付通知的Url。在使用支付宝AlipayGateway时，需要注意这里需要额外的设置SellerEmail属性。
 
 
 ----
-
- === 查询订单 ===
-
- 查询订单有2种不同的方式。
-
-第一种，查询订单跟提交订单的使用类似。同上，因为不同的网关可能支持Form或者Url提交查询，然后网关服务器给指定页面返回查询结果，然后你可以使用处理网关服务器返回付款通知一样的方法来处理订单的查询。
-
-如下代码演示了提交一个查询
-{{{
-// 设置需要查询的订单
-PaymentSetting<ChinabankGateway> ps = new PaymentSetting<ChinabankGateway>();
-ps.PayGateway.Merchant.UserName = "10000432521";
-ps.PayGateway.Merchant.Key = "8UPp0KE8sq73zVP370vko7C39403rtK1YwX40Td6irH216036H27Eb12792t";
-ps.PayGateway.Merchant.NotifyUrl = "http://yousite.com/Notify.aspx";
-ps.PayGateway.Order.OrderId = "1564515";
-
-// 创建查询订单，并提交查询
-ps.Query();
-}}}
-
-如果当前的ChinabankGateway网关不支持查询订单或者没有实现查询订单，使用Query方法将不会有任何效果，支持查询订单的网关都实现了IQueryForm或者IQueryUrl接口。
-
-
-第二种，因为有的网关服务器是通过向网关服务器POST数据后，网关通过返回HTTP流的方式来返回结果。这种类型的网关都实现了ICheckPayment接口。
-
-实现了ICheckPayment接口的网关，这么查询订单的状态
-{{{
-PaymentSetting<YeepayGateway> ps = new PaymentSetting<YeepayGateway>();
-ps.PayGateway.Merchant.UserName = "10000432521";
-ps.PayGateway.Merchant.Key = "8UPp0KE8sq73zVP370vko7C39403rtK1YwX40Td6irH216036H27Eb12792t";
-ps.PayGateway.Order.OrderId = "1564515";
-ps.PayGateway.Order.Amount = 0.01;
-
-if(ps.PayGateway.CheckPayment())
-{
-    // 订单已支付
-}
-}}}
-
-----
-
-
- === 处理网关订单支付通知 ===
+= 处理网关订单支付通知 =
 
 在同一个页面接收多个不同的网关返回的付款通知，如下代码：
 {{{
@@ -214,15 +158,45 @@ if (paymentNotify.HasNotify)
 }}}
 
 ----
-= 可能遇到的问题 =
 
-如果你提交的订单出现乱码，可能是你的页面不是GB2312编码导致的。因为国内的网关普遍是使用GB2312编码，所以你也要使用GB2312编码来提交订单跟接受网关返回的通知，如果你使用的是其他编码就会出现乱码。
+= 查询订单 =
 
-*解决方法*
+*查询订单有2种不同的方式*
 
-你可以通过在Web.config文件的configuration/system.web节点增加以下代码，可以设置默认编码为GB2312
+1、查询订单跟提交订单的使用类似。提交查询以后，网关服务器给指定页面发送支付通知，然后你使用处理网关服务器返回付款通知一样的方法来处理订单的查询。
+
+下面的代码演示了提交一个查询
 {{{
-<globalization requestEncoding="gb2312" responseEncoding="gb2312" />
+private void QueryChinabankOrder()
+{
+    PaymentSetting<ChinabankGateway> setting = new PaymentSetting<ChinabankGateway>();
+    setting.Merchant.UserName = "10000000000";
+    setting.Merchant.Key = "0000000000000000000000000000000000000000";
+    setting.Merchant.NotifyUrl = new Uri("http://yousite.com/Payment/PaymentNotify.aspx");
+    setting.Order.OrderId = "1564515";
+
+    setting.Query();
+}
 }}}
 
-如果你的系统需要使用其它编码而不能使用GB2312编码，你可以新建一个用于提交订单跟接受网关通知的新文件夹。并在这个文件夹中增加一个web.config文件，并将提交订单跟接受网关通知的页面放置在这个文件夹中，然后跟上面的解决方法一样在这个web.config文件的configuration/system.web节点中增加上面的代码，这样就可以使得只有这个文件夹中的页面使用GB2312编码，而其他页面将使用其他的编码。
+不是所有支付网关都支持查询，你通过PaymentSetting.CanQuery属性可以知道当前支付网关是否支持查询。支持查询订单的网关都实现了IQueryForm或者IQueryUrl接口。
+
+
+2、有的支付网关是通过向支付网关查询页面POST需要查询的订单数据后，查询页面将输出查询结果。使用查询方式的支付网关都实现了IQueryPayment接口。
+
+实现了ICheckPayment接口的网关，将使用如下方式查询订单的状态
+{{{
+private void QueryYeepayOrder()
+{
+    PaymentSetting<YeepayGateway> setting = new PaymentSetting<YeepayGateway>();
+    setting.Merchant.UserName = "10000000000";
+    setting.Merchant.Key = "0000000000000000000000000000000000000000";
+    setting.Order.OrderId = "1564515";
+    setting.Order.Amount = 0.01;
+
+    if (setting.Gateway.QueryPayment())
+    {
+        // 订单已支付
+    }
+}
+}}}
