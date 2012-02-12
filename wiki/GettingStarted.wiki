@@ -1,8 +1,8 @@
 = 如何使用 =
 
  * [http://code.google.com/p/icanpay/wiki/GettingStarted#介绍 介绍]
- * [http://code.google.com/p/icanpay/wiki/GettingStarted#使用ICanPay创建付款的订单 使用ICanPay创建付款的订单]
- * [http://code.google.com/p/icanpay/wiki/GettingStarted#处理网关订单支付通知 处理网关订单支付通知]
+ * [http://code.google.com/p/icanpay/wiki/GettingStarted#创建订单 创建订单]
+ * [http://code.google.com/p/icanpay/wiki/GettingStarted#接收支付网关的支付通知 接收支付网关的支付通知]
  * [http://code.google.com/p/icanpay/wiki/GettingStarted#查询订单 查询订单]
 
 
@@ -18,9 +18,9 @@ ICanPay仅支持人民币支付。为了能够支持多个支付网关，创建�
 
 ----
 
-= 使用ICanPay创建付款的订单 =
+= 创建订单 =
 
-下面将演示如使用ICanPay创建一个支付订单。首先你需要创建一个名为Payment的Web 窗体，Payment.aspx页面仅保留如下代码：
+下面将演示如使用创建一个支付订单。首先你需要新建一个名为Payment的Web窗体，并在Payment.aspx页面仅保留如下代码：
 {{{
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Payment.aspx.cs" Inherits="Demo.Payment" %>
 }}}
@@ -60,102 +60,52 @@ private void CreateAlipayOrder()
 
 
 ----
-= 处理网关订单支付通知 =
+= 接收支付网关的支付通知 =
 
-在同一个页面接收多个不同的网关返回的付款通知，如下代码：
+首先你新建之前创建订单中用来接收支付网关通知的名为PaymentNotify的Web窗体。在这个页面将接收并处理多个不同的网关返回的支付通知，代码如下：
+
 {{{
-using ICanPay;
-
-namespace Demo
+protected void Page_Load(object sender, EventArgs e)
 {
-    public partial class Notify : System.Web.UI.Page
-    {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            GetNotify();
-        }
+    Merchant alipayMerchant = new Merchant();
+    alipayMerchant.GatewayType = GatewayType.Alipay;
+    alipayMerchant.UserName = "0000000000";
+    alipayMerchant.Key = "00000000000000000000000000";
 
-        private void GetNotify()
-        {
-            // 商户的帐号跟密钥
-            Merchant yeepayMerchant = new Merchant();
-            yeepayMerchant.UserName = "10000432521";
-            yeepayMerchant.Key = "8UPp0KE8sq73zVP370vko7C39403rtK1YwX40Td6irH216036H27Eb12792t";
+    Merchant yeepayMerchant = new Merchant();
+    yeepayMerchant.GatewayType = GatewayType.Yeepay;
+    yeepayMerchant.UserName = "1000000000000";
+    yeepayMerchant.Key = "00000000000000000000000000000000000000000000";
 
+    List<Merchant> merchantList = new List<Merchant>();
+    merchantList.Add(alipayMerchant);
+    merchantList.Add(yeepayMerchant);
 
-            Merchant chinabankMerchat = new Merchant();
-            chinabankMerchat.UserName = "00000000000";
-            chinabankMerchat.Key = "0000000000000000000000000000000000000000000";
+    PaymentNotify notify = new PaymentNotify(merchantList);
+    notify.PaymentSucceed += new PaymentSucceedEventHandler(notify_PaymentSucceed);
+    notify.PaymentFailed += new PaymentFailedEventHandler(notify_PaymentFailed);
+    notify.UnknownGateway += new UnknownGatewayEventHandler(notify_UnknownGateway);
 
-            PaymentNotify paymentNotify = PayGatewayFactory.GetGatewayNotify();
-
-            // 没有收到可识别的网关通知
-            if (paymentNotify == null)
-            {
-                return;
-            }
-
-            // 使用相应网关的商户数据以验证通知数据是否正确
-            switch (paymentNotify.PayGateway.GatewayName)
-            {
-                case GatewayType.ChinaBank:
-                    paymentNotify.PayGateway.Merchant = chinabankMerchat;
-
-                    // 如果你知道服务器的网关IP，并且想加强安全性。
-                    // 可以设置验证发送通知服务器的IP地址，并添加允许的服务器IP地址。
-                    paymentNotify.PayGateway.ValidateNotifyHostServerAddress = true;
-                    paymentNotify.PayGateway.SafeAddress.Add("129.1.12.52");
-                    paymentNotify.PayGateway.SafeAddress.Add("129.1.12.51");
-                    paymentNotify.PayGateway.SafeAddress.Add("129.1.12.50");
-                    break;
-                case GatewayType.YeePay:
-                    paymentNotify.PayGateway.Merchant = yeepayMerchant;
-                    break;
-            }
-
-            if (paymentNotify.HasNotify)
-            {
-                double amount = paymentNotify.PayGateway.Order.Amount;
-                string orderId = paymentNotify.PayGateway.Order.OrderId;
-
-                // 判断amount、orderId跟数据库订单记录是否符合，再处理付款。
-            }
-        }
-    }
+    notify.Received();
 }
 
-}}}
-
-首先需要不同网关的不同商户数据，将用于核对订单的签名是否正确。
-
-PayGatewayFactory的GetGatewayNotify方法将识别并创建正确的网关实现类。
-{{{
-PaymentNotify paymentNotify = PayGatewayFactory.GetGatewayNotify();
-}}}
-
-在使用之前需要知道是否接收到了可支持的网关返回的通知，如果没有接收到可识别的通知paymentNotify将为null 
-{{{
-paymentNotify == null
-}}}
-
-添加允许的IP地址，验证通知服务器的IP是否在内，以加强安全性。
-{{{
-paymentNotify.PayGateway.ValidateNotifyHostServerAddress = true;
-paymentNotify.PayGateway.SafeAddress.Add("129.1.12.52");
-paymentNotify.PayGateway.SafeAddress.Add("129.1.12.51");
-paymentNotify.PayGateway.SafeAddress.Add("129.1.12.50");
-}}}
-
-
-验证接收到的网关通知是否正确，通知正确在这里做收到付款的逻辑处理。
-{{{
-if (paymentNotify.HasNotify)
+private void notify_PaymentSucceed(object sender, PaymentSucceedEventArgs e)
 {
-    double amount = paymentNotify.PayGateway.Order.Amount;
-    string orderId = paymentNotify.PayGateway.Order.OrderId;
-    // 判断amount、orderId跟数据库订单记录是否符合，再处理付款。
+    // 支付成功时时的处理代码
+}
+
+private void notify_PaymentFailed(object sender, PaymentFailedEventArgs e)
+{
+    // 支付失败时的处理代码
+}
+
+private void notify_UnknownGateway(object sender, UnknownGatewayEventArgs e)
+{
+    // 无法识别支付网关时的处理代码
 }
 }}}
+
+首先创建支付网关的商户数据，然后将他们添加到集合。在创建PaymentNotify对象时将商户数据的集合传入构造函数中。接着PaymentNotify在支付成功、失败、无法识别支付网关时事件上注册回调方法，最后使用Received方法来接收支付网关返回的支付通知，它将完成支付通知的处理并引发相应的事件。
 
 ----
 
