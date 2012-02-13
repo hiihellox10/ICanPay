@@ -45,7 +45,7 @@ private void CreateYeepayOrder()
 private void CreateAlipayOrder()
 {
     PaymentSetting<AlipayGateway> setting = new PaymentSetting<AlipayGateway>();
-    setting.Gateway.SellerEmail = "name@address.com";
+    setting.SetGatewayParameterValue("seller_email", "name@address.com");
     setting.Merchant.UserName = "0000000000";
     setting.Merchant.Key = "00000000000000000000000000";
     setting.Merchant.NotifyUrl = new Uri("http://yousite.com/Payment/PaymentNotify.aspx");
@@ -56,7 +56,7 @@ private void CreateAlipayOrder()
 }
 }}}
 
-在上面的代码我们使用了易宝YeepayGateway的支付网关，并设置了商户的密钥、订单的数据、接收网关支付通知的Url。在使用支付宝AlipayGateway时，需要注意这里需要额外的设置SellerEmail属性。
+在上面的代码我们使用了易宝YeepayGateway的支付网关，并设置了商户的密钥、订单的数据、接收网关支付通知的Url。在使用支付宝AlipayGateway时，需要注意这里需要再设置卖家支付宝账号的邮箱，在支付或查询时一些额外数据通过使用SetGatewayParameterValue方法来添加。
 
 
 ----
