@@ -36,7 +36,7 @@ private void CreateYeepayOrder()
     setting.Merchant.Key = "00000000000000000000000000";
     setting.Merchant.NotifyUrl = new Uri("http://yousite.com/Payment/PaymentNotify.aspx");
     setting.Order.Amount = 0.01;
-    setting.Order.OrderId = "104";
+    setting.Order.OrderId = "9";
 
     setting.Payment();
 }
@@ -50,13 +50,15 @@ private void CreateAlipayOrder()
     setting.Merchant.Key = "00000000000000000000000000";
     setting.Merchant.NotifyUrl = new Uri("http://yousite.com/Payment/PaymentNotify.aspx");
     setting.Order.Amount = 0.01;
-    setting.Order.OrderId = "104";
+    setting.Order.OrderId = "10";
 
     setting.Payment();
 }
 }}}
 
-在上面的代码我们使用了易宝YeepayGateway、支付宝AlipayGateway的支付网关来创建订单，在创建订单时需要设置商户的密钥、订单的数据、接收网关支付通知的Url这些必须的数据。在使用支付宝AlipayGateway时，需要注意这里需要再设置卖家支付宝账号的邮箱，在支付或查询时一些额外数据通过使用SetGatewayParameterValue方法来添加。
+在上面的代码我们使用了易宝YeepayGateway、支付宝AlipayGateway的支付网关来创建订单，在创建订单时需要设置商户的、订单、接收网关支付通知的Url这些必须的数据。在使用支付宝AlipayGateway时，需要注意这里需要再设置卖家支付宝账号的邮箱，在支付或查询时一些额外数据通过使用SetGatewayParameterValue方法来添加。
+
+在完成必须的设置后，使用Payment方法将会在当前页面输出提交订单的Form或者Url，然后会将用户定向到相应的支付网站。
 
 ----
 = 接收支付网关的支付通知 =
