@@ -177,11 +177,13 @@ private void QueryYeepayOrder()
 
 1、支付宝在创建订单时需要设置seller_email，也就是是卖家支付宝账号的邮箱。
 {{{
+PaymentSetting<AlipayGateway> setting = new PaymentSetting<AlipayGateway>();
 setting.SetGatewayParameterValue("seller_email", "name@address.com");
 }}}
 
 2、财付通在查询订单时需要设置date，date是订单的交易日期，日期格式为yyyyMMdd。
 {{{
+PaymentSetting<TenpayGateway> setting = new PaymentSetting<TenpayGateway>();
 setting.SetGatewayParameterValue("date", "20090101");
 }}}
 
