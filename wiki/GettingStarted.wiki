@@ -4,7 +4,8 @@
  * [http://code.google.com/p/icanpay/wiki/GettingStarted#创建订单 创建订单]
  * [http://code.google.com/p/icanpay/wiki/GettingStarted#接收支付网关的支付通知 接收支付网关的支付通知]
  * [http://code.google.com/p/icanpay/wiki/GettingStarted#查询订单 查询订单]
-
+ * [http://code.google.com/p/icanpay/wiki/GettingStarted#设置额外的数据 设置额外的数据]
+ * [http://code.google.com/p/icanpay/wiki/GettingStarted#订单Id的建议 订单Id的建议]
 
 ----
 
@@ -166,3 +167,28 @@ private void QueryYeepayOrder()
     }
 }
 }}}
+----
+
+= 设置额外的数据 =
+
+一些支付网关可能在生成支付订单或查询时需要一些额外的数据，这些数据通过{{{PaymentSetting<T>.SetGatewayParameterValue}}}方法来设置。
+
+下面演示目前以实现的支付网关中有2个需要设置额外数据的的地方。
+
+1、支付宝在创建订单时需要设置seller_email，也就是是卖家支付宝账号的邮箱。
+{{{
+setting.SetGatewayParameterValue("seller_email", "name@address.com");
+}}}
+
+2、财付通在查询订单时需要设置date，date是订单的交易日期，日期格式为yyyyMMdd。
+{{{
+setting.SetGatewayParameterValue("date", "20090101");
+}}}
+
+----
+
+= 订单Id的建议 =
+
+不同支付网关对订单Id有不同的限制。它可能被要求的只能是数字、数字英文跟一些指定字符组成，或者有长度限制，详细的说明请阅读相关支付网关的问题。
+
+但共同点就是他们都可以使用数字作为订单Id，如果你需要同时使用多个支付网关，就应该考虑只使用数字作为订单Id。
