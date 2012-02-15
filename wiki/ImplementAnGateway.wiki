@@ -1,13 +1,30 @@
-#summary One-sentence summary of this page.
+= 实现基类支持更多支付网关 =
 
-= Introduction =
+ * [http://code.google.com/p/icanpay/wiki/ImplementAnGateway#主要接口介绍 主要接口介绍]
+ * [http://code.google.com/p/icanpay/wiki/ImplementAnGateway#PayGateway基类介绍 PayGateway基类介绍]
+ * [http://code.google.com/p/icanpay/wiki/ImplementAnGateway#实现创建订单接口 实现创建订单接口]
+ * [http://code.google.com/p/icanpay/wiki/ImplementAnGateway#实现创建查询接口 实现创建查询接口]
+ * [http://code.google.com/p/icanpay/wiki/ImplementAnGateway#实现PayGateway抽象方法完成支付网关通知的验证 实现PayGateway抽象方法完成支付网关通知的验证]
 
-Add your content here.
+----
+= 主要接口介绍 =
 
+*IPaymentForm*
 
-= Details =
+当支付网关是通过创建一个包含订单数据的form表单来提交订单时通过实现IPaymentForm接口来创建支付订单的html页面代码。
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+*IPaymentUrl*
+
+当支付网关是通过创建一个包含订单数据的url来提交订单时通过实现IPaymentUrl接口来创建订单的url。
+
+*IQueryForm*
+
+当支付网关是通过创建一个包含订单数据的form表单来查询订单时通过实现IQueryForm接口来创建查询订单的html页面代码。查询结果跟订单支付成功时的通知返回方式一致。
+
+*IQueryUrl*
+
+当支付网关是通过创建一个包含订单数据的url来查询订单时通过实现IPaymentUrl接口来创建订单的url。查询结果跟订单支付成功时的通知返回方式一致。
+
+*IQueryPayment*
+
+通过向支付网关查询url发送需要查询的订单数据，支付网关在查询url页面输出查询结果时实现此接口。
