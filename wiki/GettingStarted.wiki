@@ -149,9 +149,9 @@ private void QueryChinabankOrder()
 不是所有支付网关都支持查询，你通过PaymentSetting.CanQuery属性可以知道当前支付网关是否支持查询。支持查询订单的网关都实现了IQueryForm或者IQueryUrl接口。
 
 
-2、有的支付网关是通过向支付网关查询页面POST需要查询的订单数据后，查询页面将输出查询结果。使用查询方式的支付网关都实现了IQueryPayment接口。
+2、有的支付网关是通过向支付网关查询页面发送需要查询的订单数据后，查询页面将输出查询结果。使用查询方式的支付网关都实现了IQueryPayment接口。
 
-实现了ICheckPayment接口的网关，将使用如下方式查询订单的状态
+实现了IQueryPayment接口的网关，将使用如下方式查询订单的状态
 {{{
 private void QueryYeepayOrder()
 {
