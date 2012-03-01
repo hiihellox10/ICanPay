@@ -100,7 +100,41 @@ WriteSucceedFlag方法在收到支付网关通知时输出表示接收到支付�
 = 支付网关通知的验证 =
 CheckNotifyData方法用于验证当前支付网关返回的支付结果。支付网关返回的支付通知数据(查询字符串、from表单)都保存在PayGateway.GatewayParameterData属性中，你可以使用GetGatewayParameterValue方法来获得相应参数的值。支付结果的验证请参考相关支付网关的文档。
 
-我们还需要让ICanPay能够识别支付通知是否是DemoGateway发送的。先在NotifyProcess类中增加IsDemoGateway属性，在IsDemoGateway属性中我们通过判断当前支付通知中是否存在DemoGateway的支付通知必须包含的参数来判断当前支付通知是否是DemoGateway支付网关发送的，相关参数请阅读相关支付网关的文档。接着修改NotifyProcess.GetGateway方法，让它在当前支付通知是由DemoGateway发送时返回DemoGateway的实例。
+我们还需要让ICanPay能够识别支付通知是否是DemoGateway发送的。先在NotifyProcess类中增加IsDemoGateway属性，在IsDemoGateway属性中我们通过判断当前支付通知中是否存在DemoGateway的支付通知必须包含的参数来判断当前支付通知是否是DemoGateway支付网关发送的，相关参数请阅读相关支付网关的文档。
+
+{{{
+internal static class NotifyProcess
+{
+    static string[] demoGatewayVerifyParmaNames= { "c_mid", "c_order", "c_orderamount", "c_ymd", "c_succmark" };
+
+    private static bool IsDemoGateway
+    {
+        get
+        {
+            return Utility.ExistParameter(demoGatewayVerifyParmaNames, gatewayParameterData);
+        }
+    }
+}
+}}}
+
+接着修改NotifyProcess.GetGateway方法，让它在当前支付通知是由DemoGateway发送时返回DemoGateway的实例。
+
+{{{
+internal static class NotifyProcess
+{
+    public static PayGateway GetGateway()
+    {
+        // 省略已存在代码
+
+        if (IsDemoGateway)
+        {
+            return new DemoGateway(gatewayParameterData);
+        }
+
+        return new NullGateway(gatewayParameterData);
+    }
+}
+}}}
 
 完成上面的这些步骤之后我们的DemoGateway已经可以处理支付网关的支付通知了。
 
