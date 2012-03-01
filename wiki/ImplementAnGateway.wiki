@@ -43,58 +43,53 @@
 
 ----
 = PayGateway基类介绍 =
-首先我们完成处理支付网关返回的支付结果部分。新建的DemoGateway它需要继承自PayGateway基类，然后需要实现其中的1个属性，3个方法。
+首先我们需要让DemoGateway能够处理支付网关返回的支付结果部分。新建的DemoGateway它需要继承自PayGateway基类。
 
+{{{
+public sealed class DemoGateway : PayGateway
+{
+}
+}}}
+接着我们需要修改ICanPay.GatewayType枚举，在ICanPay.GatewayType枚举中增加Demo值来表示当前网关为DemoGateway。
+{{{
+public enum GatewayType
+{
+    // 省略已存在枚举值
+
+    Demo = 6
+}
+}}}
+再修改DemoGateway.GatewayType属性，让它返回新增的GatewayType.Demo值。
 {{{
 public sealed class DemoGateway : PayGateway
 {
     public override GatewayType GatewayType
     {
-        get { throw new NotImplementedException(); }
-    }
-
-    public override PaymentNotifyMethod PaymentNotifyMethod
-    {
-        get { throw new NotImplementedException(); }
-    }
-
-    protected override bool CheckNotifyData()
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override void WriteSucceedFlag()
-    {
-        base.WriteSucceedFlag();
+        get { return GatewayType.Demo }
     }
 }
 }}}
-接着我们需要修改ICanPay.GatewayType枚举，在ICanPay.GatewayType枚举中增加Demo值。再修改DemoGateway.GatewayType属性，让它返回新增的GatewayType.Demo值。
-{{{
-public enum GatewayType
-{
-    // 省略已存在枚举值
-    Demo = 6
-}
-}}}
-我们还需要实现PaymentNotifyMethod属性。订单的支付结果目前会通过2种形式发送回来，1
-、支付网关服务器发送，2、将用户跳转到设置的通知url，并在查询字符串里包含支付结果。
+我们还需要实现PaymentNotifyMethod属性。订单的支付结果目前会通过2种形式返回，1
+、支付网关服务器发送支付结果通知到指定url，2、将用户跳转到设置的通知url，并在查询字符串里包含支付结果。
 
 有的支付网关可能通过服务器发送支付结果通知给你时会要求你输出一个特定的字符串用户表示已接收到支付通知，而将用户跳转到通知url时则不需要。如果没有对这2种方式做判断，在用户跳转到通知url时输出表示接收到支付网站通知的字符串时会让用户觉得很奇怪，这时应该给用户一个支付成功的提示页面，而不是奇怪的字符串。
 
-支付通知是否由网关服务器发送，我们可以通过HttpContext.Current.Request的RequestType、UserAgent、UrlReferrer 3个属性来判断。这3个属性你可以先运行几次你需要新增的支付网关提供的Demo，完成几次支付并获得相关值。
+支付通知是否由网关服务器发送，我们可以通过HttpContext.Current.Request的RequestType、UserAgent、UrlReferrer 3个属性来判断，因为支付网关的服务器通知的这3个属性跟用户浏览器的这3个属性会明显不同。这3个属性你可以先运行几次你需要新增的支付网关提供的Demo，完成几次支付并获得相关值。
 {{{
-public override PaymentNotifyMethod PaymentNotifyMethod
+public sealed class DemoGateway : PayGateway
 {
-    get
+    public override PaymentNotifyMethod PaymentNotifyMethod
     {
-        if (string.Compare(HttpContext.Current.Request.RequestType, "POST") == 0 &&
-            string.Compare(HttpContext.Current.Request.UserAgent, "Mozilla/4.0") == 0)
+        get
         {
-            return PaymentNotifyMethod.ServerNotify;
-        }
+            if (string.Compare(HttpContext.Current.Request.RequestType, "POST") == 0 &&
+                string.Compare(HttpContext.Current.Request.UserAgent, "Mozilla/4.0") == 0)
+            {
+                return PaymentNotifyMethod.ServerNotify;
+            }
 
-        return PaymentNotifyMethod.AutoReturn;
+            return PaymentNotifyMethod.AutoReturn;
+        }
     }
 }
 }}}
