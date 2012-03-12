@@ -74,7 +74,7 @@ public sealed class DemoGateway : PayGateway
 
 有的支付网关可能通过服务器发送支付结果通知给你时会要求你输出一个特定的字符串用户表示已接收到支付通知，而将用户跳转到通知url时则不需要。如果没有对这2种方式做判断，在用户跳转到通知url时输出表示接收到支付网站通知的字符串时会让用户觉得很奇怪，这时应该给用户一个支付成功的提示页面，而不是奇怪的字符串。
 
-支付通知是否由网关服务器发送，我们可以通过HttpContext.Current.Request的RequestType、UserAgent、UrlReferrer 3个属性来判断，因为支付网关的服务器通知的这3个属性都是固定值，跟用户浏览器的这3个属性会明显不同。这3个属性你可以先运行几次你需要新增的支付网关提供的Demo，完成支付并获得相关值。
+支付通知是否由网关服务器发送，我们可以通过HttpContext.Current.Request的RequestType、UserAgent 2个属性来判断，因为支付网关的服务器通知的这2个属性都是固定值，而用户通过浏览器返回支付通知页面时的这2个属性会明显不同。这2个属性你可以先运行几次你需要新增的支付网关提供的Demo，完成支付并获得相关值。
 {{{
 public sealed class DemoGateway : PayGateway
 {
