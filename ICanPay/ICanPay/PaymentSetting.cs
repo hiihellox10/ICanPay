@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Web;
 
 namespace ICanPay
@@ -15,70 +13,191 @@ namespace ICanPay
     /// </remarks>
     public class PaymentSetting<T> where T : PayGateway, new()
     {
-        private T t;
 
+        #region 构造函数
 
-        /// <summary>
-        /// 传入网关接口的实现类
-        /// </summary>
         public PaymentSetting()
         {
-            this.t = new T();
         }
 
+
+        public PaymentSetting(Merchant merchant, Order order)
+        {
+            t.Merchant = merchant;
+            t.Order = order;
+        }
+
+        #endregion
+
+
+        #region 字段
+
+        T t = new T();
+
+        #endregion
+
+
+        #region 属性
+
         /// <summary>
-        /// 网关数据
+        /// 网关
         /// </summary>
-        public T PayGateway
+        public T Gateway
         {
             get
             {
-                return this.t;
+                return t;
             }
         }
 
+
+        /// <summary>
+        /// 商家数据
+        /// </summary>
+        public Merchant Merchant
+        {
+            get
+            {
+                return t.Merchant;
+            }
+
+            set
+            {
+                t.Merchant = value;
+            }
+        }
+
+
+        /// <summary>
+        /// 订单数据
+        /// </summary>
+        public Order Order
+        {
+            get
+            {
+                return t.Order;
+            }
+
+            set
+            {
+                t.Order = value;
+            }
+        }
+
+
+        /// <summary>
+        /// 是否已实现支付接口
+        /// </summary>
+        public bool CanPayment
+        {
+            get
+            {
+                IPaymentUrl url = t as IPaymentUrl;
+                if (url != null)
+                {
+                    return true;
+                }
+
+                IPaymentForm form = t as IPaymentForm;
+                if (form != null)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+
+        /// <summary>
+        /// 是否已实现查询接口
+        /// </summary>
+        public bool CanQuery
+        {
+            get
+            {
+                IQueryUrl url = t as IQueryUrl;
+                if (url != null)
+                {
+                    return true;
+                }
+
+                IQueryForm form = t as IQueryForm;
+                if (form != null)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        #endregion
+
+
+        #region 方法
 
         /// <summary>
         /// 转到支付网站支付
         /// </summary>
         public void Payment()
         {
-            // 判断网关实现了哪一个产生支付数据的接口，调用相应接口输出订单数据。
-            if (t is IPaymentForm)
+            IPaymentUrl url = t as IPaymentUrl;
+            if (url != null)
             {
-                IPaymentForm form = t as IPaymentForm;
+                HttpContext.Current.Response.Redirect(url.BuildPaymentUrl());
+                return;
+            }
+
+            IPaymentForm form = t as IPaymentForm;
+            if (form != null)
+            {
                 HttpContext.Current.Response.Write(form.BuildPaymentForm());
                 return;
             }
 
-            if (t is IPaymentUrl)
-            {
-                IPaymentUrl url = t as IPaymentUrl;
-                HttpContext.Current.Response.Redirect(url.BuildPaymentUrl());
-                return;
-            }
+            throw new NotSupportedException(t.GatewayType + " 没有实现支付接口");
         }
+
 
         /// <summary>
         /// 查询订单
         /// </summary>
-        /// <remarks>订单的数据通过跟支付通知一样的形式发回。用处理网关通知一样的方法接受查询订单的数据</remarks>
+        /// <remarks>
+        /// 订单的查询通知数据通过跟支付通知一样的形式反回。用处理网关通知一样的方法接受查询订单的数据
+        /// </remarks>
         public void Query()
         {
-            // 判断网关实现了哪一个产生支付数据的接口，调用相应接口输出订单数据。
-            if (t is IQueryForm)
+            IQueryUrl url = t as IQueryUrl;
+            if (url != null)
             {
-                IQueryForm form = t as IQueryForm;
+                HttpContext.Current.Response.Redirect(url.BuildQueryUrl());
+                return;
+            }
+
+            IQueryForm form = t as IQueryForm;
+            if (form != null)
+            {
+
                 HttpContext.Current.Response.Write(form.BuildQueryForm());
                 return;
             }
 
-            if (t is IQueryUrl)
-            {
-                IQueryUrl url = t as IQueryUrl;
-                HttpContext.Current.Response.Redirect(url.BuildQueryUrl());
-                return;
-            }
+            throw new NotSupportedException(t.GatewayType + " 没有实现查询接口");
         }
+
+
+        /// <summary>
+        /// 设置网关的数据
+        /// </summary>
+        /// <param name="gatewayParameterName">网关的参数名称</param>
+        /// <param name="gatewayParameterValue">网关的参数值</param>
+        public void SetGatewayParameterValue(string gatewayParameterName, string gatewayParameterValue)
+        {
+            Gateway.SetGatewayParameterValue(gatewayParameterName, gatewayParameterValue);
+        }
+
+        #endregion
+
     }
 }

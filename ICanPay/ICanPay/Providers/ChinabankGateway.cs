@@ -2,48 +2,97 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace ICanPay.Providers
 {
     /// <summary>
-    /// 中国网银
+    /// 网银在线网关
     /// </summary>
-    public class ChinabankGateway : PayGateway, IPaymentForm, IQueryForm
+    /// <remarks>
+    /// 网银在线的服务器通知需要联系他们设置接收支付通知的地址才能使用。
+    /// </remarks>
+    public sealed class ChinabankGateway : PayGateway, IPaymentForm, IQueryForm
     {
+
+        #region 私有字段
+
         const string payGatewayUrl = @"https://pay3.chinabank.com.cn/PayGate";
         const string queryGatewayUrl = @"https://pay3.chinabank.com.cn/receiveorder.jsp";
-        Dictionary<string, string> parma;
+        const string orderIdRegexString = @"^[a-zA-Z_\-0-9#$():;,.]+$";
+
+        #endregion
+
+
+        #region 构造函数
+
+        /// <summary>
+        /// 初始化网银在线网关
+        /// </summary>
+        public ChinabankGateway()
+        {
+        }
+
+        /// <summary>
+        /// 初始化网银在线网关
+        /// </summary>
+        /// <param name="gatewayParameterData">网关通知的数据集合</param>
+        public ChinabankGateway(ICollection<GatewayParameter> gatewayParameterData)
+            : base(gatewayParameterData)
+        {
+        }
+
+        #endregion
+
+
+        #region 属性
 
         /// <summary>
         /// 网关名
         /// </summary>
-        public override GatewayType GatewayName
+        public override GatewayType GatewayType
         {
             get
             {
-                return GatewayType.ChinaBank;
+                return GatewayType.Chinabank;
             }
         }
 
+
+        public override PaymentNotifyMethod PaymentNotifyMethod
+        {
+            get
+            {
+                // 网银在线的服务器通知需要联系他们设置接收支付通知的地址才能使用。
+                if (string.Compare(HttpContext.Current.Request.RequestType, "POST") == 0 &&
+                    string.Compare(HttpContext.Current.Request.UserAgent, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)") == 0)
+                {
+                    return PaymentNotifyMethod.ServerNotify;
+                }
+
+                return PaymentNotifyMethod.AutoReturn;
+            }
+        }
+
+
+        #endregion
+
+
+        #region 方法
 
         /// <summary>
         /// 检查网关支付通知，是否支付成功
         /// </summary>
         protected override bool CheckNotifyData()
         {
-            // 通知数据中必须包含的Key，如果没有表示数据可能非法
-            string[] checkParma = { "v_oid", "v_pstatus", "v_pstring", "v_pmode", "v_md5str", "v_amount", "v_moneytype" };
-
-            if (!PayUtility.ContainsKey(checkParma, OtherData))
-            {
-                return false;
-            }
-
             // 检查订单是否支付成功，订单签名是否正确，货币类型是否为RMB
-            if (OtherData["v_md5str"] == NotifySign() && OtherData["v_moneytype"] == "CNY" && OtherData["v_pstatus"] == "20" || OtherData["v_pstring"] == "支付完成")
+            if (string.Compare(GetGatewayParameterValue("v_md5str"), NotifySign()) == 0 &&
+                string.Compare(GetGatewayParameterValue("v_moneytype"), "CNY") == 0 &&
+                string.Compare(GetGatewayParameterValue("v_pstatus"), "20") == 0 ||
+                string.Compare(GetGatewayParameterValue("v_pstring"), "支付完成") == 0)
             {
-                Order.Amount = Convert.ToDouble(OtherData["v_amount"]);
-                Order.OrderId = OtherData["v_oid"];
+                Order.Amount = Convert.ToDouble(GetGatewayParameterValue("v_amount"));
+                Order.OrderId = GetGatewayParameterValue("v_oid");
 
                 return true;
             }
@@ -58,9 +107,9 @@ namespace ICanPay.Providers
         private string NotifySign()
         {
             string[] notifyParma = { "v_oid", "v_pstatus", "v_amount", "v_moneytype" };
-            string sign = PayUtility.GetOtherDataValue(notifyParma, OtherData) + Merchant.Key;
+            string sign = GetGatewayParameterValue(notifyParma) + Merchant.Key;
 
-            return PayUtility.MD5(sign).ToUpper();
+            return Utility.MD5(sign).ToUpper();
         }
 
         /// <summary>
@@ -73,18 +122,13 @@ namespace ICanPay.Providers
                 throw new ArgumentException("订单只能由英文数字跟英文符号组成。", "OrderId");
             }
 
-            parma = new Dictionary<string, string>();
+            Dictionary<string, string> parma = new Dictionary<string, string>();
             parma.Add("v_mid", Merchant.UserName);
             parma.Add("v_oid", Order.OrderId);
             parma.Add("v_amount", Order.Amount.ToString());
             parma.Add("v_moneytype", "CNY");
-            parma.Add("v_url", Merchant.NotifyUrl);
+            parma.Add("v_url", Merchant.NotifyUrl.ToString());
             parma.Add("v_md5info", PaySign());
-            parma.Add("v_rcvname", Customer.Name);
-            parma.Add("v_rcvaddr", Customer.Address);
-            parma.Add("v_rcvtel", Customer.Telephone);
-            parma.Add("v_rcvpost", Customer.Post);
-            parma.Add("v_rcvemail", Customer.Email);
 
             return GetForm(parma, payGatewayUrl);
         }
@@ -104,7 +148,7 @@ namespace ICanPay.Providers
             sign.Append(Merchant.NotifyUrl);
             sign.Append(Merchant.Key);
 
-            return PayUtility.MD5(sign.ToString()).ToUpper();
+            return Utility.MD5(sign.ToString()).ToUpper();
         }
 
 
@@ -114,7 +158,7 @@ namespace ICanPay.Providers
         /// <param name="orderId">订单编号</param>
         private static bool IsRightOrderId(string orderId)
         {
-            return Regex.IsMatch(orderId, @"^[a-zA-Z_\-0-9#$():;,.]+$");
+            return Regex.IsMatch(orderId, orderIdRegexString);
         }
 
 
@@ -128,10 +172,10 @@ namespace ICanPay.Providers
                 throw new ArgumentException("订单只能由英文数字跟_-#$():;,.符号组成。", "OrderId");
             }
 
-            parma = new Dictionary<string, string>();
+            Dictionary<string, string> parma = new Dictionary<string, string>();
             parma.Add("v_mid", Merchant.UserName);
             parma.Add("v_oid", Order.OrderId);
-            parma.Add("v_url", Merchant.NotifyUrl);
+            parma.Add("v_url", Merchant.NotifyUrl.ToString());
             parma.Add("billNo_md5", QuerySign());
 
             return GetForm(parma, queryGatewayUrl);
@@ -147,31 +191,19 @@ namespace ICanPay.Providers
             sign.Append(Order.OrderId);
             sign.Append(Merchant.Key);
 
-            return PayUtility.MD5(sign.ToString()).ToUpper();
+            return Utility.MD5(sign.ToString()).ToUpper();
         }
 
 
         protected override void WriteSucceedFlag()
         {
-            System.Web.HttpContext.Current.Response.Write("ok");
+            if (PaymentNotifyMethod == PaymentNotifyMethod.ServerNotify)
+            {
+                System.Web.HttpContext.Current.Response.Write("ok");
+            }
         }
+
+        #endregion
+
     }
 }
-
-
-
-/*
-服务器返回的通知中Form中的数据格式
-v_oid, 1
-v_pstatus, 20
-v_pstring, 支付成功
-v_pmode, 建设银行
-v_md5str, D4502468C877AA4F801AAD128CBC6134
-v_md5info, 73d390268ab382ca8a693901cc69dba1
-v_md5money, 6606290f1faf96e3c5df2cfd36c96f15
-v_md5, D4502468C877AA4F801AAD128CBC6134
-v_amount, 0.01
-v_moneytype, CNY
-remark1, 
-remark2,
-*/

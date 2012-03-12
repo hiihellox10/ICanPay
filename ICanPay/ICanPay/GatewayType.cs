@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace ICanPay
 {
     /// <summary>
@@ -10,26 +7,32 @@ namespace ICanPay
     public enum GatewayType
     {
         /// <summary>
+        /// 未知网关类型
+        /// </summary>
+        None = 0,
+
+
+        /// <summary>
         /// 财付通
         /// </summary>
-        TenPay = 1,
+        Tenpay = 1,
 
 
         /// <summary>
         /// 中国网银
         /// </summary>
-        ChinaBank = 2,
+        Chinabank = 2,
 
 
         /// <summary>
         /// 易宝
         /// </summary>
-        YeePay = 3,
+        Yeepay = 3,
 
 
         /// <summary>
-        /// 云网
+        /// 支付宝
         /// </summary>
-        Cloudnet = 4
+        Alipay = 5
     }
 }

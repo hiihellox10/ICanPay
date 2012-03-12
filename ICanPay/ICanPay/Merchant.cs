@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ICanPay
 {
@@ -9,14 +8,36 @@ namespace ICanPay
     /// </summary>
     public class Merchant
     {
+
+        #region 私有字段
+
         string userName;
         string key;
-        string notifyUrl;
+        Uri notifyUrl;
 
+        #endregion
+
+
+        #region 构造函数
 
         public Merchant()
         {
         }
+
+
+        public Merchant(string userName, string key, Uri notifyUrl, GatewayType gatewayType)
+        {
+            this.userName = userName;
+            this.key = key;
+            this.notifyUrl = notifyUrl;
+            GatewayType = gatewayType;
+        }
+
+        #endregion
+
+
+        #region 属性
+
         /// <summary>
         /// 商户帐号
         /// </summary>
@@ -24,27 +45,25 @@ namespace ICanPay
         {
             get
             {
-                if (userName != null)
-                {
-                    return userName;
-                }
-                else
+                if (string.IsNullOrEmpty(userName))
                 {
                     throw new ArgumentNullException("UserName", "商户帐号没有设置");
                 }
+
+                return userName;
             }
+
             set
             {
-                if (value != null)
-                {
-                    userName = value;
-                }
-                else
+                if (string.IsNullOrEmpty(value))
                 {
                     throw new ArgumentNullException("UserName", "商户帐号不能为空");
                 }
+
+                userName = value;
             }
         }
+
 
         /// <summary>
         /// 商户密钥
@@ -53,55 +72,59 @@ namespace ICanPay
         {
             get
             {
-                if (key != null)
-                {
-                    return key;
-                }
-                else
+                if (string.IsNullOrEmpty(key))
                 {
                     throw new ArgumentNullException("Key", "商户密钥没有设置");
                 }
+
+                return key;
             }
+
             set
             {
-                if (value != null)
-                {
-                    key = value;
-                }
-                else
+                if (string.IsNullOrEmpty(value))
                 {
                     throw new ArgumentNullException("Key", "商户密钥不能为空");
                 }
+
+                key = value;
             }
         }
+
 
         /// <summary>
         /// 网关回发通知URL
         /// </summary>
-        public string NotifyUrl
+        public Uri NotifyUrl
         {
             get
             {
-                if (notifyUrl != null)
-                {
-                    return notifyUrl;
-                }
-                else
+                if (notifyUrl == null)
                 {
                     throw new ArgumentNullException("NotifyUrl", "网关通知Url没有设置");
                 }
+
+                return notifyUrl;
             }
+
             set
             {
-                if (value != null)
-                {
-                    notifyUrl = value;
-                }
-                else
+                if (value == null)
                 {
                     throw new ArgumentNullException("NotifyUrl", "网关通知Url不能为空");
                 }
+
+                notifyUrl = value;
             }
         }
+
+
+        /// <summary>
+        /// 网关类型
+        /// </summary>
+        public GatewayType GatewayType { get; set; }
+
+        #endregion
+
     }
 }

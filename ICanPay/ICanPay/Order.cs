@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ICanPay
 {
@@ -9,39 +7,60 @@ namespace ICanPay
     /// </summary>
     public class Order
     {
-        double amount = 0.0;
-        string orderid;
+
+        #region 私有字段
+
+        double amount;
+        string orderId;
+
+        #endregion
+
+
+        #region 构造函数
+
+        public Order()
+        {
+        }
+
+
+
+        public Order(string orderId, double orderAmount)
+        {
+            this.orderId = orderId;
+            this.amount = orderAmount;
+        }
+
+        #endregion
+
+
+        #region 属性
 
         /// <summary>
-        /// 订单总金额，以元为单位。例如：1.00，1元人民币。0.01，1角人民币。
+        /// 订单总金额，以元为单位。例如：1.00，1元人民币。0.01，1角人民币。因为支付网关要求的最低支付金额为0.01元，所以amount最低为0.01。
         /// </summary>
         public double Amount
         {
             get
             {
-                if (amount >= 0.01)
+                if (amount < 0.01)
                 {
-                    return amount;
+                    throw new ArgumentOutOfRangeException("Amount", "订单金额没有设置");
                 }
-                else
-                {
-                    throw new ArgumentNullException("Amount", "订单金额没有设置");
-                }
-                
+
+                return amount;
             }
 
             set
             {
-                if (value >= 0.01)
+                if (value < 0.01)
                 {
-                    amount = value;
+                    throw new ArgumentOutOfRangeException("订单金额必须大于或等于0.01", "Amount");
                 }
-                else
-                {
-                    throw new ArgumentException("订单金额必须大于或等于0.01", "Amount");
-                }
+
+                amount = value;
             }
         }
+
 
         /// <summary>
         /// 订单编号或名称
@@ -50,26 +69,26 @@ namespace ICanPay
         {
             get
             {
-                if (orderid != null)
-                {
-                    return orderid;
-                }
-                else
+                if (string.IsNullOrEmpty(orderId))
                 {
                     throw new ArgumentNullException("OrderId", "订单订单编号没有设置");
                 }
+
+                return orderId;
             }
+
             set
             {
-                if (value != null)
-                {
-                    orderid = value;
-                }
-                else
+                if (string.IsNullOrEmpty(value))
                 {
                     throw new ArgumentNullException("OrderId", "订单订单编号不能为空");
                 }
+
+                orderId = value;
             }
         }
+
+        #endregion
+
     }
 }
