@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace ICanPay
 {
     /// <summary>
-    /// 支付Url的接口
+    /// 支付订单通过url提交
     /// </summary>
     internal interface IPaymentUrl
     {
         /// <summary>
-        /// 支付订单数据的Url键接
+        /// 创建包含支付订单数据的url地址
         /// </summary>
         string BuildPaymentUrl();
     }

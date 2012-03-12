@@ -1,43 +1,93 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ICanPay;
-using System.Text.RegularExpressions;
+using System.Web;
 
 namespace ICanPay.Providers
 {
     /// <summary>
-    /// 财付通
+    /// 财付通网关
     /// </summary>
-    sealed public class TenpayGateway : PayGateway, IPaymentUrl, IQueryUrl
+    /// <remarks>
+    /// 当前财付通的实现只提供了即时到帐功能
+    /// </remarks>
+    public sealed class TenpayGateway : PayGateway, IPaymentUrl
     {
-        const string payGatewayUrl = @"https://www.tenpay.com/cgi-bin/v1.0/pay_gate.cgi";
-        const string queryGatewayUrl = @"http://portal.tenpay.com/cfbiportal/cgi-bin/cfbiqueryorder.cgi";
 
+        #region 私有字段
+
+        const string payGatewayUrl = @"http://service.tenpay.com/cgi-bin/v3.0/payservice.cgi";
+
+        #endregion
+
+
+        #region 构造函数
+
+        /// <summary>
+        /// 初始化财付通网关
+        /// </summary>
+        public TenpayGateway()
+        {
+        }
+
+
+        /// <summary>
+        /// 初始化财付通网关
+        /// </summary>
+        /// <param name="gatewayParameterData">网关通知的数据集合</param>
+        public TenpayGateway(ICollection<GatewayParameter> gatewayParameterData)
+            : base(gatewayParameterData)
+        {
+        }
+
+        #endregion
+
+
+        #region 属性
 
         /// <summary>
         /// 网关名称
         /// </summary>
-        public override GatewayType GatewayName
+        public override GatewayType GatewayType
         {
             get
             {
-                return GatewayType.TenPay;
+                return GatewayType.Tenpay;
             }
         }
 
+
+        public override PaymentNotifyMethod PaymentNotifyMethod
+        {
+            get
+            {
+                // 通过RequestType、UserAgent来判断是否为服务器通知
+                if (string.Compare(HttpContext.Current.Request.RequestType, "GET") == 0 &&
+                    string.IsNullOrEmpty(HttpContext.Current.Request.UserAgent))
+                {
+                    return PaymentNotifyMethod.ServerNotify;
+                }
+
+                return PaymentNotifyMethod.AutoReturn;
+            }
+        }
+
+        #endregion
+
+
+        #region 方法
 
         /// <summary>
         /// 支付订单数据的Url
         /// </summary>
         public string BuildPaymentUrl()
         {
-            if(Order.OrderId.Length > 10)
+            if (Order.OrderId.Length > 10)
             {
                 throw new ArgumentException("订单编号必须少于10位数", "OrderId");
             }
 
-            if(!PayUtility.IsNumeric(Order.OrderId))
+            if (!Utility.IsNumeric(Order.OrderId))
             {
                 throw new ArgumentException("订单编号只能是数字", "OrderId");
             }
@@ -56,6 +106,7 @@ namespace ICanPay.Providers
             url.Append("&fee_type=1");
             url.Append("&return_url=" + Merchant.NotifyUrl);
             url.Append("&attach=");
+            url.Append("&spbill_create_ip=" + HttpContext.Current.Request.UserHostAddress);
             url.Append("&sign=" + PaySign());
 
             return url.ToString();
@@ -77,59 +128,10 @@ namespace ICanPay.Providers
             sign.Append("&fee_type=1");
             sign.Append("&return_url=" + Merchant.NotifyUrl);
             sign.Append("&attach=");
+            sign.Append("&spbill_create_ip=" + HttpContext.Current.Request.UserHostAddress);
             sign.Append("&key=" + Merchant.Key);
 
-            return PayUtility.MD5(sign.ToString()).ToUpper();
-        }
-
-
-        /// <summary>
-        /// 订单查询Url
-        /// </summary>
-        public string BuildQueryUrl()
-        {
-            // 是否有附加的c_ymd参数
-            if (!OtherData.ContainsKey("date"))
-            {
-                throw new ArgumentException("财付通查询订单需要交易日期，date为订单的交易日期。通过OtherData[" + "date" + "]设置订单交易日期，格式为yyyyMMdd",
-                                            "OtherData[" + "date" + "]");
-            }
-            else if (!PayUtility.IsNumeric(OtherData["date"]) && OtherData["date"].Length != 8)
-            {
-                throw new ArgumentException("交易日期必须为数字，格式为yyyyMMdd", "OtherData[" + "date" + "]");
-            }
-
-            StringBuilder url = new StringBuilder();
-            url.Append(queryGatewayUrl + "?");
-            url.Append("cmdno=2");
-            url.Append("&date=" + OtherData["date"]);
-            url.Append("&bargainor_id=" + Merchant.UserName);
-            url.Append("&transaction_id=" + Merchant.UserName + OtherData["date"] + Order.OrderId.PadLeft(10, '0'));
-            url.Append("&sp_billno=" + Order.OrderId);
-            url.Append("&return_url=" + Merchant.NotifyUrl);
-            url.Append("&attach=");
-            url.Append("&sign=" + QuerySign());
-
-            return url.ToString();
-        }
-
-
-        /// <summary>
-        /// 查询订单Url的签名
-        /// </summary>
-        private string QuerySign()
-        {
-            StringBuilder sign = new StringBuilder();
-            sign.Append("cmdno=2");
-            sign.Append("&date=" + OtherData["date"]);
-            sign.Append("&bargainor_id=" + Merchant.UserName);
-            sign.Append("&transaction_id=" + Merchant.UserName + OtherData["date"] + Order.OrderId.PadLeft(10, '0'));
-            sign.Append("&sp_billno=" + Order.OrderId);
-            sign.Append("&return_url=" + Merchant.NotifyUrl);
-            sign.Append("&attach=");
-            sign.Append("&key=" + Merchant.Key);
-
-            return PayUtility.MD5(sign.ToString());
+            return Utility.MD5(sign.ToString()).ToUpper();
         }
 
 
@@ -139,19 +141,14 @@ namespace ICanPay.Providers
         /// <remarks>这里处理查询订单的网关通知跟支付订单的网关通知</remarks>
         protected override bool CheckNotifyData()
         {
-            // 通知数据中必须包含的Key，如果没有表示数据可能非法
-            string[] checkParma = { "cmdno", "pay_result", "pay_info", "date", "transaction_id", "sp_billno", "total_fee", "fee_type", "attach" };
-
-            if (!PayUtility.ContainsKey(checkParma, OtherData))
+            // 检查通知签名是否正确、是否支付成功，货币类型是否为RMB
+            if (string.Compare(GetGatewayParameterValue("sign"), NotifySign()) == 0 &&
+                string.Compare(GetGatewayParameterValue("fee_type"), "1") == 0 &&
+                string.Compare(GetGatewayParameterValue("pay_result"), "0") == 0 &&
+                string.Compare(GetGatewayParameterValue("pay_info"), "OK") == 0)
             {
-                return false;
-            }
-
-            // 检查订单是否支付成功，订单签名是否正确，货币类型是否为RMB
-            if (OtherData["sign"] == NotifySign() && OtherData["fee_type"] == "1" && OtherData["pay_result"] == "0" && OtherData["pay_info"] == "OK")
-            {
-                Order.Amount = Convert.ToDouble(OtherData["total_fee"]) * 0.01;
-                Order.OrderId = OtherData["sp_billno"];
+                Order.Amount = Convert.ToDouble(GetGatewayParameterValue("total_fee")) * 0.01;
+                Order.OrderId = GetGatewayParameterValue("sp_billno");
 
                 return true;
             }
@@ -161,41 +158,45 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// 服务器通知签名
+        /// 服务器支付通知签名
         /// </summary>
         private string NotifySign()
         {
             StringBuilder sign = new StringBuilder();
-            sign.Append("cmdno=" + OtherData["cmdno"]);
-            sign.Append("&pay_result=" + OtherData["pay_result"]);
-            sign.Append("&date=" + OtherData["date"]);
-            sign.Append("&transaction_id=" + OtherData["transaction_id"]);
-            sign.Append("&sp_billno=" + OtherData["sp_billno"]);
-            sign.Append("&total_fee=" + OtherData["total_fee"]);
-            sign.Append("&fee_type=" + OtherData["fee_type"]);
-            sign.Append("&attach=" + OtherData["attach"]);
+            sign.Append("cmdno=" + GetGatewayParameterValue("cmdno"));
+            sign.Append("&pay_result=" + GetGatewayParameterValue("pay_result"));
+            sign.Append("&date=" + GetGatewayParameterValue("date"));
+            sign.Append("&transaction_id=" + GetGatewayParameterValue("transaction_id"));
+            sign.Append("&sp_billno=" + GetGatewayParameterValue("sp_billno"));
+            sign.Append("&total_fee=" + GetGatewayParameterValue("total_fee"));
+            sign.Append("&fee_type=" + GetGatewayParameterValue("fee_type"));
+            sign.Append("&attach=" + GetGatewayParameterValue("attach"));
             sign.Append("&key=" + Merchant.Key);
 
-            return PayUtility.MD5(sign.ToString());
+            return Utility.MD5(sign.ToString());
         }
+
 
         protected override void WriteSucceedFlag()
         {
-            string resultPage = "http://" + System.Web.HttpContext.Current.Request.Url.Host;
+            if (PaymentNotifyMethod == PaymentNotifyMethod.ServerNotify)
+            {
+                StringBuilder flag = new StringBuilder();
+                flag.AppendLine("<html>");
+                flag.AppendLine("<head>");
+                flag.AppendLine("<meta name=\"TENCENT_ONELINE_PAYMENT\" content=\"China TENCENT\">");
+                flag.AppendLine("<script language=javascript>");
+                flag.AppendLine(string.Format("window.location.href='http://{0}';", System.Web.HttpContext.Current.Request.Url));
+                flag.AppendLine("</script>");
+                flag.AppendLine("</head>");
+                flag.AppendLine("<body></body>");
+                flag.AppendLine("</html>");
 
-            StringBuilder flag = new StringBuilder();
-            flag.AppendLine("<meta name=\"TENCENT_ONELINE_PAYMENT\" content=\"China TENCENT\">");
-            flag.AppendLine("<script language=javascript>");
-            flag.AppendLine("window.location.href='" + resultPage + "';");
-            flag.AppendLine("</script>");
-
-            System.Web.HttpContext.Current.Response.Write(flag.ToString());
+                System.Web.HttpContext.Current.Response.Write(flag.ToString());
+            }
         }
+
+        #endregion
+
     }
 }
-
-
-/*
- * 接收到的通知的数据格式
- * /Pay/notify.aspx?attach=&bargainor_id=1202550401&cmdno=1&date=20080413&fee_type=1&pay_info=OK&pay_result=0&pay_time=1208059299&sign=45EB8FFC7363F8ECB6BA0610F4B7F0BA&sp_billno=2&total_fee=1&transaction_id=1202550401200804130000000002
-*/

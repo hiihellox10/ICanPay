@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace ICanPay
 {
     /// <summary>
-    /// 建立支付订单Form HTML代码的接口
+    /// 支付订单通过form表单提交的HTML代码
     /// </summary>
     internal interface IPaymentForm
     {
         /// <summary>
-        /// 建立Form提交支付订单HTML代码
+        /// 创建包含支付订单数据的form表单的HTML代码
         /// </summary>
         string BuildPaymentForm();
     }
