@@ -15,24 +15,24 @@ namespace ICanPay
         /// <summary>
         /// 财付通
         /// </summary>
-        Tenpay = 1,
+        Tenpay,
 
 
         /// <summary>
         /// 中国网银
         /// </summary>
-        Chinabank = 2,
+        Chinabank,
 
 
         /// <summary>
         /// 易宝
         /// </summary>
-        Yeepay = 3,
+        Yeepay,
 
 
         /// <summary>
         /// 支付宝
         /// </summary>
-        Alipay = 5
+        Alipay
     }
 }
