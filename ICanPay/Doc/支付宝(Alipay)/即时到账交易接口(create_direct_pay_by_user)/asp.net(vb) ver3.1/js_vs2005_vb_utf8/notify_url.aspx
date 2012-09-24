@@ -1,0 +1,1 @@
+﻿<%@ Page Language="VB" AutoEventWireup="false" CodeFile="notify_url.aspx.vb" Inherits="notify_url" %>
