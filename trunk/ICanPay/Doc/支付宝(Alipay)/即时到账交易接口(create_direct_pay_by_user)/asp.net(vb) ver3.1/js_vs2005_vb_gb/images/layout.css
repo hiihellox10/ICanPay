@@ -1,0 +1,297 @@
+BODY {
+	BACKGROUND: #ffffff; MARGIN: 5px 0px 0px; FONT-FAMILY: ËÎÌו
+}
+TD {
+	FONT-SIZE: 14px; COLOR: #000; FONT-FAMILY: ËÎÌו
+}
+INPUT {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-SIZE: 14px; PADDING-BOTTOM: 0px; PADDING-TOP: 4px
+}
+IMG {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BORDER-LEFT: 0px; BORDER-BOTTOM: 0px
+}
+A:link {
+	COLOR: #003399
+}
+A:visited {
+	COLOR: #003399
+}
+A:hover {
+	COLOR: #ff6600
+}
+.box {
+	BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 8px; BORDER-TOP: #cccccc 3px solid; PADDING-LEFT: 8px; FONT-SIZE: 14px; PADDING-BOTTOM: 10px; BORDER-LEFT: #cccccc 1px solid; LINE-HEIGHT: 150%; PADDING-TOP: 10px; BORDER-BOTTOM: #cccccc 1px solid
+}
+.box-top {
+	PADDING-RIGHT: 8px; BORDER-TOP: #cccccc 3px solid; PADDING-LEFT: 8px; FONT-SIZE: 14px; PADDING-BOTTOM: 10px; LINE-HEIGHT: 150%; PADDING-TOP: 10px
+}
+.box-list {
+	BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 8px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 8px; PADDING-BOTTOM: 10px; BORDER-LEFT: #cccccc 1px solid; LINE-HEIGHT: 150%; PADDING-TOP: 10px; BORDER-BOTTOM: #cccccc 1px solid
+}
+.box-o {
+	PADDING-RIGHT: 8px; BORDER-TOP: #eeeedd 3px solid; PADDING-LEFT: 8px; PADDING-BOTTOM: 10px; LINE-HEIGHT: 150%; PADDING-TOP: 10px
+}
+.box-action {
+	BORDER-RIGHT: #ff9966 2px solid; PADDING-RIGHT: 8px; BORDER-TOP: #ff9966 2px solid; PADDING-LEFT: 8px; BACKGROUND: #fff6f0; PADDING-BOTTOM: 10px; BORDER-LEFT: #ff9966 2px solid; LINE-HEIGHT: 150%; PADDING-TOP: 10px; BORDER-BOTTOM: #ff9966 2px solid
+}
+.box-danger {
+	BORDER-RIGHT: #ffd0a8 1px solid; PADDING-RIGHT: 8px; BORDER-TOP: #ffd0a8 1px solid; PADDING-LEFT: 8px; BACKGROUND: #ffffee; PADDING-BOTTOM: 6px; BORDER-LEFT: #ffd0a8 1px solid; LINE-HEIGHT: 150%; PADDING-TOP: 6px; BORDER-BOTTOM: #ffd0a8 1px solid
+}
+.box-prom {
+	BORDER-RIGHT: #ffd0a8 2px solid; PADDING-RIGHT: 8px; BORDER-TOP: #ffd0a8 2px solid; PADDING-LEFT: 8px; BACKGROUND: #ffffff; PADDING-BOTTOM: 6px; BORDER-LEFT: #ffd0a8 2px solid; LINE-HEIGHT: 150%; PADDING-TOP: 6px; BORDER-BOTTOM: #ffd0a8 2px solid
+}
+.box-note {
+	BORDER-RIGHT: #ccccee 1px solid; PADDING-RIGHT: 8px; BORDER-TOP: #ccccee 1px solid; PADDING-LEFT: 8px; BACKGROUND: #eeeeff; PADDING-BOTTOM: 6px; BORDER-LEFT: #ccccee 1px solid; LINE-HEIGHT: 150%; PADDING-TOP: 6px; BORDER-BOTTOM: #ccccee 1px solid
+}
+.h1 {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; FONT-WEIGHT: bold; FONT-SIZE: 14px; PADDING-BOTTOM: 6px; COLOR: #cc5500; LINE-HEIGHT: 150%; PADDING-TOP: 6px
+}
+.h1-top {
+	PADDING-RIGHT: 8px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 8px; FONT-WEIGHT: bold; FONT-SIZE: 14px; PADDING-BOTTOM: 6px; COLOR: #cc5500; LINE-HEIGHT: 150%; PADDING-TOP: 6px
+}
+.h1-prom {
+	PADDING-RIGHT: 8px; BORDER-TOP: #ffcc99 1px solid; PADDING-LEFT: 8px; FONT-WEIGHT: bold; FONT-SIZE: 14px; BACKGROUND: #ffffee; PADDING-BOTTOM: 6px; COLOR: #cc5500; LINE-HEIGHT: 150%; PADDING-TOP: 6px
+}
+.h1-succ {
+	BORDER-RIGHT: #eeeedd 1px solid; PADDING-RIGHT: 8px; BORDER-TOP: #eeeedd 1px solid; PADDING-LEFT: 8px; FONT-WEIGHT: bold; FONT-SIZE: 14px; BACKGROUND: #ffffee; PADDING-BOTTOM: 10px; BORDER-LEFT: #eeeedd 1px solid; COLOR: #000000; LINE-HEIGHT: 150%; PADDING-TOP: 10px; BORDER-BOTTOM: #eeeedd 1px solid
+}
+.h1-danger {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; FONT-WEIGHT: bold; FONT-SIZE: 14px; PADDING-BOTTOM: 6px; COLOR: #f00000; LINE-HEIGHT: 150%; PADDING-TOP: 6px
+}
+.h2 {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; FONT-WEIGHT: bold; FONT-SIZE: 14px; PADDING-BOTTOM: 6px; LINE-HEIGHT: 150%; PADDING-TOP: 6px
+}
+.h2-top {
+	PADDING-RIGHT: 8px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 8px; FONT-WEIGHT: bold; FONT-SIZE: 14px; PADDING-BOTTOM: 6px; LINE-HEIGHT: 150%; PADDING-TOP: 6px
+}
+.h2-note {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; FONT-WEIGHT: bold; FONT-SIZE: 14px; PADDING-BOTTOM: 3px; LINE-HEIGHT: 150%; PADDING-TOP: 8px; BORDER-BOTTOM: #ccccee 1px solid
+}
+.h2-bottom {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 26px; FONT-WEIGHT: bold; FONT-SIZE: 14px; PADDING-BOTTOM: 3px; LINE-HEIGHT: 150%; PADDING-TOP: 8px; BORDER-BOTTOM: #eeeedd 2px solid; align: left
+}
+.h2-bottom-hot {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 26px; FONT-WEIGHT: bold; FONT-SIZE: 14px; PADDING-BOTTOM: 3px; LINE-HEIGHT: 150%; PADDING-TOP: 6px; BORDER-BOTTOM: #ff7300 0px solid
+}
+.h3 {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; FONT-SIZE: 14px; PADDING-BOTTOM: 6px; LINE-HEIGHT: 150%; PADDING-TOP: 6px
+}
+.h3-top {
+	PADDING-RIGHT: 8px; BORDER-TOP: #eeeedd 3px solid; PADDING-LEFT: 8px; FONT-SIZE: 14px; PADDING-BOTTOM: 6px; LINE-HEIGHT: 150%; PADDING-TOP: 6px
+}
+.h3-note {
+	BORDER-RIGHT: #ccccee 1px solid; PADDING-RIGHT: 8px; BORDER-TOP: #ccccee 1px solid; PADDING-LEFT: 8px; FONT-SIZE: 14px; BACKGROUND: #eeeeff; PADDING-BOTTOM: 6px; BORDER-LEFT: #ccccee 1px solid; LINE-HEIGHT: 150%; PADDING-TOP: 6px; BORDER-BOTTOM: #ccccee 1px solid
+}
+.h3-prom {
+	BORDER-RIGHT: #ff9966 1px solid; PADDING-RIGHT: 8px; BORDER-TOP: #ff9966 1px solid; PADDING-LEFT: 8px; FONT-SIZE: 14px; BACKGROUND: #ffffee; PADDING-BOTTOM: 6px; BORDER-LEFT: #ff9966 1px solid; LINE-HEIGHT: 150%; PADDING-TOP: 6px; BORDER-BOTTOM: #ff9966 1px solid
+}
+.h3-green {
+	BORDER-RIGHT: #669966 1px solid; PADDING-RIGHT: 8px; BORDER-TOP: #669966 1px solid; PADDING-LEFT: 8px; FONT-SIZE: 14px; BACKGROUND: #dbf0dd; PADDING-BOTTOM: 6px; BORDER-LEFT: #669966 1px solid; LINE-HEIGHT: 150%; PADDING-TOP: 6px; BORDER-BOTTOM: #669966 1px solid
+}
+.h3-yellow {
+	BORDER-RIGHT: #ffcc00 1px solid; PADDING-RIGHT: 8px; BORDER-TOP: #ffcc00 1px solid; PADDING-LEFT: 8px; FONT-SIZE: 14px; BACKGROUND: #f8f8d2; PADDING-BOTTOM: 6px; BORDER-LEFT: #ffcc00 1px solid; LINE-HEIGHT: 150%; PADDING-TOP: 6px; BORDER-BOTTOM: #ffcc00 1px solid
+}
+.title {
+	PADDING-RIGHT: 16px; PADDING-LEFT: 10px; FONT-WEIGHT: bold; FONT-SIZE: 14px; BACKGROUND: #ff7300; PADDING-BOTTOM: 5px; BORDER-LEFT: #666677 10px solid; COLOR: #ffffff; PADDING-TOP: 8px; BORDER-BOTTOM: #cc6600 1px solid
+}
+.title-2 {
+	BORDER-RIGHT: #ffb270 1px solid; PADDING-RIGHT: 8px; BORDER-TOP: #ffb270 1px solid; PADDING-LEFT: 8px; FONT-SIZE: 14px; BACKGROUND: #ffd0a8; PADDING-BOTTOM: 2px; BORDER-LEFT: #ffb270 1px solid; COLOR: #993300; LINE-HEIGHT: 150%; PADDING-TOP: 3px; BORDER-BOTTOM: #ffb270 1px solid
+}
+.title-gray {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; FONT-SIZE: 14px; BACKGROUND: #666677; PADDING-BOTTOM: 3px; BORDER-LEFT: #ff7300 10px solid; COLOR: #ffffff; LINE-HEIGHT: 150%; PADDING-TOP: 4px; BORDER-BOTTOM: #333333 1px solid
+}
+.title-gray-2 {
+	BORDER-RIGHT: #b6b6b6 1px solid; PADDING-RIGHT: 8px; BORDER-TOP: #b6b6b6 1px solid; PADDING-LEFT: 8px; FONT-SIZE: 14px; BACKGROUND: #dddddd; PADDING-BOTTOM: 2px; BORDER-LEFT: #b6b6b6 1px solid; COLOR: #666666; LINE-HEIGHT: 150%; PADDING-TOP: 3px; BORDER-BOTTOM: #b6b6b6 1px solid
+}
+.title-black {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; FONT-SIZE: 14px; BACKGROUND: #ff0000; PADDING-BOTTOM: 2px; COLOR: #ffff00; LINE-HEIGHT: 150%; PADDING-TOP: 3px; HEIGHT: 30px
+}
+.listMT {
+	BORDER-RIGHT: #ffffff 1px solid; PADDING-RIGHT: 4px; BORDER-TOP: #ffffff 1px solid; PADDING-LEFT: 4px; FONT-SIZE: 12px; PADDING-BOTTOM: 2px; COLOR: #e16602; PADDING-TOP: 6px; BORDER-BOTTOM: #ffd0a8 1px solid; HEIGHT: 25px; BACKGROUND-COLOR: #ffe5ce
+}
+.listMB {
+	BORDER-RIGHT: #ffe5ce 1px solid; PADDING-RIGHT: 4px; BORDER-TOP: #ffffff 2px solid; PADDING-LEFT: 4px; FONT-SIZE: 12px; PADDING-BOTTOM: 2px; COLOR: #000000; LINE-HEIGHT: 150%; PADDING-TOP: 6px; BORDER-BOTTOM: #ffd0a8 1px solid; HEIGHT: 35px
+}
+.listMT-gray {
+	BORDER-RIGHT: #ffffff 1px solid; PADDING-RIGHT: 4px; BORDER-TOP: #ffffff 1px solid; PADDING-LEFT: 4px; FONT-SIZE: 12px; PADDING-BOTTOM: 2px; COLOR: #666666; PADDING-TOP: 6px; BORDER-BOTTOM: #dcdcdc 1px solid; HEIGHT: 25px; BACKGROUND-COLOR: #eeeeee
+}
+.listMB-gray {
+	BORDER-RIGHT: #dcdcdc 1px solid; PADDING-RIGHT: 4px; BORDER-TOP: #ffffff 2px solid; PADDING-LEFT: 4px; FONT-SIZE: 12px; PADDING-BOTTOM: 2px; COLOR: #000000; LINE-HEIGHT: 150%; PADDING-TOP: 6px; BORDER-BOTTOM: #dcdcdc 1px solid; HEIGHT: 35px
+}
+.txtNextPage {
+	PADDING-RIGHT: 4px; PADDING-LEFT: 4px; FONT-SIZE: 12px; PADDING-BOTTOM: 2px; LINE-HEIGHT: 150%; PADDING-TOP: 4px; HEIGHT: 30px; TEXT-ALIGN: center
+}
+.nav-tabsub {
+	BORDER-RIGHT: #7c7cca 1px solid; PADDING-RIGHT: 8px; BORDER-TOP: #7c7cca 1px solid; PADDING-LEFT: 8px; FONT-SIZE: 12px; BACKGROUND: #ffffff; PADDING-BOTTOM: 0px; BORDER-LEFT: #7c7cca 1px solid; COLOR: #993300; LINE-HEIGHT: 150%; PADDING-TOP: 1px; BORDER-BOTTOM: #7c7cca 1px solid
+}
+.nav-tabsubhot {
+	BORDER-RIGHT: #ffffff 1px solid; PADDING-RIGHT: 8px; BORDER-TOP: #ffffff 1px solid; PADDING-LEFT: 8px; FONT-SIZE: 12px; BACKGROUND: #7c7cca; PADDING-BOTTOM: 0px; BORDER-LEFT: #ffffff 1px solid; COLOR: #ffffff; LINE-HEIGHT: 150%; PADDING-TOP: 1px; BORDER-BOTTOM: #ffffff 1px solid
+}
+.navToolbar {
+	BORDER-RIGHT: #ff9966 1px solid; PADDING-RIGHT: 13px; BORDER-TOP: #ff9966 1px solid; PADDING-LEFT: 10px; FONT-SIZE: 12px; PADDING-BOTTOM: 4px; VERTICAL-ALIGN: middle; BORDER-LEFT: #ff9966 4px solid; PADDING-TOP: 4px; BORDER-BOTTOM: #ff9966 1px solid; BACKGROUND-COLOR: #fff
+}
+.navToolbarHot {
+	PADDING-RIGHT: 16px; PADDING-LEFT: 10px; FONT-SIZE: 12px; BACKGROUND: #ff7300; PADDING-BOTTOM: 5px; BORDER-LEFT: #666677 10px solid; COLOR: #ffffff; PADDING-TOP: 6px; BORDER-BOTTOM: #cc6600 1px solid
+}
+.txtYouhere-tab {
+	PADDING-LEFT: 3px; FONT-SIZE: 12px; COLOR: #999999; LINE-HEIGHT: 130%
+}
+.nav-link:link {
+	COLOR: #3d362b
+}
+.nav-link:visited {
+	COLOR: #3d362b
+}
+.nav-link:hover {
+	COLOR: #f60
+}
+.nav-left {
+	PADDING-RIGHT: 0px; BORDER-TOP: #ffffff 2px solid; PADDING-LEFT: 10px; FONT-SIZE: 14px; BACKGROUND: #eeeeff; PADDING-BOTTOM: 2px; BORDER-LEFT: #ff7300 3px solid; WIDTH: 180px; COLOR: #ffffff; PADDING-TOP: 3px; BORDER-BOTTOM: #ccccee 1px solid; HEIGHT: 28px
+}
+.nav-lefthot {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 10px; FONT-WEIGHT: bold; FONT-SIZE: 14px; BACKGROUND: #ff7300; PADDING-BOTTOM: 2px; BORDER-LEFT: #666677 4px solid; WIDTH: 180px; COLOR: #ffffff; PADDING-TOP: 6px; BORDER-BOTTOM: #cc6600 1px solid; HEIGHT: 28px
+}
+.nav-lefthot-w-b:link {
+	COLOR: #ffffff
+}
+.nav-lefthot-w-b:visited {
+	COLOR: #ffffff
+}
+.nav-lefthot-w-b:hover {
+	COLOR: #ffffff
+}
+.nav-pagebott {
+	PADDING-RIGHT: 8px; BORDER-TOP: #eeeedd 4px solid; PADDING-LEFT: 8px; FONT-SIZE: 12px; PADDING-BOTTOM: 16px; LINE-HEIGHT: 150%; PADDING-TOP: 40px
+}
+.nav-setup {
+	BORDER-RIGHT: #eeeedd 0px solid; PADDING-RIGHT: 5px; PADDING-LEFT: 3px; FONT-SIZE: 12px; PADDING-BOTTOM: 1px; WIDTH: 25%; COLOR: #666666; PADDING-TOP: 5px; BORDER-BOTTOM: #eeeedd 3px solid; BACKGROUND-COLOR: #ffffff
+}
+.nav-setupto {
+	BORDER-RIGHT: #ff9966 0px solid; PADDING-RIGHT: 5px; PADDING-LEFT: 3px; FONT-SIZE: 12px; PADDING-BOTTOM: 1px; WIDTH: 25%; COLOR: #000000; PADDING-TOP: 5px; BORDER-BOTTOM: #ff9966 3px solid; BACKGROUND-COLOR: #fff6f0
+}
+.nav-tab {
+	BORDER-RIGHT: #ff9966 1px solid; PADDING-RIGHT: 10px; BORDER-TOP: #ff7300 3px solid; PADDING-LEFT: 10px; FONT-SIZE: 12px; PADDING-BOTTOM: 4px; VERTICAL-ALIGN: middle; BORDER-LEFT: #ff9966 1px solid; COLOR: #000000; PADDING-TOP: 4px; BORDER-BOTTOM: #ff9966 0px solid; BACKGROUND-COLOR: #ffffff
+}
+.nav-tabhot {
+	BORDER-RIGHT: #ff9966 1px solid; PADDING-RIGHT: 10px; BORDER-TOP: #666677 3px solid; PADDING-LEFT: 10px; FONT-SIZE: 12px; PADDING-BOTTOM: 4px; BORDER-LEFT: #ff9966 1px solid; COLOR: #ffffff; PADDING-TOP: 4px; BACKGROUND-COLOR: #ff7300
+}
+.form-left {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; FONT-SIZE: 14px; PADDING-BOTTOM: 3px; VERTICAL-ALIGN: top; WIDTH: 25%; LINE-HEIGHT: 150%; PADDING-TOP: 6px; TEXT-ALIGN: right
+}
+.form-right {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; FONT-SIZE: 14px; PADDING-BOTTOM: 3px; VERTICAL-ALIGN: top; LINE-HEIGHT: 150%; PADDING-TOP: 6px
+}
+.form-star {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 3px; FONT-SIZE: 12px; PADDING-BOTTOM: 3px; VERTICAL-ALIGN: top; WIDTH: 1%; COLOR: #ff0000; PADDING-TOP: 12px
+}
+.form-left-top {
+	PADDING-RIGHT: 3px; BORDER-TOP: #eeeedd 1px solid; PADDING-LEFT: 3px; FONT-SIZE: 14px; PADDING-BOTTOM: 3px; VERTICAL-ALIGN: top; WIDTH: 25%; LINE-HEIGHT: 150%; PADDING-TOP: 6px; TEXT-ALIGN: right
+}
+.form-right-top {
+	PADDING-RIGHT: 3px; BORDER-TOP: #eeeedd 1px solid; PADDING-LEFT: 3px; FONT-SIZE: 14px; PADDING-BOTTOM: 3px; VERTICAL-ALIGN: top; LINE-HEIGHT: 150%; PADDING-TOP: 6px
+}
+.form-star-top {
+	PADDING-RIGHT: 0px; BORDER-TOP: #eeeedd 1px solid; PADDING-LEFT: 3px; FONT-SIZE: 12px; PADDING-BOTTOM: 3px; VERTICAL-ALIGN: top; WIDTH: 1%; COLOR: #ff0000; PADDING-TOP: 6px
+}
+.form-input {
+	FONT-SIZE: 14px; WIDTH: 180px; HEIGHT: 25px
+}
+.form-input-err {
+	FONT-SIZE: 14px; WIDTH: 180px; HEIGHT: 25px; BACKGROUND-COLOR: #eeeeff
+}
+.form-input-small {
+	FONT-SIZE: 14px; WIDTH: 100px; HEIGHT: 25px
+}
+.form-input-big {
+	FONT-SIZE: 14px; WIDTH: 260px; HEIGHT: 25px
+}
+.form-input-big-err {
+	FONT-SIZE: 14px; WIDTH: 260px; HEIGHT: 25px; BACKGROUND-COLOR: #eeeeff
+}
+.form-select {
+	FONT-SIZE: 14px; WIDTH: 180px
+}
+.form-select-err {
+	FONT-SIZE: 14px; WIDTH: 180px; BACKGROUND-COLOR: #eeeeff
+}
+.form-select-big {
+	FONT-SIZE: 14px; WIDTH: 300px
+}
+.form-select-big-err {
+	FONT-SIZE: 14px; WIDTH: 260px; BACKGROUND-COLOR: #eeeeff
+}
+.form-textarea-err {
+	FONT-SIZE: 14px; BACKGROUND-COLOR: #eeeeff
+}
+.form-button-next {
+	PADDING-RIGHT: 3px; BORDER-TOP: #eeeedd 1px solid; PADDING-LEFT: 3px; FONT-SIZE: 14px; PADDING-BOTTOM: 0px; PADDING-TOP: 8px; HEIGHT: 40px; TEXT-ALIGN: right
+}
+.form-button-replay {
+	PADDING-RIGHT: 3px; BORDER-TOP: #eeeedd 1px solid; PADDING-LEFT: 3px; FONT-SIZE: 14px; PADDING-BOTTOM: 0px; WIDTH: 20%; PADDING-TOP: 8px; HEIGHT: 40px; TEXT-ALIGN: right
+}
+.form-button-ok {
+	PADDING-RIGHT: 3px; BORDER-TOP: #eeeedd 1px solid; PADDING-LEFT: 3px; FONT-SIZE: 14px; PADDING-BOTTOM: 0px; PADDING-TOP: 8px; HEIGHT: 40px
+}
+.txt14 {
+	FONT-SIZE: 14px; LINE-HEIGHT: 130%
+}
+.txt14-w-b:link {
+	FONT-WEIGHT: bold; FONT-SIZE: 14px; COLOR: #ffffff
+}
+.txt14-w-b:visited {
+	FONT-WEIGHT: bold; FONT-SIZE: 14px; COLOR: #ffffff
+}
+.txt14-w-b:hover {
+	FONT-WEIGHT: bold; FONT-SIZE: 14px; COLOR: #ffffff
+}
+.txt14-kong {
+	PADDING-LEFT: 28px; FONT-SIZE: 14px; LINE-HEIGHT: 130%
+}
+.txt12-w:link {
+	FONT-SIZE: 12px; COLOR: #ffffff
+}
+.txt12-w:visited {
+	FONT-SIZE: 12px; COLOR: #ffffff
+}
+.txt12-w:hover {
+	FONT-SIZE: 12px; COLOR: #ffff00
+}
+.txt12 {
+	FONT-SIZE: 12px; LINE-HEIGHT: 130%
+}
+.txt12-w-b:link {
+	FONT-WEIGHT: bold; FONT-SIZE: 13px; COLOR: #ffffff
+}
+.txt12-w-b:visited {
+	FONT-WEIGHT: bold; FONT-SIZE: 13px; COLOR: #ffffff
+}
+.txt12-w-b:hover {
+	FONT-WEIGHT: bold; FONT-SIZE: 13px; COLOR: #ffffff
+}
+.txt-danger {
+	FONT-SIZE: 14px; COLOR: #f00000; LINE-HEIGHT: 130%
+}
+.txt-TIME-s {
+	LINE-HEIGHT: 130%; FONT-FAMILY: "Times New Roman"
+}
+.txt-TIME-b {
+	FONT-SIZE: 36px; LINE-HEIGHT: 150%; FONT-FAMILY: "Times New Roman"
+}
+.note {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 8px; FONT-SIZE: 12px; PADDING-BOTTOM: 3px; LINE-HEIGHT: 130%; PADDING-TOP: 6px
+}
+.note-strong {
+	PADDING-LEFT: 3px; FONT-SIZE: 12px; COLOR: #ff7300; LINE-HEIGHT: 130%
+}
+.note-help {
+	PADDING-LEFT: 3px; FONT-SIZE: 12px; COLOR: #999999; LINE-HEIGHT: 130%
+}
+.note-danger {
+	PADDING-RIGHT: 8px; PADDING-LEFT: 8px; FONT-SIZE: 12px; PADDING-BOTTOM: 6px; COLOR: #f00000; LINE-HEIGHT: 130%; PADDING-TOP: 6px
+}
+.note-14-strong {
+	PADDING-LEFT: 3px; FONT-SIZE: 14px; COLOR: #ff7300; LINE-HEIGHT: 130%
+}
+FORM {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="refund_fastpay_by_platform_pwd_jsp_gb"
+  id="myeclipse.1306901232476"
+  context-root="/refund_fastpay_by_platform_pwd_jsp_gb"
+  j2ee-spec="5.0"
+  archive="refund_fastpay_by_platform_pwd_jsp_gb.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

@@ -1,1 +1,0 @@
-<%@ Page language="c#" Codebehind="GetPayNotify.aspx.cs" AutoEventWireup="false" Inherits="PortSampleForDotNet.GetPayNotify" %>

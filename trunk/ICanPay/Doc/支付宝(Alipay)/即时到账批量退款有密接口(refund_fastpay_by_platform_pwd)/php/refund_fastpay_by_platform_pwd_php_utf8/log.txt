@@ -1,0 +1,4 @@
+﻿
+执行日期：201103311704
+responseTxt=true
+ notify_url_log:sign=0fdf212418909c5f104fe21465b84389&mysign=0fdf212418909c5f104fe21465b84389,body=即时到帐测试&buyer_email=349308847@qq.com&buyer_id=2088002396712354&exterface=create_direct_pay_by_user&is_success=T&notify_id=RqPnCoPT3K9%2Fvwbh3I7xskmpmwsW7%2BVBD5VdSHp9EUgwrJyp%2Fq2pWr9bPASFkM8cExtk&notify_time=2011-03-31 17:53:04&notify_type=trade_status_sync&out_trade_no=20110331055226&payment_type=1&seller_email=alipay-test03@alipay.com&seller_id=2088101568345155&subject=一分钱测试&total_fee=0.01&trade_no=2011033182911535&trade_status=TRADE_SUCCESS&sign=0fdf212418909c5f104fe21465b84389&sign_type=MD5
