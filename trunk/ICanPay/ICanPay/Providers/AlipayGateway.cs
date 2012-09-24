@@ -138,8 +138,9 @@ namespace ICanPay.Providers
         {
             if (ValidateAlipayNotify() && ValidateAlipayNotifySign())
             {
-                // 支付状态是否为成功
-                if (string.Compare(GetGatewayParameterValue("trade_status"), "TRADE_FINISHED") == 0)
+                // 支付状态是否为成功。TRADE_FINISHED（普通即时到账的交易成功状态，TRADE_SUCCESS（开通了高级即时到账或机票分销产品后的交易成功状态）
+                if (string.Compare(GetGatewayParameterValue("trade_status"), "TRADE_FINISHED") == 0 ||
+                    string.Compare(GetGatewayParameterValue("trade_status"), "TRADE_SUCCESS") == 0)
                 {
                     Order.Amount = double.Parse(GetGatewayParameterValue("total_fee"));
                     Order.OrderId = GetGatewayParameterValue("out_trade_no");
