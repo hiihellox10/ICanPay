@@ -6,6 +6,6 @@ ICanPay目前实现了4家支付网关，你可以通过实现抽象基类以支
 
 目前支持支付网关有：支付宝、财付通、中国网银、易宝。
 
- * [如何使用](/hiihellox10/icanpay/wiki/Getting-started)
+ * [如何使用](https://github.com/hiihellox10/icanpay/wiki/Getting-started)
 
- * [实现基类支持更多支付网关](/hiihellox10/icanpay/wiki/Implement-a-new-gateway)
+ * [实现基类支持更多支付网关](https://github.com/hiihellox10/icanpay/wiki/Implement-a-new-gateway)
