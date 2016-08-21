@@ -1,32 +1,33 @@
-ï»¿using System;
+using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace ICanPay.Providers
 {
     /// <summary>
-    /// æ”¯ä»˜å®ç½‘å…³
+    /// Ö§¸¶±¦Íø¹Ø
     /// </summary>
     /// <remarks>
-    /// å½“å‰æ”¯ä»˜å®çš„å®ç°åªæä¾›äº†å³æ—¶åˆ°å¸åŠŸèƒ½
+    /// µ±Ç°Ö§¸¶±¦µÄÊµÏÖ½öÖ§³ÖMD5ÃÜÔ¿¡£
     /// </remarks>
     public sealed class AlipayGateway : PayGateway, IPaymentForm, IPaymentUrl
     {
 
-        #region ç§æœ‰å­—æ®µ
+        #region Ë½ÓĞ×Ö¶Î
 
-        const string payGatewayUrl = @"https://www.alipay.com/cooperate/gateway.do";
+        const string payGatewayUrl = "https://mapi.alipay.com/gateway.do";
+        const string emailRegexString = @"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
         static Encoding pageEncoding = Encoding.GetEncoding("gb2312");
 
         #endregion
 
 
-        #region æ„é€ å‡½æ•°
+        #region ¹¹Ôìº¯Êı
 
         /// <summary>
-        /// åˆå§‹åŒ–æ”¯ä»˜å®ç½‘å…³
+        /// ³õÊ¼»¯Ö§¸¶±¦Íø¹Ø
         /// </summary>
         public AlipayGateway()
         {
@@ -34,10 +35,10 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// åˆå§‹åŒ–æ”¯ä»˜å®ç½‘å…³
+        /// ³õÊ¼»¯Ö§¸¶±¦Íø¹Ø
         /// </summary>
-        /// <param name="gatewayParameterData">ç½‘å…³é€šçŸ¥çš„æ•°æ®é›†åˆ</param>
-        public AlipayGateway(ICollection<GatewayParameter> gatewayParameterData)
+        /// <param name="gatewayParameterData">Íø¹ØÍ¨ÖªµÄÊı¾İ¼¯ºÏ</param>
+        public AlipayGateway(List<GatewayParameter> gatewayParameterData)
             : base(gatewayParameterData)
         {
         }
@@ -45,7 +46,7 @@ namespace ICanPay.Providers
         #endregion
 
 
-        #region å±æ€§
+        #region ÊôĞÔ
 
         public override GatewayType GatewayType
         {
@@ -60,7 +61,7 @@ namespace ICanPay.Providers
         {
             get
             {
-                // é€šè¿‡RequestTypeã€UserAgentæ¥åˆ¤æ–­æ˜¯å¦ä¸ºæœåŠ¡å™¨é€šçŸ¥
+                // Í¨¹ıRequestType¡¢UserAgentÀ´ÅĞ¶ÏÊÇ·ñÎª·şÎñÆ÷Í¨Öª
                 if (string.Compare(HttpContext.Current.Request.RequestType, "POST") == 0 &&
                     string.Compare(HttpContext.Current.Request.UserAgent, "Mozilla/4.0") == 0)
                 {
@@ -75,75 +76,104 @@ namespace ICanPay.Providers
         #endregion
 
 
-        #region IPaymentForm æˆå‘˜
+        #region ·½·¨
 
         public string BuildPaymentForm()
         {
-            if (string.IsNullOrEmpty(GetGatewayParameterValue("seller_email")))
-            {
-                throw new ArgumentNullException("seller_email", "è®¢å•ç¼ºå°‘seller_emailå‚æ•°ï¼Œseller_emailæ˜¯å–å®¶æ”¯ä»˜å®è´¦å·çš„é‚®ç®±ã€‚" +
-                                                "ä½ éœ€è¦ä½¿ç”¨PaymentSetting<T>.SetGatewayParameterValue(\"seller_email\", \"youname@email.com\")æ–¹æ³•è®¾ç½®å–å®¶æ”¯ä»˜å®è´¦å·çš„é‚®ç®±ã€‚");
-            }
+            ValidatePaymentOrderParameter();
+            InitOrderParameter();
 
-            if (!Utility.IsEmail(GetGatewayParameterValue("seller_email")))
-            {
-                throw new ArgumentException("Emailæ ¼å¼ä¸æ­£ç¡®", "seller_email");
-            }
-
-            Dictionary<string, string> parma = new Dictionary<string, string>();
-            parma.Add("service", "create_direct_pay_by_user");
-            parma.Add("partner", Merchant.UserName);
-            parma.Add("notify_url", Merchant.NotifyUrl.ToString());
-            parma.Add("return_url", Merchant.NotifyUrl.ToString());
-            parma.Add("sign", PaySign());
-            parma.Add("sign_type", "MD5");
-            parma.Add("subject", Order.OrderId);
-            parma.Add("out_trade_no", Order.OrderId);
-            parma.Add("total_fee", Order.Amount.ToString());
-            parma.Add("payment_type", "1");
-            parma.Add("seller_email", GetGatewayParameterValue("seller_email"));
-            parma.Add("_input_charset", "gb2312");
-
-            return GetForm(parma, payGatewayUrl);
+            return GetFormHtml(payGatewayUrl);
         }
 
-        #endregion
 
+        /// <summary>
+        /// ³õÊ¼»¯¶©µ¥²ÎÊı
+        /// </summary>
+        private void InitOrderParameter()
+        {
+            SetGatewayParameterValue("service", "create_direct_pay_by_user");
+            SetGatewayParameterValue("partner", Merchant.UserName);
+            SetGatewayParameterValue("notify_url", Merchant.NotifyUrl.ToString());
+            SetGatewayParameterValue("return_url", Merchant.NotifyUrl.ToString());
+            SetGatewayParameterValue("sign_type", "MD5");
+            SetGatewayParameterValue("subject", Order.Subject);
+            SetGatewayParameterValue("out_trade_no", Order.Id);
+            SetGatewayParameterValue("total_fee", Order.Amount.ToString());
+            SetGatewayParameterValue("payment_type", "1");
+            SetGatewayParameterValue("_input_charset", "gb2312");
+            SetGatewayParameterValue("sign", GetOrderSign());    // Ç©ÃûĞèÒªÔÚ×îºóÉèÖÃ£¬ÒÔÃâÈ±ÉÙ²ÎÊı¡£
+        }
 
-        #region IPaymentUrl æˆå‘˜
 
         public string BuildPaymentUrl()
         {
-            if (string.IsNullOrEmpty(GetGatewayParameterValue("seller_email")))
-            {
-                throw new ArgumentNullException("seller_email", "è®¢å•ç¼ºå°‘seller_emailå‚æ•°ï¼Œseller_emailæ˜¯å–å®¶æ”¯ä»˜å®è´¦å·çš„é‚®ç®±ã€‚" +
-                                                "ä½ éœ€è¦ä½¿ç”¨PaymentSetting<T>.SetGatewayParameterValue(\"seller_email\", \"youname@email.com\")æ–¹æ³•è®¾ç½®å–å®¶æ”¯ä»˜å®è´¦å·çš„é‚®ç®±ã€‚");
-            }
+            ValidatePaymentOrderParameter();
+            InitOrderParameter();
 
-            if (!Utility.IsEmail(GetGatewayParameterValue("seller_email")))
-            {
-                throw new ArgumentException("Emailæ ¼å¼ä¸æ­£ç¡®", "seller_email");
-            }
-
-            string sign = GetSignPrama();
-            return string.Format("{0}?{1}&sign={2}&sign_type=MD5", payGatewayUrl, sign, PaySign(sign));
+            return string.Format("{0}?{1}", payGatewayUrl, GetPaymentQueryString());
         }
 
-        #endregion
+
+        private string GetPaymentQueryString()
+        {
+            StringBuilder urlBuilder = new StringBuilder();
+            foreach (KeyValuePair<string, string> item in GetSortedGatewayParameter())
+            {
+                urlBuilder.AppendFormat("{0}={1}&", item.Key, item.Value);
+            }
+
+            return urlBuilder.ToString().TrimEnd('&');
+        }
 
 
-        #region æ–¹æ³•
+        /// <summary>
+        /// »ñµÃÓÃÓÚÇ©ÃûµÄ²ÎÊı×Ö·û´®
+        /// </summary>
+        private string GetSignParameter()
+        {
+            StringBuilder signBuilder = new StringBuilder();
+            foreach(KeyValuePair<string, string> item in GetSortedGatewayParameter())
+            {
+                if (string.Compare("sign", item.Key) != 0 && string.Compare("sign_type", item.Key) != 0)
+                {
+                    signBuilder.AppendFormat("{0}={1}&", item.Key, item.Value);
+                }
+            }
+
+            return signBuilder.ToString().TrimEnd('&');
+        }
+
+
+
+        /// <summary>
+        /// ÑéÖ¤Ö§¸¶¶©µ¥µÄ²ÎÊıÉèÖÃ
+        /// </summary>
+        private void ValidatePaymentOrderParameter()
+        {
+            if (string.IsNullOrEmpty(GetGatewayParameterValue("seller_email")))
+            {
+                throw new ArgumentNullException("seller_email", "¶©µ¥È±ÉÙseller_email²ÎÊı£¬seller_emailÊÇÂô¼ÒÖ§¸¶±¦ÕËºÅµÄÓÊÏä¡£" +
+                                                "ÄãĞèÒªÊ¹ÓÃPaymentSetting<T>.SetGatewayParameterValue(\"seller_email\", \"youname@email.com\")·½·¨ÉèÖÃÂô¼ÒÖ§¸¶±¦ÕËºÅµÄÓÊÏä¡£");
+            }
+
+            if (!IsEmail(GetGatewayParameterValue("seller_email")))
+            {
+                throw new ArgumentException("Email¸ñÊ½²»ÕıÈ·", "seller_email");
+            }
+        }
+
 
         protected override bool CheckNotifyData()
         {
             if (ValidateAlipayNotify() && ValidateAlipayNotifySign())
             {
-                // æ”¯ä»˜çŠ¶æ€æ˜¯å¦ä¸ºæˆåŠŸã€‚TRADE_FINISHEDï¼ˆæ™®é€šå³æ—¶åˆ°è´¦çš„äº¤æ˜“æˆåŠŸçŠ¶æ€ï¼ŒTRADE_SUCCESSï¼ˆå¼€é€šäº†é«˜çº§å³æ—¶åˆ°è´¦æˆ–æœºç¥¨åˆ†é”€äº§å“åçš„äº¤æ˜“æˆåŠŸçŠ¶æ€ï¼‰
+                // Ö§¸¶×´Ì¬ÊÇ·ñÎª³É¹¦¡£TRADE_FINISHED£¨ÆÕÍ¨¼´Ê±µ½ÕËµÄ½»Ò×³É¹¦×´Ì¬£¬TRADE_SUCCESS£¨¿ªÍ¨ÁË¸ß¼¶¼´Ê±µ½ÕË»ò»úÆ±·ÖÏú²úÆ·ºóµÄ½»Ò×³É¹¦×´Ì¬£©
                 if (string.Compare(GetGatewayParameterValue("trade_status"), "TRADE_FINISHED") == 0 ||
                     string.Compare(GetGatewayParameterValue("trade_status"), "TRADE_SUCCESS") == 0)
                 {
                     Order.Amount = double.Parse(GetGatewayParameterValue("total_fee"));
-                    Order.OrderId = GetGatewayParameterValue("out_trade_no");
+                    Order.Id = GetGatewayParameterValue("out_trade_no");
 
                     return true;
                 }
@@ -154,31 +184,12 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// éªŒè¯æ”¯ä»˜å®é€šçŸ¥çš„ç­¾å
+        /// ÑéÖ¤Ö§¸¶±¦Í¨ÖªµÄÇ©Ãû
         /// </summary>
         private bool ValidateAlipayNotifySign()
         {
-            // è·å¾—ç­¾åå­—ç¬¦ä¸²ï¼Œé¦–å…ˆéœ€è¦å°†å‚æ•°æ’åºã€‚
-            // ç„¶åç»„åˆå‚æ•°ã€‚å°†å€¼éç©ºï¼Œå‚æ•°åä¸æ˜¯signã€sign_typeçš„å…¶ä»–å‚æ•°ç»„åˆèµ·æ¥éªŒè¯ç­¾åã€‚
-            List<string> paramList = new List<string>();
-            foreach (KeyValuePair<string, string> item in GatewayParameterDataSort(GatewayParameterData))
-            {
-                if (string.Compare(item.Key, "sign") != 0 && string.Compare(item.Key, "sign_type") != 0 &&
-                    !string.IsNullOrEmpty(item.Value))
-                {
-                    paramList.Add(string.Format("{0}={1}", item.Key, item.Value));
-                }
-            }
-
-            StringBuilder sign = new StringBuilder();
-            foreach (string parma in paramList)
-            {
-                sign.Append(parma + "&");
-            }
-            sign.Remove(sign.Length - 1, 1);
-
-            // éªŒè¯é€šçŸ¥çš„ç­¾å
-            if (string.Compare(GetGatewayParameterValue("sign"), PaySign(sign.ToString())) == 0)
+            // ÑéÖ¤Í¨ÖªµÄÇ©Ãû
+            if (string.Compare(GetGatewayParameterValue("sign"), GetOrderSign()) == 0)
             {
                 return true;
             }
@@ -188,15 +199,15 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// å°†ç½‘å…³å‚æ•°çš„é›†åˆæ’åº
+        /// ½«Íø¹Ø²ÎÊıµÄ¼¯ºÏÅÅĞò
         /// </summary>
-        /// <param name="coll">åŸç½‘å…³å‚æ•°çš„é›†åˆ</param>
+        /// <param name="coll">Ô­Íø¹Ø²ÎÊıµÄ¼¯ºÏ</param>
         private SortedList<string, string> GatewayParameterDataSort(ICollection<GatewayParameter> coll)
         {
             SortedList<string, string> list = new SortedList<string, string>();
             foreach (GatewayParameter item in coll)
             {
-                list.Add(item.ParameterName, item.ParameterValue);
+                list.Add(item.Name, item.Value);
             }
 
             return list;
@@ -204,67 +215,16 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// è·å¾—æäº¤çš„æ”¯ä»˜è®¢å•æ•°æ®çš„ç­¾åã€‚
+        /// »ñµÃ¶©µ¥µÄÇ©Ãû¡£
         /// </summary>
-        private string PaySign()
+        private string GetOrderSign()
         {
-            return PaySign(GetSignPrama());
+            // »ñµÃMD5ÖµÊ±ĞèÒªÊ¹ÓÃGB2312±àÂë£¬·ñÔòÖ÷ÌâÖĞÓĞÖĞÎÄÊ±»áÌáÊ¾Ç©ÃûÒì³££¬²¢ÇÒMD5Öµ±ØĞëÎªĞ¡Ğ´¡£
+            return Utility.GetMD5(GetSignParameter() + Merchant.Key, pageEncoding).ToLower();
         }
 
 
-        /// <summary>
-        /// è·å¾—æäº¤çš„æ”¯ä»˜è®¢å•æ•°æ®çš„ç­¾åã€‚
-        /// </summary>
-        /// <param name="SignPrama">ç”¨äºç­¾åçš„å­—ç¬¦ä¸²(ä¸åŒ…æ‹¬Key)</param>
-        private string PaySign(string signPrama)
-        {
-            return AlipayMD5(signPrama + Merchant.Key);
-        }
-
-
-        /// <summary>
-        /// è·å¾—ç”¨äºç­¾åæ•°æ®çš„æ”¯ä»˜å®MD5æ•£åˆ—å€¼
-        /// </summary>
-        /// <param name="signPrama">ç”¨äºç­¾åçš„å­—ç¬¦ä¸²</param>
-        private string AlipayMD5(string signPrama)
-        {
-            MD5 md5 = new MD5CryptoServiceProvider();
-            byte[] t = md5.ComputeHash(pageEncoding.GetBytes(signPrama));
-
-            StringBuilder sb = new StringBuilder(32);
-            for (int i = 0; i < t.Length; i++)
-            {
-                sb.Append(t[i].ToString("x").PadLeft(2, '0'));
-            }
-
-            return sb.ToString();
-        }
-
-
-        /// <summary>
-        /// è·å¾—ç”¨äºç­¾åçš„æ•°æ®å­—ç¬¦ä¸²
-        /// </summary>
-        private string GetSignPrama()
-        {
-            StringBuilder sign = new StringBuilder();
-
-            // ç­¾åå‚æ•°éœ€è¦æŒ‰å­—æ¯é¡ºåºæ·»åŠ 
-            sign.Append("_input_charset=gb2312&");
-            sign.AppendFormat("notify_url={0}&", Merchant.NotifyUrl.ToString());
-            sign.AppendFormat("out_trade_no={0}&", Order.OrderId);
-            sign.AppendFormat("partner={0}&", Merchant.UserName);
-            sign.Append("payment_type=1&");
-            sign.AppendFormat("return_url={0}&", Merchant.NotifyUrl.ToString());
-            sign.AppendFormat("seller_email={0}&", GetGatewayParameterValue("seller_email"));
-            sign.Append("service=create_direct_pay_by_user&");
-            sign.AppendFormat("subject={0}&", Order.OrderId);
-            sign.AppendFormat("total_fee={0}", Order.Amount.ToString());
-
-            return sign.ToString();
-        }
-
-
-        protected override void WriteSucceedFlag()
+        public override void WriteSucceedFlag()
         {
             if (PaymentNotifyMethod == PaymentNotifyMethod.ServerNotify)
             {
@@ -274,44 +234,23 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// éªŒè¯ç½‘å…³çš„é€šçŸ¥æ˜¯å¦æ­£ç¡®
+        /// ÑéÖ¤Íø¹ØµÄÍ¨ÖªIdÊÇ·ñÓĞĞ§
         /// </summary>
         private bool ValidateAlipayNotify()
         {
-            // å› ä¸ºç½‘å…³é€šçŸ¥çš„æœ‰æ•ˆæ€§éªŒè¯åªæœ‰1åˆ†é’Ÿæ—¶é—´ï¼Œè¶…è¿‡æ—¶é—´åå°†æ— æ³•éªŒè¯é€šçŸ¥æ˜¯å¦æ­£ç¡®ã€‚
-            // å¯èƒ½ä¼šå› ä¸ºæ”¯ä»˜å®æœåŠ¡å™¨æˆ–è€…å…¶å®ƒé—®é¢˜é€ æˆæ²¡æœ‰åœ¨1åˆ†é’Ÿå†…å®Œæˆé€šçŸ¥çš„éªŒè¯ï¼Œ
-            // è¶…æ—¶ä»¥åå°†æ— æ³•æ­£ç¡®éªŒè¯ï¼Œè¿™ä¼šå¯¼è‡´æ•´ä¸ªæ”¯ä»˜çš„éªŒè¯å¤±è´¥ã€‚æœ‰å¿…è¦çš„è¯å¯ä»¥è€ƒè™‘ä¸éªŒè¯é€šçŸ¥çš„çœŸå®æ€§ç›´æ¥è¿”å›trueã€‚
-            // å› ä¸ºæµ‹è¯•çš„æ—¶å€™æ”¯ä»˜å®çš„éªŒè¯æœåŠ¡å™¨æœ‰æ—¶å·®ï¼Œæ”¶åˆ°æ”¯ä»˜å®é€šçŸ¥çš„æ—¶å€™çš„æ—¶å€™éªŒè¯æœåŠ¡å™¨ä¸èƒ½æ­£ç¡®é€šè¿‡éªŒè¯ï¼Œ
-            // éœ€è¦å»¶è¿Ÿå‡ ç§’ï¼Œæ‰€ä»¥å±è”½äº†éªŒè¯ä»£ç ã€‚
-            return true;
+            // ä¯ÀÀÆ÷×Ô¶¯·µ»ØµÄÍ¨ÖªId»áÔÚÑéÖ¤ºó1·ÖÖÓÊ§Ğ§£¬
+            // ·şÎñÆ÷Òì²½Í¨ÖªµÄÍ¨ÖªIdÔò»áÔÚÊä³ö±êÖ¾³É¹¦½ÓÊÕµ½Í¨ÖªµÄsuccess×Ö·û´®ºóÊ§Ğ§¡£
+            if (string.Compare(Utility.ReadPage(GetValidateAlipayNotifyUrl()), "true") == 0)
+            {
+                return true;
+            }
 
-            //try
-            //{
-            //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(GetValidateAlipayNotifyUrl());
-            //    using (WebResponse response = request.GetResponse())
-            //    {
-            //        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-            //        {
-            //            if (reader == null)
-            //            {
-            //                return false;
-            //            }
-
-            //            if (string.Compare(reader.ReadToEnd(), "true") == 0)
-            //            {
-            //                return true;
-            //            }
-            //        }
-            //    }
-            //}
-            //catch { }
-
-            //return false;
+            return false;
         }
 
 
         /// <summary>
-        /// è·å¾—éªŒè¯æ”¯ä»˜å®é€šçŸ¥çš„Url
+        /// »ñµÃÑéÖ¤Ö§¸¶±¦Í¨ÖªµÄUrl
         /// </summary>
         private string GetValidateAlipayNotifyUrl()
         {
@@ -319,6 +258,20 @@ namespace ICanPay.Providers
                                  GetGatewayParameterValue("notify_id"));
         }
 
+
+        /// <summary>
+        /// ÊÇ·ñÊÇÕıÈ·¸ñÊ½µÄEmailµØÖ·
+        /// </summary>
+        /// <param name="emailAddress">EmailµØÖ·</param>
+        public bool IsEmail(string emailAddress)
+        {
+            if (string.IsNullOrEmpty(emailAddress))
+            {
+                return false;
+            }
+
+            return Regex.IsMatch(emailAddress, emailRegexString);
+        }
 
         #endregion
 

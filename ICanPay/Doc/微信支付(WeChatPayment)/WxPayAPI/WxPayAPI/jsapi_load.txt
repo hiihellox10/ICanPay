@@ -1,0 +1,118 @@
+            if (Request.QueryString["code"] == null || Request.QueryString["code"] == "")
+            {
+                string host = Request.Url.Host;
+                string path = Request.Path;
+                string redirect_uri = HttpUtility.UrlEncode("http://" + host + path);
+                Log.Debug(this.GetType().ToString(), "Current page URL : " + redirect_uri);
+                WxPayData data = new WxPayData();
+                data.SetValue("appid", WxPayConfig.APPID);
+                data.SetValue("redirect_uri", redirect_uri);
+                data.SetValue("response_type", "code");
+                data.SetValue("scope", "snsapi_base");
+                data.SetValue("state", "STATE" + "#wechat_redirect");
+                string url = "https://open.weixin.qq.com/connect/oauth2/authorize?" + data.ToUrl();
+                Log.Debug(this.GetType().ToString(), "Will Redirect to URL : " + url);
+
+                
+
+                Response.Redirect(url);
+
+                //System.Environment.Exit(0);
+                Response.End();
+                Log.Debug(this.GetType().ToString(), "If print this sentence, it is error!!!");
+            }
+            else
+            {
+                string code = Request.QueryString["code"];
+                Log.Debug(this.GetType().ToString(), "Get code : " + code);
+                //构造获取openid及access_token的url
+                WxPayData data3 = new WxPayData();
+                data3.SetValue("appid", WxPayConfig.APPID);
+                data3.SetValue("secret", WxPayConfig.APPSECRET);
+                data3.SetValue("code", code);
+                data3.SetValue("grant_type", "authorization_code");
+                string url3 = "https://api.weixin.qq.com/sns/oauth2/access_token?" + data3.ToUrl();
+                //请求url以获取数据
+                HttpWebRequest objRequest = (HttpWebRequest)WebRequest.Create(url3);
+                objRequest.Method = "GET";
+                WebProxy proxy = new WebProxy();                          //定义一个网关对象
+                proxy.Address = new Uri("http://10.152.18.220:8080");              //网关服务器端口:端口
+                objRequest.Proxy = proxy;
+                string result = "";
+                HttpWebResponse objResponse = (HttpWebResponse)objRequest.GetResponse();
+                using (StreamReader sr = new StreamReader(objResponse.GetResponseStream()))
+                {
+                    result = sr.ReadToEnd();
+                    sr.Close();
+                }
+                Log.Debug(this.GetType().ToString(), "Get access_token : " + result);
+                //保存access_token，用于收货地址获取
+                JsonData jd = JsonMapper.ToObject(result);
+                string access_token = (string)jd["access_token"];
+                string openid = (string)jd["openid"];
+                Log.Debug(this.GetType().ToString(), "Get openid : " + openid);
+
+                //统一下单
+                WxPayData data2 = new WxPayData();
+                data2.SetValue("body", "test");//
+                data2.SetValue("attach", "test");
+                data2.SetValue("out_trade_no", WxPayApi.GenerateOutTradeNo());
+                data2.SetValue("total_fee", 1);
+                data2.SetValue("time_start", DateTime.Now.ToString("yyyyMMddHHmmss"));
+                data2.SetValue("time_expire", DateTime.Now.AddMinutes(10).ToString("yyyyMMddHHmmss"));
+                data2.SetValue("goods_tag", "test");
+                data2.SetValue("trade_type", "JSAPI");
+                data2.SetValue("openid", openid);
+                WxPayData result2 = WxPayApi.UnifiedOrder(data2);
+                if (!result2.IsSet("appid") || !result2.IsSet("prepay_id") || result2.GetValue("prepay_id").ToString() == "")
+                {
+                    Log.Error(this.GetType().ToString(), "UnifiedOrder response error!");
+                    throw new WxPayException("UnifiedOrder response error!");
+                }
+
+
+                WxPayData jsApiParam = new WxPayData();
+                jsApiParam.SetValue("appId", result2.GetValue("appid"));
+                jsApiParam.SetValue("timeStamp", WxPayApi.GenerateTimeStamp());
+                jsApiParam.SetValue("nonceStr", WxPayApi.GenerateNonceStr());
+                jsApiParam.SetValue("package", "prepay_id=" + result2.GetValue("prepay_id"));
+                jsApiParam.SetValue("signType", "MD5");
+                jsApiParam.SetValue("paySign", jsApiParam.MakeSign());
+                string parameters = jsApiParam.ToJson();
+                Log.Info(this.GetType().ToString(), "Get jsApiParam : " + parameters);
+                wxJsApiParam = parameters;
+
+                //获取收货地址
+                string parameter2 = null;
+                try
+                {
+                    WxPayData signData = new WxPayData();
+                    signData.SetValue("appid", WxPayConfig.APPID);
+                    signData.SetValue("url", Request.Url.ToString());
+                    signData.SetValue("timestamp", WxPayApi.GenerateTimeStamp());
+                    signData.SetValue("nonce_str", WxPayApi.GenerateNonceStr());
+                    signData.SetValue("accesstoken", access_token);
+                    string param = signData.ToUrl();
+
+                    Log.Info(this.GetType().ToString(), "GetEditAddressParam param : " + param);
+
+                    string addrSign = FormsAuthentication.HashPasswordForStoringInConfigFile(param, "SHA1");
+
+                    WxPayData afterData = new WxPayData();
+                    afterData.SetValue("appId", WxPayConfig.APPID);
+                    afterData.SetValue("scope", "jsapi_address");
+                    afterData.SetValue("signType", "sha1");
+                    afterData.SetValue("addrSign", addrSign);
+                    afterData.SetValue("timeStamp", signData.GetValue("timestamp"));
+                    afterData.SetValue("nonceStr", signData.GetValue("nonce_str"));
+
+                    parameter2 = afterData.ToJson();
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(this.GetType().ToString(), ex.ToString());
+                }
+
+                Log.Info(this.GetType().ToString(), "Get EditAddressParam : " + parameter2);
+                wxEditAddrParam = parameter2;
+            }

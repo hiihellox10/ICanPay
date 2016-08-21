@@ -1,25 +1,25 @@
-ï»¿using System.Linq;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace ICanPay
 {
     /// <summary>
-    /// ç½‘å…³è¿”å›çš„æ”¯ä»˜é€šçŸ¥æ•°æ®çš„æ¥å—
+    /// Íø¹Ø·µ»ØµÄÖ§¸¶Í¨ÖªÊı¾İµÄ½ÓÊÜ
     /// </summary>
     public class PaymentNotify
     {
 
-        #region ç§æœ‰å­—æ®µ
+        #region Ë½ÓĞ×Ö¶Î
 
         ICollection<Merchant> merchantList;
 
         #endregion
 
 
-        #region æ„é€ å‡½æ•°
+        #region ¹¹Ôìº¯Êı
 
         /// <summary>
-        /// åˆå§‹åŒ–æ¥å—é˜…è¯»åé¦ˆçš„PaymentNotify
+        /// ³õÊ¼»¯½ÓÊÜÔÄ¶Á·´À¡µÄPaymentNotify
         /// </summary>
         public PaymentNotify() :
             this(new List<Merchant>())
@@ -27,9 +27,9 @@ namespace ICanPay
         }
 
         /// <summary>
-        /// åˆå§‹åŒ–æ¥å—é˜…è¯»åé¦ˆçš„PaymentNotify
+        /// ³õÊ¼»¯½ÓÊÜÔÄ¶Á·´À¡µÄPaymentNotify
         /// </summary>
-        /// <param name="merchant">å•†æˆ·æ•°æ®</param>
+        /// <param name="merchant">ÉÌ»§Êı¾İ</param>
         public PaymentNotify(Merchant merchant)
         {
             merchantList = new List<Merchant>();
@@ -38,9 +38,9 @@ namespace ICanPay
 
 
         /// <summary>
-        /// åˆå§‹åŒ–æ¥å—é˜…è¯»åé¦ˆçš„PaymentNotify
+        /// ³õÊ¼»¯½ÓÊÜÔÄ¶Á·´À¡µÄPaymentNotify
         /// </summary>
-        /// <param name="merchantList">ç”¨äºéªŒè¯æ”¯ä»˜ç½‘å…³è¿”å›æ•°æ®çš„å•†æˆ·æ•°æ®åˆ—è¡¨</param>
+        /// <param name="merchantList">ÓÃÓÚÑéÖ¤Ö§¸¶Íø¹Ø·µ»ØÊı¾İµÄÉÌ»§Êı¾İÁĞ±í</param>
         public PaymentNotify(ICollection<Merchant> merchantList)
         {
             this.merchantList = merchantList;
@@ -49,29 +49,29 @@ namespace ICanPay
         #endregion
 
 
-        #region äº‹ä»¶
+        #region ÊÂ¼ş
 
         /// <summary>
-        /// ç½‘å…³è¿”å›çš„æ”¯ä»˜é€šçŸ¥éªŒè¯å¤±è´¥æ—¶è§¦å‘
+        /// Íø¹Ø·µ»ØµÄÖ§¸¶Í¨ÖªÑéÖ¤Ê§°ÜÊ±´¥·¢
         /// </summary>
         public event PaymentFailedEventHandler PaymentFailed;
 
 
         /// <summary>
-        /// ç½‘å…³è¿”å›çš„æ”¯ä»˜é€šçŸ¥éªŒè¯æˆåŠŸæ—¶è§¦å‘
+        /// Íø¹Ø·µ»ØµÄÖ§¸¶Í¨ÖªÑéÖ¤³É¹¦Ê±´¥·¢
         /// </summary>
         public event PaymentSucceedEventHandler PaymentSucceed;
 
 
         /// <summary>
-        /// è¿”å›é€šçŸ¥æ¶ˆæ¯çš„ç½‘å…³æ— æ³•è¯†åˆ«æ—¶è§¦å‘
+        /// ·µ»ØÍ¨ÖªÏûÏ¢µÄÍø¹ØÎŞ·¨Ê¶±ğÊ±´¥·¢
         /// </summary>
         public event UnknownGatewayEventHandler UnknownGateway;
 
         #endregion
 
 
-        #region æ–¹æ³•
+        #region ·½·¨
 
         protected virtual void OnPaymentFailed(PaymentFailedEventArgs e)
         {
@@ -81,7 +81,6 @@ namespace ICanPay
                 handler(this, e);
             }
         }
-
 
 
         protected virtual void OnPaymentSucceed(PaymentSucceedEventArgs e)
@@ -105,22 +104,18 @@ namespace ICanPay
 
 
         /// <summary>
-        /// æ¥æ”¶å¹¶éªŒè¯ç½‘å…³çš„æ”¯ä»˜é€šçŸ¥
+        /// ½ÓÊÕ²¢ÑéÖ¤Íø¹ØµÄÖ§¸¶Í¨Öª
         /// </summary>
         public void Received()
         {
             PayGateway gateway = NotifyProcess.GetGateway();
             if (gateway.GatewayType != GatewayType.None)
             {
-                Merchant gatewayMerchant = GetMerchant(gateway.GatewayType);
-                if (gatewayMerchant != null)
-                {
-                    gateway.Merchant = gatewayMerchant;
-                }
-
+                gateway.Merchant = GetMerchant(gateway.GatewayType);
                 if (gateway.ValidateNotify())
                 {
                     OnPaymentSucceed(new PaymentSucceedEventArgs(gateway));
+                    gateway.WriteSucceedFlag();
                 }
                 else
                 {
@@ -135,9 +130,9 @@ namespace ICanPay
 
 
         /// <summary>
-        /// æ·»åŠ å•†æˆ·æ•°æ®ã€‚ä¸æ·»åŠ çš„å•†æˆ·æ•°æ®é‡å¤çš„ç½‘å…³å°†ä¼šè¢«åˆ é™¤
+        /// Ìí¼ÓÉÌ»§Êı¾İ¡£ÓëÌí¼ÓµÄÉÌ»§Êı¾İÖØ¸´µÄÍø¹Ø½«»á±»É¾³ı
         /// </summary>
-        /// <param name="merchant">å•†æˆ·æ•°æ®</param>
+        /// <param name="merchant">ÉÌ»§Êı¾İ</param>
         public void AddMerchant(Merchant merchant)
         {
             RemoveMerchant(merchant.GatewayType);
@@ -146,10 +141,10 @@ namespace ICanPay
 
 
         /// <summary>
-        /// è·å¾—å•†æˆ·æ•°æ®ã€‚ç½‘å…³å­˜åœ¨å¤šä¸ªå•†æˆ·æ•°æ®æ—¶è¿”å›ç¬¬ä¸€ä¸ªï¼Œæ— æ³•æ‰¾åˆ°è¿”å›null
+        /// »ñµÃÉÌ»§Êı¾İ¡£Íø¹Ø´æÔÚ¶à¸öÉÌ»§Êı¾İÊ±·µ»ØµÚÒ»¸ö£¬ÎŞ·¨ÕÒµ½·µ»Ønull
         /// </summary>
-        /// <param name="gatewayType">ç½‘å…³ç±»å‹</param>
-        /// <returns>ç½‘å…³å­˜åœ¨å¤šä¸ªå•†æˆ·æ•°æ®æ—¶è¿”å›ç¬¬ä¸€ä¸ªï¼Œæ— æ³•æ‰¾åˆ°è¿”å›null</returns>
+        /// <param name="gatewayType">Íø¹ØÀàĞÍ</param>
+        /// <returns>Íø¹Ø´æÔÚ¶à¸öÉÌ»§Êı¾İÊ±·µ»ØµÚÒ»¸ö£¬ÎŞ·¨ÕÒµ½·µ»Ønull</returns>
         public Merchant GetMerchant(GatewayType gatewayType)
         {
             return merchantList.FirstOrDefault(m => m.GatewayType == gatewayType);
@@ -157,9 +152,9 @@ namespace ICanPay
 
 
         /// <summary>
-        /// åˆ é™¤å•†æˆ·æ•°æ®
+        /// É¾³ıÉÌ»§Êı¾İ
         /// </summary>
-        /// <param name="gatewayType">ç½‘å…³ç±»å‹</param>
+        /// <param name="gatewayType">Íø¹ØÀàĞÍ</param>
         public void RemoveMerchant(GatewayType gatewayType)
         {
             Merchant removeMerchant = merchantList.FirstOrDefault(m => m.GatewayType == gatewayType);
@@ -173,11 +168,10 @@ namespace ICanPay
 
     }
 
-
-    #region å§”æ‰˜
+    #region Î¯ÍĞ
 
     /// <summary>
-    /// æ”¯ä»˜æˆåŠŸæ—¶å¼•å‘äº‹ä»¶
+    /// Ö§¸¶³É¹¦Ê±Òı·¢ÊÂ¼ş
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -185,7 +179,7 @@ namespace ICanPay
 
 
     /// <summary>
-    /// æ”¯ä»˜å¤±è´¥æ—¶å¼•å‘äº‹ä»¶
+    /// Ö§¸¶Ê§°ÜÊ±Òı·¢ÊÂ¼ş
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -193,7 +187,7 @@ namespace ICanPay
 
 
     /// <summary>
-    /// æ— æ³•è¯†åˆ«çš„ç½‘å…³æ—¶å¼•å‘äº‹ä»¶
+    /// ÎŞ·¨Ê¶±ğµÄÍø¹ØÊ±Òı·¢ÊÂ¼ş
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>

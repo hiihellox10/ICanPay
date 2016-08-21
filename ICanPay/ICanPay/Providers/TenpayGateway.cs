@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Web;
+using System.Xml;
 
 namespace ICanPay.Providers
 {
     /// <summary>
     /// 财付通网关
     /// </summary>
-    /// <remarks>
-    /// 当前财付通的实现只提供了即时到帐功能
-    /// </remarks>
-    public sealed class TenpayGateway : PayGateway, IPaymentUrl
+    public sealed class TenpayGateway : PayGateway, IPaymentUrl, IPaymentForm, IQueryNow
     {
 
         #region 私有字段
 
-        const string payGatewayUrl = @"http://service.tenpay.com/cgi-bin/v3.0/payservice.cgi";
+        const string payGatewayUrl = "https://gw.tenpay.com/gateway/pay.htm";
+        const string verifyNotifyGatewayUrl = "https://gw.tenpay.com/gateway/verifynotifyid.xml";
+        const string queryGatewayUrl = "https://gw.tenpay.com/gateway/normalorderquery.xml";
+        static Encoding pageEncoding = Encoding.GetEncoding("GB2312");
 
         #endregion
 
@@ -35,7 +36,7 @@ namespace ICanPay.Providers
         /// 初始化财付通网关
         /// </summary>
         /// <param name="gatewayParameterData">网关通知的数据集合</param>
-        public TenpayGateway(ICollection<GatewayParameter> gatewayParameterData)
+        public TenpayGateway(List<GatewayParameter> gatewayParameterData)
             : base(gatewayParameterData)
         {
         }
@@ -82,56 +83,62 @@ namespace ICanPay.Providers
         /// </summary>
         public string BuildPaymentUrl()
         {
-            if (Order.OrderId.Length > 10)
-            {
-                throw new ArgumentException("订单编号必须少于10位数", "OrderId");
-            }
+            InitOrderParameter();
+            return string.Format("{0}?{1}", payGatewayUrl, GetPaymentQueryString());
+        }
 
-            if (!Utility.IsNumeric(Order.OrderId))
-            {
-                throw new ArgumentException("订单编号只能是数字", "OrderId");
-            }
 
-            StringBuilder url = new StringBuilder();
-            url.Append(payGatewayUrl + "?");
-            url.Append("cmdno=1");
-            url.Append("&date=" + DateTime.Now.ToString("yyyyMMdd"));
-            url.Append("&bank_type=0");
-            url.Append("&desc=" + Order.OrderId);
-            url.Append("&purchaser_id=");
-            url.Append("&bargainor_id=" + Merchant.UserName);
-            url.Append("&transaction_id=" + Merchant.UserName + DateTime.Now.ToString("yyyyMMdd") + Order.OrderId.PadLeft(10, '0'));
-            url.Append("&sp_billno=" + Order.OrderId);
-            url.Append("&total_fee=" + Order.Amount * 100);
-            url.Append("&fee_type=1");
-            url.Append("&return_url=" + Merchant.NotifyUrl);
-            url.Append("&attach=");
-            url.Append("&spbill_create_ip=" + HttpContext.Current.Request.UserHostAddress);
-            url.Append("&sign=" + PaySign());
-
-            return url.ToString();
+        public string BuildPaymentForm()
+        {
+            InitOrderParameter();
+            return GetFormHtml(payGatewayUrl);
         }
 
 
         /// <summary>
-        /// 支付订单的签名
+        /// 初始化订单参数
         /// </summary>
-        private string PaySign()
+        private void InitOrderParameter()
         {
-            StringBuilder sign = new StringBuilder();
-            sign.Append("cmdno=1");
-            sign.Append("&date=" + DateTime.Now.ToString("yyyyMMdd"));
-            sign.Append("&bargainor_id=" + Merchant.UserName);
-            sign.Append("&transaction_id=" + Merchant.UserName + DateTime.Now.ToString("yyyyMMdd") + Order.OrderId.PadLeft(10, '0'));
-            sign.Append("&sp_billno=" + Order.OrderId);
-            sign.Append("&total_fee=" + Order.Amount * 100);
-            sign.Append("&fee_type=1");
-            sign.Append("&return_url=" + Merchant.NotifyUrl);
-            sign.Append("&attach=");
-            sign.Append("&spbill_create_ip=" + HttpContext.Current.Request.UserHostAddress);
-            sign.Append("&key=" + Merchant.Key);
+            SetGatewayParameterValue("body", Order.Subject);
+            SetGatewayParameterValue("fee_type", "1");
+            SetGatewayParameterValue("notify_url", Merchant.NotifyUrl);
+            SetGatewayParameterValue("out_trade_no", Order.Id);
+            SetGatewayParameterValue("partner", Merchant.UserName);
+            SetGatewayParameterValue("return_url", Merchant.NotifyUrl);
+            SetGatewayParameterValue("spbill_create_ip", HttpContext.Current.Request.UserHostAddress);
+            SetGatewayParameterValue("total_fee", Order.Amount * 100);
+            SetGatewayParameterValue("input_charset", "GBK");
+            SetGatewayParameterValue("sign", GetOrderSign());    // 签名需要在最后设置，以免缺少参数。
+        }
 
-            return Utility.MD5(sign.ToString()).ToUpper();
+
+        private string GetPaymentQueryString()
+        {
+            StringBuilder url = new StringBuilder();
+            foreach (GatewayParameter item in GatewayParameterData)
+            {
+                url.AppendFormat("{0}={1}&", item.Name, item.Value);
+            }
+
+            return url.ToString().TrimEnd('&');
+        }
+
+
+        private string GetOrderSign()
+        {
+            StringBuilder signParameterBuilder = new StringBuilder();
+            foreach (KeyValuePair<string, string> item in GetSortedGatewayParameter())
+            {
+                // 空值的参数跟sign签名参数不参加签名
+                if (!string.IsNullOrEmpty(item.Value) && string.Compare(item.Key, "sign") != 0)
+                {
+                    signParameterBuilder.AppendFormat("{0}={1}&", item.Key, item.Value);
+                }
+            }
+
+            // 获得MD5值时需要使用GB2312编码，否则主题中有中文时会提示签名异常
+            return Utility.GetMD5(signParameterBuilder.Append("key=" + Merchant.Key).ToString(), pageEncoding);
         }
 
 
@@ -141,15 +148,30 @@ namespace ICanPay.Providers
         /// <remarks>这里处理查询订单的网关通知跟支付订单的网关通知</remarks>
         protected override bool CheckNotifyData()
         {
-            // 检查通知签名是否正确、是否支付成功，货币类型是否为RMB
-            if (string.Compare(GetGatewayParameterValue("sign"), NotifySign()) == 0 &&
-                string.Compare(GetGatewayParameterValue("fee_type"), "1") == 0 &&
-                string.Compare(GetGatewayParameterValue("pay_result"), "0") == 0 &&
-                string.Compare(GetGatewayParameterValue("pay_info"), "OK") == 0)
+            if (ValidateNotifyParameter())
             {
-                Order.Amount = Convert.ToDouble(GetGatewayParameterValue("total_fee")) * 0.01;
-                Order.OrderId = GetGatewayParameterValue("sp_billno");
+                if (ValidateNotifyId())
+                {
+                    ReadNotifyOrderParameter();
+                    return true;
+                }
+            }
 
+            return false;
+        }
+
+
+        /// <summary>
+        /// 检查通知签名是否正确、货币类型是否为RMB、是否支付成功。
+        /// </summary>
+        /// <returns></returns>
+        private bool ValidateNotifyParameter()
+        {
+            if (string.Compare(GetGatewayParameterValue("sign"), GetOrderSign()) == 0 &&
+                string.Compare(GetGatewayParameterValue("fee_type"), "1") == 0 &&
+                string.Compare(GetGatewayParameterValue("trade_mode"), "1") == 0 &&
+                string.Compare(GetGatewayParameterValue("trade_state"), "0") == 0)
+            {
                 return true;
             }
 
@@ -158,43 +180,157 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// 服务器支付通知签名
+        /// 读取通知中的订单金额、订单编号
         /// </summary>
-        private string NotifySign()
+        private void ReadNotifyOrderParameter()
         {
-            StringBuilder sign = new StringBuilder();
-            sign.Append("cmdno=" + GetGatewayParameterValue("cmdno"));
-            sign.Append("&pay_result=" + GetGatewayParameterValue("pay_result"));
-            sign.Append("&date=" + GetGatewayParameterValue("date"));
-            sign.Append("&transaction_id=" + GetGatewayParameterValue("transaction_id"));
-            sign.Append("&sp_billno=" + GetGatewayParameterValue("sp_billno"));
-            sign.Append("&total_fee=" + GetGatewayParameterValue("total_fee"));
-            sign.Append("&fee_type=" + GetGatewayParameterValue("fee_type"));
-            sign.Append("&attach=" + GetGatewayParameterValue("attach"));
-            sign.Append("&key=" + Merchant.Key);
-
-            return Utility.MD5(sign.ToString());
+            Order.Amount = Convert.ToDouble(GetGatewayParameterValue("total_fee")) * 0.01;
+            Order.Id = GetGatewayParameterValue("out_trade_no");
         }
 
 
-        protected override void WriteSucceedFlag()
+
+        public override void WriteSucceedFlag()
         {
             if (PaymentNotifyMethod == PaymentNotifyMethod.ServerNotify)
             {
-                StringBuilder flag = new StringBuilder();
-                flag.AppendLine("<html>");
-                flag.AppendLine("<head>");
-                flag.AppendLine("<meta name=\"TENCENT_ONELINE_PAYMENT\" content=\"China TENCENT\">");
-                flag.AppendLine("<script language=javascript>");
-                flag.AppendLine(string.Format("window.location.href='http://{0}';", System.Web.HttpContext.Current.Request.Url));
-                flag.AppendLine("</script>");
-                flag.AppendLine("</head>");
-                flag.AppendLine("<body></body>");
-                flag.AppendLine("</html>");
-
-                System.Web.HttpContext.Current.Response.Write(flag.ToString());
+                System.Web.HttpContext.Current.Response.Write("success");
             }
         }
+
+
+        /// <summary>
+        /// 验证通知Id
+        /// </summary>
+        /// <returns></returns>
+        private bool ValidateNotifyId()
+        {
+            string resultXml = Utility.ReadPage(GetValidateNotifyUrl(), pageEncoding);
+            // 需要先备份并清除之前接收到的网关的通知的数据，否者会对数据的验证造成干扰。
+            List<GatewayParameter> gatewayParameterData = BackupAndClearGatewayParameter();
+            ReadResultXml(resultXml);
+            bool result = ValidateNotifyParameter();
+            RestoreGatewayParameter(gatewayParameterData);   // 验证通知Id后还原之前的通知的数据。
+
+            return result;
+        }
+
+
+        /// <summary>
+        /// 验证订单金额、订单号是否与之前的通知的金额、订单号相符
+        /// </summary>
+        /// <returns></returns>
+        private bool ValidateOrder()
+        {
+            if(Order.Amount == Convert.ToDouble(GetGatewayParameterValue("total_fee")) * 0.01 &&
+               string.Compare(Order.Id , GetGatewayParameterValue("out_trade_no")) == 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
+        /// <summary>
+        /// 获得验证通知的URL
+        /// </summary>
+        /// <returns></returns>
+
+        private string GetValidateNotifyUrl()
+        {
+            return string.Format("{0}?{1}&sign={2}", verifyNotifyGatewayUrl, GetValidateNotifyQueryString(),
+                                 Utility.GetMD5(GetValidateNotifyQueryString() + "&key=" + Merchant.Key, pageEncoding));
+        }
+
+
+        /// <summary>
+        /// 获得验证通知的查询字符串
+        /// </summary>
+        /// <returns></returns>
+        private string GetValidateNotifyQueryString()
+        {
+            return string.Format("notify_id={0}&partner={1}", GetGatewayParameterValue("notify_id"), Merchant.UserName);
+        }
+
+
+        /// <summary>
+        /// 读取结果的XML
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <returns></returns>
+        private void ReadResultXml(string xml)
+        {
+            XmlDocument xmlDocument = new XmlDocument();
+            try
+            {
+                xmlDocument.LoadXml(xml);
+            }
+            catch (XmlException) { }
+
+            foreach (XmlNode rootNode in xmlDocument.ChildNodes)
+            {
+                foreach (XmlNode item in rootNode.ChildNodes)
+                {
+                    SetGatewayParameterValue(item.Name, item.InnerText);
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 备份并清除网关的参数
+        /// </summary>
+        private List<GatewayParameter> BackupAndClearGatewayParameter()
+        {
+            List<GatewayParameter> gatewayParameterData = new List<GatewayParameter>(GatewayParameterData);
+            GatewayParameterData.Clear();
+            return gatewayParameterData;
+        }
+
+
+        /// <summary>
+        /// 还原网关的参数
+        /// </summary>
+        /// <param name="gatewayParameterData">网关的数据的集合</param>
+        private void RestoreGatewayParameter(List<GatewayParameter> gatewayParameterData)
+        {
+            SetGatewayParameterData(gatewayParameterData);
+        }
+
+
+        public bool QueryNow()
+        {
+            ReadResultXml(Utility.ReadPage(GetQueryOrderUrl(), pageEncoding));
+            if (ValidateNotifyParameter() && ValidateOrder())
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
+        /// <summary>
+        /// 获得查询订单的Url
+        /// </summary>
+        /// <returns></returns>
+        private string GetQueryOrderUrl()
+        {
+            return string.Format("{0}?{1}&sign={2}", queryGatewayUrl, GetQueryOrderQueryString(),
+                                 Utility.GetMD5(GetQueryOrderQueryString() + "&key=" + Merchant.Key, pageEncoding));
+        }
+
+
+        /// <summary>
+        /// 获得查询订单的查询字符串
+        /// </summary>
+        /// <returns></returns>
+        private string GetQueryOrderQueryString()
+        {
+            return string.Format("out_trade_no={0}&partner={1}", Order.Id, Merchant.UserName);
+        }
+
 
         #endregion
 

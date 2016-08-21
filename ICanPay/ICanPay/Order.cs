@@ -11,7 +11,8 @@ namespace ICanPay
         #region 私有字段
 
         double amount;
-        string orderId;
+        string id;
+        string subject;
 
         #endregion
 
@@ -24,9 +25,9 @@ namespace ICanPay
 
 
 
-        public Order(string orderId, double orderAmount)
+        public Order(string id, double orderAmount)
         {
-            this.orderId = orderId;
+            this.id = id;
             this.amount = orderAmount;
         }
 
@@ -63,18 +64,18 @@ namespace ICanPay
 
 
         /// <summary>
-        /// 订单编号或名称
+        /// 订单Id
         /// </summary>
-        public string OrderId
+        public string Id
         {
             get
             {
-                if (string.IsNullOrEmpty(orderId))
+                if (string.IsNullOrEmpty(id))
                 {
                     throw new ArgumentNullException("OrderId", "订单订单编号没有设置");
                 }
 
-                return orderId;
+                return id;
             }
 
             set
@@ -84,7 +85,29 @@ namespace ICanPay
                     throw new ArgumentNullException("OrderId", "订单订单编号不能为空");
                 }
 
-                orderId = value;
+                id = value;
+            }
+        }
+
+
+        /// <summary>
+        /// 订单主题，订单主题为空时将使用订单Id作为主题
+        /// </summary>
+        public string Subject
+        {
+            get
+            {
+                if(string.IsNullOrEmpty(subject))
+                {
+                    return id;
+                }
+
+                return subject;
+            }
+
+            set
+            {
+                subject = value;
             }
         }
 

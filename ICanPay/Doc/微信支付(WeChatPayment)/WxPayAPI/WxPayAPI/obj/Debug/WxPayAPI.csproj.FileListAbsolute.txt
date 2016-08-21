@@ -1,0 +1,15 @@
+F:\WxPayAPI\WxPayAPI\bin\WxPayAPI.dll.config
+F:\WxPayAPI\WxPayAPI\bin\WxPayAPI.dll
+F:\WxPayAPI\WxPayAPI\bin\WxPayAPI.pdb
+F:\WxPayAPI\WxPayAPI\obj\Debug\WxPayAPI.dll
+F:\WxPayAPI\WxPayAPI\obj\Debug\WxPayAPI.pdb
+C:\Users\Administrator\Desktop\WxPayAPI\WxPayAPI\bin\WxPayAPI.dll.config
+C:\Users\Administrator\Desktop\WxPayAPI\WxPayAPI\bin\WxPayAPI.dll
+C:\Users\Administrator\Desktop\WxPayAPI\WxPayAPI\bin\WxPayAPI.pdb
+C:\Users\Administrator\Desktop\WxPayAPI\WxPayAPI\obj\Debug\WxPayAPI.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\WxPayAPI\WxPayAPI\obj\Debug\WxPayAPI.dll
+C:\Users\Administrator\Desktop\WxPayAPI\WxPayAPI\obj\Debug\WxPayAPI.pdb
+C:\Users\Administrator\Desktop\WxPayAPI\WxPayAPI\bin\QuickMark.dll
+C:\Users\Administrator\Desktop\WxPayAPI\WxPayAPI\bin\ThoughtWorks.QRCode.dll
+C:\Users\Administrator\Desktop\WxPayAPI\WxPayAPI\bin\LitJson.dll
+F:\WxPayAPI\WxPayAPI\obj\Debug\WxPayAPI.csprojResolveAssemblyReference.cache

@@ -1,39 +1,39 @@
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Text;
 using System.Web;
 
 namespace ICanPay.Providers
 {
     /// <summary>
-    /// æ˜“å®ç½‘å…³
+    /// Ò×±¦Íø¹Ø
     /// </summary>
-    public sealed class YeepayGateway : PayGateway, IPaymentForm, IPaymentUrl, IQueryPayment
+    public sealed class YeepayGateway : PayGateway, IPaymentForm, IPaymentUrl, IQueryNow
     {
 
-        #region ç§æœ‰å­—æ®µ
+        #region Ë½ÓĞ×Ö¶Î
 
-        const string payGatewayUrl = @"https://www.yeepay.com/app-merchant-proxy/node";
+        const string payGatewayUrl = "https://www.yeepay.com/app-merchant-proxy/node";
 
         #endregion
 
 
-        #region æ„é€ å‡½æ•°
+        #region ¹¹Ôìº¯Êı
 
         /// <summary>
-        /// åˆå§‹åŒ–æ˜“å®ç½‘å…³
+        /// ³õÊ¼»¯Ò×±¦Íø¹Ø
         /// </summary>
         public YeepayGateway()
         {
         }
 
+
         /// <summary>
-        /// åˆå§‹åŒ–æ˜“å®ç½‘å…³
+        /// ³õÊ¼»¯Ò×±¦Íø¹Ø
         /// </summary>
-        /// <param name="gatewayParameterData">ç½‘å…³é€šçŸ¥çš„æ•°æ®é›†åˆ</param>
-        public YeepayGateway(ICollection<GatewayParameter> gatewayParameterData)
+        /// <param name="gatewayParameterData">Íø¹ØÍ¨ÖªµÄÊı¾İ¼¯ºÏ</param>
+        public YeepayGateway(List<GatewayParameter> gatewayParameterData)
             : base(gatewayParameterData)
         {
         }
@@ -41,11 +41,164 @@ namespace ICanPay.Providers
         #endregion
 
 
-        #region å±æ€§
+        #region ·½·¨
 
         /// <summary>
-        /// ç½‘å…³åç§°
+        /// Ö§¸¶¶©µ¥µÄForm HTML´úÂë
         /// </summary>
+        /// <returns></returns>
+        public string BuildPaymentForm()
+        {
+            InitOrderParameter();
+            return GetFormHtml(payGatewayUrl);
+        }
+
+
+        /// <summary>
+        /// ´´½¨Ö§¸¶¶©µ¥Êı¾İµÄUrl
+        /// </summary>
+        /// <returns></returns>
+        public string BuildPaymentUrl()
+        {
+            InitOrderParameter();
+            return string.Format("{0}?{1}", payGatewayUrl, GetPaymentQueryString());
+        }
+
+
+        /// <summary>
+        /// ÑéÖ¤¶©µ¥ÊÇ·ñÖ§¸¶³É¹¦
+        /// </summary>
+        /// <returns></returns>
+        protected override bool CheckNotifyData()
+        {
+            if (string.Compare(GetGatewayParameterValue("hmac"), NotifySign()) == 0 && 
+                string.Compare(GetGatewayParameterValue("r1_Code"), "1") == 0 && 
+                string.Compare(GetGatewayParameterValue("r4_Cur"), "RMB") == 0)
+            {
+                Order.Amount = Convert.ToDouble(GetGatewayParameterValue("r3_Amt"));
+                Order.Id = GetGatewayParameterValue("r6_Order");
+
+                return true;
+            }
+            return false;
+        }
+
+
+        /// <summary>
+        /// »ñµÃ¶©µ¥Ç©Ãû
+        /// </summary>
+        /// <returns></returns>
+        private string GetOrderSign()
+        {
+            StringBuilder signBuilder = new StringBuilder();
+            foreach (GatewayParameter item in GatewayParameterData)
+            {
+                signBuilder.Append(item.Value);
+            }
+
+            return YeepayHmacMD5.HmacSign(signBuilder.ToString(), Merchant.Key);
+        }
+
+
+        private string GetPaymentQueryString()
+        {
+            StringBuilder builder = new StringBuilder();
+            foreach (KeyValuePair<string, string> item in GetSortedGatewayParameter())
+            {
+                builder.AppendFormat("{0}={1}&", item.Key, item.Value);
+            }
+
+            return builder.ToString().TrimEnd('&');
+        }
+
+
+        private string GetQueryOrderUrl()
+        {
+            string hmac = YeepayHmacMD5.HmacSign("QueryOrdDetail" + Merchant.UserName + Order.Id, Merchant.Key);
+            return string.Format("{0}?p0_Cmd=QueryOrdDetail&p1_MerId={1}&p2_Order={2}&hmac={3}", payGatewayUrl, Merchant.UserName, Order.Id, hmac);
+        }
+
+        private void InitOrderParameter()
+        {
+            SetGatewayParameterValue("p0_Cmd", "Buy");
+            SetGatewayParameterValue("p1_MerId", Merchant.UserName);
+            SetGatewayParameterValue("p2_Order", Order.Id);
+            SetGatewayParameterValue("p3_Amt", Order.Amount.ToString());
+            SetGatewayParameterValue("p4_Cur", "CNY");
+            SetGatewayParameterValue("p5_Pid", Order.Subject);
+            SetGatewayParameterValue("p8_Url", Merchant.NotifyUrl.ToString());
+            SetGatewayParameterValue("p9_SAF", "0");
+            SetGatewayParameterValue("pr_NeedResponse", "1");
+            SetGatewayParameterValue("hmac", GetOrderSign());
+        }
+
+
+        /// <summary>
+        /// Í¨ÖªÊı¾İµÄÇ©Ãû
+        /// </summary>
+        /// <returns></returns>
+        private string NotifySign()
+        {
+            // Éú³ÉÇ©Ãû²ÎÊıµÄË³Ğò
+            string[] notifyParmaName = new string[] { "p1_MerId", "r0_Cmd", "r1_Code", "r2_TrxId", "r3_Amt", "r4_Cur", "r5_Pid", "r6_Order", "r7_Uid", "r8_MP", "r9_BType" };
+            return YeepayHmacMD5.HmacSign(GetGatewayParameterValue(notifyParmaName), Merchant.Key);
+        }
+
+
+        /// <summary>
+        /// ²éÑ¯¶©µ¥ÊÇ·ñÖ§¸¶³É¹¦
+        /// </summary>
+        /// <returns></returns>
+        public bool QueryNow()
+        {
+            ReadQueryReturn(Utility.ReadPage(GetQueryOrderUrl()));
+            return ValidateQuery();
+        }
+
+
+        private void ReadQueryReturn(string result)
+        {
+            StringReader reader = new StringReader(result);
+            string line = string.Empty;
+            while ((line = reader.ReadLine()) != null)
+            {
+                string[] data = line.Split('=');
+                if (data.Length == 2)
+                {
+                    SetGatewayParameterValue(data[0], data[1]);
+                }
+            }
+        }
+
+
+        private bool ValidateQuery()
+        {
+             if(string.Compare(GetGatewayParameterValue("r1_Code"), "1") == 0 && 
+                string.Compare(GetGatewayParameterValue("rb_PayStatus"), "SUCCESS") == 0 && 
+                string.Compare(GetGatewayParameterValue("r6_Order"), Order.Id) == 0 && 
+                Order.Amount == Convert.ToDouble(GetGatewayParameterValue("r3_Amt")))
+             {
+                 return true;
+             }
+
+             return false;
+        }
+
+
+        public override void WriteSucceedFlag()
+        {
+            if (PaymentNotifyMethod == PaymentNotifyMethod.ServerNotify)
+            {
+                HttpContext.Current.Response.Write("SUCCESS");
+            }
+        }
+
+        #endregion
+
+
+        #region ÊôĞÔ
+
+
         public override GatewayType GatewayType
         {
             get
@@ -59,9 +212,7 @@ namespace ICanPay.Providers
         {
             get
             {
-                // é€šè¿‡RequestTypeã€UserAgentæ¥åˆ¤æ–­æ˜¯å¦ä¸ºæœåŠ¡å™¨é€šçŸ¥
-                if (string.Compare(HttpContext.Current.Request.RequestType, "GET") == 0 &&
-                    string.Compare(HttpContext.Current.Request.UserAgent, "Java/1.5.0_14") == 0)
+                if (string.Compare(HttpContext.Current.Request.RequestType, "GET") == 0)
                 {
                     return PaymentNotifyMethod.ServerNotify;
                 }
@@ -70,208 +221,21 @@ namespace ICanPay.Providers
             }
         }
 
-
         #endregion
 
 
-        #region æ–¹æ³•
+        #region Ò×±¦Ç©ÃûËã·¨
 
         /// <summary>
-        /// æ”¯ä»˜è®¢å•çš„Form HTMLä»£ç 
-        /// </summary>
-        public string BuildPaymentForm()
-        {
-            Dictionary<string, string> parma = new Dictionary<string, string>();
-            parma.Add("p0_Cmd", "Buy");
-            parma.Add("p1_MerId", Merchant.UserName);
-            parma.Add("p2_Order", Order.OrderId);
-            parma.Add("p3_Amt", Order.Amount.ToString());
-            parma.Add("p4_Cur", "CNY");
-            parma.Add("p5_Pid", Order.OrderId);
-            parma.Add("p8_Url", Merchant.NotifyUrl.ToString());
-            parma.Add("p9_SAF", "0");
-            parma.Add("pr_NeedResponse", "1");
-            parma.Add("hmac", PaySign());
-
-            return GetForm(parma, payGatewayUrl);
-        }
-
-
-        /// <summary>
-        /// æ”¯ä»˜ç­¾å
-        /// </summary>
-        private string PaySign()
-        {
-            StringBuilder sign = new StringBuilder();
-            sign.Append("Buy");
-            sign.Append(Merchant.UserName);
-            sign.Append(Order.OrderId);
-            sign.Append(Order.Amount);
-            sign.Append("CNY");
-            sign.Append(Order.OrderId);
-            sign.Append(Merchant.NotifyUrl);
-            sign.Append("0");   // p9_SAF å€¼
-            sign.Append("1");   // pr_NeedResponse å€¼
-
-            return YeepayHmacMD5.HmacSign(sign.ToString(), Merchant.Key);;
-        }
-
-
-        /// <summary>
-        ///  æ”¯ä»˜è®¢å•æ•°æ®çš„Url
-        /// </summary>
-        public string BuildPaymentUrl()
-        {
-            StringBuilder url = new StringBuilder();
-
-            url.Append(payGatewayUrl + "?");
-            url.Append("p0_Cmd=" + "Buy");
-            url.Append("&p1_MerId=" + Merchant.UserName);
-            url.Append("&p2_Order=" + Order.OrderId);
-            url.Append("&p3_Amt=" + Order.Amount);
-            url.Append("&p4_Cur=" + "CNY");
-            url.Append("&p5_Pid=" + Order.OrderId);
-            url.Append("&p8_Url=" + Merchant.NotifyUrl);
-            url.Append("&p9_SAF=0");
-            url.Append("&pr_NeedResponse=1");
-            url.Append("&hmac=" + PaySign());
-
-            return url.ToString();
-        }
-
-
-        /// <summary>
-        /// éªŒè¯è®¢å•æ˜¯å¦æ”¯ä»˜æˆåŠŸ
-        /// </summary>
-        protected override bool CheckNotifyData()
-        {
-            // æ£€æŸ¥è®¢å•æ˜¯å¦æ”¯ä»˜æˆåŠŸï¼Œè®¢å•ç­¾åæ˜¯å¦æ­£ç¡®ï¼Œè´§å¸ç±»å‹æ˜¯å¦ä¸ºRMB
-            if (string.Compare(GetGatewayParameterValue("hmac"), NotifySign()) == 0 &&
-                string.Compare(GetGatewayParameterValue("r1_Code"), "1") == 0 &&
-                string.Compare(GetGatewayParameterValue("r4_Cur"), "RMB") == 0)
-            {
-                Order.Amount = Convert.ToDouble(GetGatewayParameterValue("r3_Amt"));
-                Order.OrderId = GetGatewayParameterValue("r6_Order");
-
-                return true;
-            }
-
-            return false;
-        }
-
-
-        /// <summary>
-        /// é€šçŸ¥æ•°æ®çš„ç­¾å
-        /// </summary>
-        private string NotifySign()
-        {
-            // ç”Ÿæˆç­¾åå‚æ•°çš„é¡ºåº
-            string[] notifyParmaName = {"p1_MerId", "r0_Cmd", "r1_Code", "r2_TrxId", "r3_Amt", "r4_Cur", "r5_Pid", "r6_Order", "r7_Uid",
-                                        "r8_MP", "r9_BType"};
-
-            string sign = GetGatewayParameterValue(notifyParmaName);
-
-            return YeepayHmacMD5.HmacSign(sign, Merchant.Key);
-        }
-
-
-        /// <summary>
-        /// æŸ¥è¯¢è®¢å•æ˜¯å¦æ”¯ä»˜æˆåŠŸ
-        /// </summary>
-        public bool QueryPayment()
-        {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(GetQueryUrl());
-            request.Method = "GET";
-            request.ContentType = "application/x-www-form-urlencoded";
-
-            bool result = false;
-            try
-            {
-                using (WebResponse response = request.GetResponse())
-                {
-                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                    {
-                        if (reader == null)
-                        {
-                            return false;
-                        }
-
-                        result = ReadReturnStream(reader);
-                    }
-                }
-            }
-            catch { }
-
-            return result;
-        }
-
-
-        /// <summary>
-        /// åˆ›å»ºæŸ¥è¯¢è®¢å•çš„Url
-        /// </summary>
-        private string GetQueryUrl()
-        {
-            string signStr = "QueryOrdDetail" + Merchant.UserName + Order.OrderId;
-            string hmac = YeepayHmacMD5.HmacSign(signStr, Merchant.Key);
-
-            return payGatewayUrl + "?p0_Cmd=QueryOrdDetail" + "&p1_MerId=" + Merchant.UserName + "&p2_Order=" + Order.OrderId + "&hmac=" + hmac;
-        }
-
-
-        /// <summary>
-        /// è¯»å–æœåŠ¡å™¨è¿”å›çš„è®¢å•çš„æ•°æ®
-        /// </summary>
-        private bool ReadReturnStream(StreamReader reader)
-        {
-            Dictionary<string, string> returnData = new Dictionary<string, string>();
-
-            string line = string.Empty;
-            while ((line = reader.ReadLine()) != null)
-            {
-                string[] data = line.Split('=');
-                if (data.Length == 2)
-                {
-                    returnData.Add(data[0], data[1]);
-                }
-            }
-
-            // è®¢å•æ˜¯å¦æ”¯ä»˜æˆåŠŸ
-            if (returnData.ContainsKey("r1_Code") && returnData.ContainsKey("rb_PayStatus") &&
-                string.Compare(returnData["r1_Code"], "1") != 0 && string.Compare(returnData["rb_PayStatus"], "SUCCESS") != 0)
-            {
-                return false;
-            }
-
-            Order.Amount = Convert.ToDouble(returnData["r3_Amt"]);
-            Order.OrderId = returnData["r6_Order"];
-
-            return true;
-        }
-
-
-        protected override void WriteSucceedFlag()
-        {
-            if (PaymentNotifyMethod == PaymentNotifyMethod.ServerNotify)
-            {
-                System.Web.HttpContext.Current.Response.Write("success");
-            }
-        }
-
-        #endregion
-
-
-        #region æ˜“å®ç­¾åç®—æ³•
-
-        /// <summary>
-        /// æ˜“å®ç­¾åç®—æ³•
+        /// Ò×±¦Ç©ÃûËã·¨
         /// </summary>
         private static class YeepayHmacMD5
         {
             /// <summary>
-            /// ç”Ÿæˆæ˜“å®ç­¾å
+            /// Éú³ÉÒ×±¦Ç©Ãû
             /// </summary>
-            /// <param name="signString">æ•£åˆ—å­—ç¬¦ä¸²</param>
-            /// <param name="key">å•†æˆ·å¯†é’¥</param>
+            /// <param name="signString">É¢ÁĞ×Ö·û´®</param>
+            /// <param name="key">ÉÌ»§ÃÜÔ¿</param>
             public static string HmacSign(string signString, string key)
             {
                 byte[] k_ipad = new byte[64];
@@ -324,7 +288,7 @@ namespace ICanPay.Providers
             }
 
             /// <summary>
-            /// HmacMD5åŠ å¯†
+            /// HmacMD5¼ÓÃÜ
             /// </summary>
             private class HmacMD5
             {
@@ -629,11 +593,12 @@ namespace ICanPay.Providers
                     a += I(b, c, d) + x + ac;
                     a = rotate_left(a, s) + b;
                 }
+
                 #endregion
+
             }
         }
 
         #endregion
-
     }
 }

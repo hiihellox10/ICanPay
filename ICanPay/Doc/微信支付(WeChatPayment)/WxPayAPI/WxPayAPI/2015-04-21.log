@@ -1,0 +1,40 @@
+2015-04-21 16:19:13.334 DEBUG ASP.default_aspx: page load
+2015-04-21 16:19:25.841 DEBUG ASP.example_micropaypage_aspx: page load
+2015-04-21 16:21:28.081 DEBUG ASP.default_aspx: page load
+2015-04-21 16:21:42.737 DEBUG ASP.example_micropaypage_aspx: page load
+2015-04-21 16:24:47.980 DEBUG ASP.default_aspx: page load
+2015-04-21 16:24:48.010 DEBUG ASP.default_aspx: page load
+2015-04-21 16:25:06.029 DEBUG ASP.example_micropaypage_aspx: page load
+2015-04-21 16:25:18.390 DEBUG ASP.example_micropaypage_aspx: page load
+2015-04-21 16:25:18.407 INFO MicroPay: Micropay is processing...
+2015-04-21 16:25:18.425 DEBUG WxPayAPI.WxPayData: Sign url param : appid=wx2428e34e0e7dc6ef&auth_code=125&body=刷卡测试样例-支付&mch_id=1233410002&nonce_str=703da1fe43f9412ab1daea6ad8e80ba7&out_trade_no=123341000220150421162518647&spbill_create_ip=8.8.8.8&total_fee=1
+2015-04-21 16:25:18.428 DEBUG WxPayApi: MicroPay request : <xml><appid><![CDATA[wx2428e34e0e7dc6ef]]></appid><auth_code><![CDATA[125]]></auth_code><body><![CDATA[刷卡测试样例-支付]]></body><mch_id><![CDATA[1233410002]]></mch_id><nonce_str><![CDATA[703da1fe43f9412ab1daea6ad8e80ba7]]></nonce_str><out_trade_no><![CDATA[123341000220150421162518647]]></out_trade_no><sign><![CDATA[41446E1F88440FFFC4280A429385B4D4]]></sign><spbill_create_ip><![CDATA[8.8.8.8]]></spbill_create_ip><total_fee>1</total_fee></xml>
+2015-04-21 16:25:18.702 DEBUG WxPayApi: Post xml!
+2015-04-21 16:25:18.703 DEBUG WxPayApi: request url : https://api.mch.weixin.qq.com/pay/micropay
+2015-04-21 16:25:18.703 DEBUG WxPayApi: request xml : <xml><appid><![CDATA[wx2428e34e0e7dc6ef]]></appid><auth_code><![CDATA[125]]></auth_code><body><![CDATA[刷卡测试样例-支付]]></body><mch_id><![CDATA[1233410002]]></mch_id><nonce_str><![CDATA[703da1fe43f9412ab1daea6ad8e80ba7]]></nonce_str><out_trade_no><![CDATA[123341000220150421162518647]]></out_trade_no><sign><![CDATA[41446E1F88440FFFC4280A429385B4D4]]></sign><spbill_create_ip><![CDATA[8.8.8.8]]></spbill_create_ip><total_fee>1</total_fee></xml>
+2015-04-21 16:25:18.990 DEBUG WxPayApi: Get Response from server!System.Net.HttpWebRequest
+2015-04-21 16:25:18.991 DEBUG WxPayApi: Postxml response : <xml><return_code><![CDATA[SUCCESS]]></return_code>
+<return_msg><![CDATA[OK]]></return_msg>
+<appid><![CDATA[wx2428e34e0e7dc6ef]]></appid>
+<mch_id><![CDATA[1233410002]]></mch_id>
+<nonce_str><![CDATA[GhCldzmtNPPqR89o]]></nonce_str>
+<sign><![CDATA[4F9176568A750F15C34F8B32436E2C88]]></sign>
+<result_code><![CDATA[FAIL]]></result_code>
+<err_code><![CDATA[AUTH_CODE_INVALID]]></err_code>
+<err_code_des><![CDATA[请扫描微信支付被扫条码/二维码]]></err_code_des>
+</xml>
+2015-04-21 16:25:18.993 DEBUG WxPayApi: MicroPay response : <xml><return_code><![CDATA[SUCCESS]]></return_code>
+<return_msg><![CDATA[OK]]></return_msg>
+<appid><![CDATA[wx2428e34e0e7dc6ef]]></appid>
+<mch_id><![CDATA[1233410002]]></mch_id>
+<nonce_str><![CDATA[GhCldzmtNPPqR89o]]></nonce_str>
+<sign><![CDATA[4F9176568A750F15C34F8B32436E2C88]]></sign>
+<result_code><![CDATA[FAIL]]></result_code>
+<err_code><![CDATA[AUTH_CODE_INVALID]]></err_code>
+<err_code_des><![CDATA[请扫描微信支付被扫条码/二维码]]></err_code_des>
+</xml>
+2015-04-21 16:25:18.995 DEBUG WxPayAPI.WxPayData: Sign url param : appid=wx2428e34e0e7dc6ef&err_code=AUTH_CODE_INVALID&err_code_des=请扫描微信支付被扫条码/二维码&mch_id=1233410002&nonce_str=GhCldzmtNPPqR89o&result_code=FAIL&return_code=SUCCESS&return_msg=OK
+2015-04-21 16:25:19.000 DEBUG WxPayAPI.WxPayData: Sign url param : appid=wx2428e34e0e7dc6ef&err_code=AUTH_CODE_INVALID&err_code_des=请扫描微信支付被扫条码/二维码&mch_id=1233410002&nonce_str=GhCldzmtNPPqR89o&result_code=FAIL&return_code=SUCCESS&return_msg=OK
+2015-04-21 16:25:19.001 INFO MicroPay: Micropay response check sign success
+2015-04-21 16:25:19.002 ERROR MicroPay: micropay API interface call success, business failure, result : <xml><appid><![CDATA[wx2428e34e0e7dc6ef]]></appid><err_code><![CDATA[AUTH_CODE_INVALID]]></err_code><err_code_des><![CDATA[请扫描微信支付被扫条码/二维码]]></err_code_des><mch_id><![CDATA[1233410002]]></mch_id><nonce_str><![CDATA[GhCldzmtNPPqR89o]]></nonce_str><result_code><![CDATA[FAIL]]></result_code><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg><sign><![CDATA[4F9176568A750F15C34F8B32436E2C88]]></sign></xml>
+2015-04-21 16:25:19.003 DEBUG WxPayAPI.WxPayData: Print in Web Page : appid=wx2428e34e0e7dc6ef<br>err_code=AUTH_CODE_INVALID<br>err_code_des=请扫描微信支付被扫条码/二维码<br>mch_id=1233410002<br>nonce_str=GhCldzmtNPPqR89o<br>result_code=FAIL<br>return_code=SUCCESS<br>return_msg=OK<br>sign=4F9176568A750F15C34F8B32436E2C88<br>

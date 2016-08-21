@@ -1,6 +1,6 @@
-﻿using System;
+﻿using ICanPay;
+using System;
 using System.Collections.Generic;
-using ICanPay;
 
 namespace Demo
 {
@@ -11,18 +11,30 @@ namespace Demo
             // 设置商户数据
             Merchant alipayMerchant = new Merchant();
             alipayMerchant.GatewayType = GatewayType.Alipay;
-            alipayMerchant.UserName = "0000000000";
-            alipayMerchant.Key = "00000000000000000000000000";
+            alipayMerchant.UserName = "000000000000000";
+            alipayMerchant.Key = "000000000000000000000000000000000000000000";
 
             Merchant yeepayMerchant = new Merchant();
             yeepayMerchant.GatewayType = GatewayType.Yeepay;
-            yeepayMerchant.UserName = "1000000000000";
-            yeepayMerchant.Key = "00000000000000000000000000000000000000000000";
+            yeepayMerchant.UserName = "000000000000000";
+            yeepayMerchant.Key = "000000000000000000000000000000000000000000";
+
+            Merchant tenpayMerchant = new Merchant();
+            tenpayMerchant.GatewayType = GatewayType.Tenpay;
+            tenpayMerchant.UserName = "000000000000000";
+            tenpayMerchant.Key = "000000000000000000000000000000000000000000";
+
+            Merchant weChatPaymentMerchant = new Merchant();
+            weChatPaymentMerchant.GatewayType = GatewayType.WeChatPayment;
+            weChatPaymentMerchant.UserName = "000000000000000";
+            weChatPaymentMerchant.Key = "000000000000000000000000000000000000000000";
 
             // 添加到商户数据集合
             List<Merchant> merchantList = new List<Merchant>();
             merchantList.Add(alipayMerchant);
             merchantList.Add(yeepayMerchant);
+            merchantList.Add(tenpayMerchant);
+            merchantList.Add(weChatPaymentMerchant);
 
             // 订阅支付通知事件
             PaymentNotify notify = new PaymentNotify(merchantList);
@@ -39,7 +51,7 @@ namespace Demo
             // 支付成功时时的处理代码
             if (e.PaymentNotifyMethod == PaymentNotifyMethod.AutoReturn)
             {
-                // 充值成功提示
+                // 当前是用户的浏览器自动返回时显示充值成功页面
             }
         }
 
@@ -52,6 +64,5 @@ namespace Demo
         {
             // 无法识别支付网关时的处理代码
         }
-
     }
 }

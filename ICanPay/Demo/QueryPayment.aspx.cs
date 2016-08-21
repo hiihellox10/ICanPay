@@ -1,6 +1,5 @@
-﻿using System;
-using ICanPay;
-using ICanPay.Providers;
+﻿using ICanPay;
+using System;
 
 namespace Demo
 {
@@ -8,23 +7,7 @@ namespace Demo
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            QueryChinabankOrder();
-        }
-
-
-        /// <summary>
-        /// 查询网银在线的订单支付状态
-        /// </summary>
-        private void QueryChinabankOrder()
-        {
-            PaymentSetting<ChinabankGateway> setting = new PaymentSetting<ChinabankGateway>();
-            setting.Merchant.UserName = "10000000000";
-            setting.Merchant.Key = "0000000000000000000000000000000000000000";
-            setting.Merchant.NotifyUrl = new Uri("http://yousite.com/Payment/PaymentNotify.aspx");
-            setting.Order.OrderId = "1564515";
-
-            // 查询结果将跟支付通知一样的形式返回
-            setting.Query();
+            QueryYeepayOrder();
         }
 
 
@@ -33,18 +16,35 @@ namespace Demo
         /// </summary>
         private void QueryYeepayOrder()
         {
-            PaymentSetting<YeepayGateway> ps = new PaymentSetting<YeepayGateway>();
-            ps.Merchant.UserName = "10000000000";
-            ps.Merchant.Key = "0000000000000000000000000000000000000000";
-            ps.Order.OrderId = "1564515";
-            ps.Order.Amount = 0.01;
+            PaymentSetting paymentSetting = new PaymentSetting(GatewayType.Yeepay);
+            paymentSetting.Merchant.UserName = "10000000000";
+            paymentSetting.Merchant.Key = "0000000000000000000000000000000000000000";
+            paymentSetting.Order.Id = "1564515";
+            paymentSetting.Order.Amount = 0.01;
 
-            if (ps.Gateway.QueryPayment())
+            if (paymentSetting.CanQueryNow && paymentSetting.QueryNow())
             {
                 // 订单已支付
             }
         }
 
+        /// <summary>
+        /// 查询微信的订单支付状态
+        /// </summary>
+        private void QueryWeChatPaymentOrder()
+        {
+            PaymentSetting paymentSetting = new PaymentSetting(GatewayType.WeChatPayment);
+            paymentSetting.SetGatewayParameterValue("appid", "wx8340ff249a2941bd");
+            paymentSetting.Merchant.UserName = "1358853202";
+            paymentSetting.Merchant.Key = "31b43e9966f05e3216bbdbd154fc34d1";
+            paymentSetting.Order.Id = "20";
+            paymentSetting.Order.Amount = 0.01;
 
+            if (paymentSetting.CanQueryNow && paymentSetting.QueryNow())
+            {
+                // 订单已支付
+                Response.Write("成功");
+            }
+        }
     }
 }

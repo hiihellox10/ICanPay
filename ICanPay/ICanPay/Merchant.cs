@@ -1,15 +1,15 @@
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 
 namespace ICanPay
 {
     /// <summary>
-    /// å•†æˆ·æ•°æ®
+    /// ÉÌ»§Êı¾İ
     /// </summary>
     public class Merchant
     {
 
-        #region ç§æœ‰å­—æ®µ
+        #region Ë½ÓĞ×Ö¶Î
 
         string userName;
         string key;
@@ -18,7 +18,7 @@ namespace ICanPay
         #endregion
 
 
-        #region æ„é€ å‡½æ•°
+        #region ¹¹Ôìº¯Êı
 
         public Merchant()
         {
@@ -36,10 +36,10 @@ namespace ICanPay
         #endregion
 
 
-        #region å±æ€§
+        #region ÊôĞÔ
 
         /// <summary>
-        /// å•†æˆ·å¸å·
+        /// ÉÌ»§ÕÊºÅ
         /// </summary>
         public string UserName
         {
@@ -47,7 +47,7 @@ namespace ICanPay
             {
                 if (string.IsNullOrEmpty(userName))
                 {
-                    throw new ArgumentNullException("UserName", "å•†æˆ·å¸å·æ²¡æœ‰è®¾ç½®");
+                    throw new ArgumentNullException("UserName", "ÉÌ»§ÕÊºÅÃ»ÓĞÉèÖÃ");
                 }
 
                 return userName;
@@ -57,7 +57,7 @@ namespace ICanPay
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentNullException("UserName", "å•†æˆ·å¸å·ä¸èƒ½ä¸ºç©º");
+                    throw new ArgumentNullException("UserName", "ÉÌ»§ÕÊºÅ²»ÄÜÎª¿Õ");
                 }
 
                 userName = value;
@@ -66,7 +66,7 @@ namespace ICanPay
 
 
         /// <summary>
-        /// å•†æˆ·å¯†é’¥
+        /// ÉÌ»§ÃÜÔ¿
         /// </summary>
         public string Key
         {
@@ -74,7 +74,7 @@ namespace ICanPay
             {
                 if (string.IsNullOrEmpty(key))
                 {
-                    throw new ArgumentNullException("Key", "å•†æˆ·å¯†é’¥æ²¡æœ‰è®¾ç½®");
+                    throw new ArgumentNullException("Key", "ÉÌ»§ÃÜÔ¿Ã»ÓĞÉèÖÃ");
                 }
 
                 return key;
@@ -84,7 +84,7 @@ namespace ICanPay
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentNullException("Key", "å•†æˆ·å¯†é’¥ä¸èƒ½ä¸ºç©º");
+                    throw new ArgumentNullException("Key", "ÉÌ»§ÃÜÔ¿²»ÄÜÎª¿Õ");
                 }
 
                 key = value;
@@ -93,7 +93,7 @@ namespace ICanPay
 
 
         /// <summary>
-        /// ç½‘å…³å›å‘é€šçŸ¥URL
+        /// Íø¹Ø»Ø·¢Í¨ÖªURL
         /// </summary>
         public Uri NotifyUrl
         {
@@ -101,7 +101,7 @@ namespace ICanPay
             {
                 if (notifyUrl == null)
                 {
-                    throw new ArgumentNullException("NotifyUrl", "ç½‘å…³é€šçŸ¥Urlæ²¡æœ‰è®¾ç½®");
+                    throw new ArgumentNullException("NotifyUrl", "Íø¹ØÍ¨ÖªUrlÃ»ÓĞÉèÖÃ");
                 }
 
                 return notifyUrl;
@@ -111,7 +111,7 @@ namespace ICanPay
             {
                 if (value == null)
                 {
-                    throw new ArgumentNullException("NotifyUrl", "ç½‘å…³é€šçŸ¥Urlä¸èƒ½ä¸ºç©º");
+                    throw new ArgumentNullException("NotifyUrl", "Íø¹ØÍ¨ÖªUrl²»ÄÜÎª¿Õ");
                 }
 
                 notifyUrl = value;
@@ -120,7 +120,7 @@ namespace ICanPay
 
 
         /// <summary>
-        /// ç½‘å…³ç±»å‹
+        /// Íø¹ØÀàĞÍ
         /// </summary>
         public GatewayType GatewayType { get; set; }
 

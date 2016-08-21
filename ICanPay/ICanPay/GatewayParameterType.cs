@@ -12,13 +12,13 @@ namespace ICanPay
         /// <summary>
         /// Get
         /// </summary>
-        Get = 0x0001,
+        Get = 1,
 
 
         /// <summary>
         /// Post
         /// </summary>
-        Post = 0x0002,
+        Post = 2,
 
 
         /// <summary>

@@ -1,105 +1,104 @@
-ï»¿using System;
+using ICanPay.Providers;
+using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Text;
 using System.Web;
+using ThoughtWorks.QRCode.Codec;
 
 namespace ICanPay
 {
     /// <summary>
-    /// è®¾ç½®éœ€è¦æ”¯ä»˜çš„è®¢å•çš„æ•°æ®ï¼Œåˆ›å»ºæ”¯ä»˜è®¢å•HTMLä»£ç æˆ–URLåœ°å€
+    /// ÉèÖÃĞèÒªÖ§¸¶µÄ¶©µ¥µÄÊı¾İ£¬´´½¨Ö§¸¶¶©µ¥URLµØÖ·»òHTML±íµ¥
     /// </summary>
     /// <remarks>
-    /// ä½ éœ€è¦ä¿è¯è¾“å‡ºHTMLä»£ç çš„é¡µé¢ä¸ºGB2312ç¼–ç ï¼Œå¦åˆ™ç½‘å…³æ¥æ”¶åˆ°çš„æ•°æ®å°†ä¼šäº§ç”Ÿä¹±ç ã€‚
-    /// åœ¨Web.configä¸­çš„configuration/system.webèŠ‚ç‚¹è®¾ç½®<globalization requestEncoding="gb2312" responseEncoding="gb2312" />
-    /// ç›®å‰åªèƒ½ä½¿ç”¨RMBæ”¯ä»˜ï¼Œå…¶ä»–è´§å¸æ”¯ä»˜è¯·é˜…è¯»ç›¸å…³ç½‘å…³æ¥å£æ–‡æ¡£ä¿®æ”¹ã€‚
+    /// ÒòÎª²¿·ÖÖ§¸¶Íø¹ØµÄ±àÂë½öÖ§³ÖGB2312£¬ËùÒÔËùÓĞÖ§¸¶Íø¹ØÍ³Ò»Ê¹ÓÃGB2312±àÂë¡£
+    /// ÄãĞèÒª±£Ö¤Êä³öHTML´úÂëµÄÒ³ÃæÎªGB2312±àÂë£¬·ñÔò´´½¨µÄÖ§¸¶¶©µ¥¸úÍø¹Ø½ÓÊÕµ½µÄÊı¾İ¿ÉÄÜ»á²úÉúÂÒÂë¡£
+    /// Í¨¹ıÔÚ Web.config ÖĞµÄ configuration/system.web ½ÚµãÉèÖÃ <globalization requestEncoding="gb2312" responseEncoding="gb2312" />
+    /// ¿ÉÒÔ½«Ò³ÃæµÄÄ¬ÈÏ±àÂëÉèÖÃÎªGB2312¡£Ä¿Ç°Ö»ÄÜÊ¹ÓÃRMBÖ§¸¶£¬ÆäËû»õ±ÒÖ§¸¶ÇëÔÄ¶ÁÏà¹ØÍø¹Ø½Ó¿ÚÎÄµµĞŞ¸Ä¡£
     /// </remarks>
-    public class PaymentSetting<T> where T : PayGateway, new()
+    public class PaymentSetting
     {
 
-        #region æ„é€ å‡½æ•°
+        #region ×Ö¶Î
 
-        public PaymentSetting()
+        PayGateway gateway;
+
+        #endregion
+
+
+        #region ¹¹Ôìº¯Êı
+
+        public PaymentSetting(GatewayType gatewayType)
         {
+            gateway = CreateGateway(gatewayType);
         }
 
 
-        public PaymentSetting(Merchant merchant, Order order)
+        public PaymentSetting(GatewayType gatewayType, Merchant merchant, Order order)
+            : this(gatewayType)
         {
-            t.Merchant = merchant;
-            t.Order = order;
+            gateway.Merchant = merchant;
+            gateway.Order = order;
         }
 
         #endregion
 
 
-        #region å­—æ®µ
-
-        T t = new T();
-
-        #endregion
-
-
-        #region å±æ€§
+        #region ÊôĞÔ
 
         /// <summary>
-        /// ç½‘å…³
+        /// Íø¹Ø
         /// </summary>
-        public T Gateway
+        public PayGateway Gateway
         {
             get
             {
-                return t;
+                return gateway;
             }
         }
 
 
         /// <summary>
-        /// å•†å®¶æ•°æ®
+        /// ÉÌ¼ÒÊı¾İ
         /// </summary>
         public Merchant Merchant
         {
             get
             {
-                return t.Merchant;
+                return gateway.Merchant;
             }
 
             set
             {
-                t.Merchant = value;
+                gateway.Merchant = value;
             }
         }
 
 
         /// <summary>
-        /// è®¢å•æ•°æ®
+        /// ¶©µ¥Êı¾İ
         /// </summary>
         public Order Order
         {
             get
             {
-                return t.Order;
+                return gateway.Order;
             }
 
             set
             {
-                t.Order = value;
+                gateway.Order = value;
             }
         }
 
 
-        /// <summary>
-        /// æ˜¯å¦å·²å®ç°æ”¯ä»˜æ¥å£
-        /// </summary>
-        public bool CanPayment
+        public bool CanQueryNotify
         {
             get
             {
-                IPaymentUrl url = t as IPaymentUrl;
-                if (url != null)
-                {
-                    return true;
-                }
-
-                IPaymentForm form = t as IPaymentForm;
-                if (form != null)
+                if (gateway is IQueryUrl || gateway is IQueryForm)
                 {
                     return true;
                 }
@@ -109,92 +108,144 @@ namespace ICanPay
         }
 
 
-        /// <summary>
-        /// æ˜¯å¦å·²å®ç°æŸ¥è¯¢æ¥å£
-        /// </summary>
-        public bool CanQuery
+        public bool CanQueryNow
         {
             get
             {
-                IQueryUrl url = t as IQueryUrl;
-                if (url != null)
-                {
-                    return true;
-                }
-
-                IQueryForm form = t as IQueryForm;
-                if (form != null)
-                {
-                    return true;
-                }
-
-                return false;
+                return gateway is IQueryNow;
             }
         }
 
         #endregion
 
 
-        #region æ–¹æ³•
+        #region ·½·¨
 
-        /// <summary>
-        /// è½¬åˆ°æ”¯ä»˜ç½‘ç«™æ”¯ä»˜
-        /// </summary>
-        public void Payment()
+
+        private PayGateway CreateGateway(GatewayType gatewayType)
         {
-            IPaymentUrl url = t as IPaymentUrl;
-            if (url != null)
+            switch (gatewayType)
             {
-                HttpContext.Current.Response.Redirect(url.BuildPaymentUrl());
-                return;
+                case GatewayType.Alipay:
+                    {
+                        return new AlipayGateway();
+                    }
+                case GatewayType.Tenpay:
+                    {
+                        return new TenpayGateway();
+                    }
+                case GatewayType.Yeepay:
+                    {
+                        return new YeepayGateway();
+                    }
+                case GatewayType.WeChatPayment:
+                    {
+                        return new WeChatPaymentGataway();
+                    }
+                default:
+                    {
+                        return new NullGateway();
+                    }
             }
-
-            IPaymentForm form = t as IPaymentForm;
-            if (form != null)
-            {
-                HttpContext.Current.Response.Write(form.BuildPaymentForm());
-                return;
-            }
-
-            throw new NotSupportedException(t.GatewayType + " æ²¡æœ‰å®ç°æ”¯ä»˜æ¥å£");
         }
 
 
         /// <summary>
-        /// æŸ¥è¯¢è®¢å•
+        /// ´´½¨¶©µ¥µÄÖ§¸¶Url¡¢Form±íµ¥¡¢¶şÎ¬Âë¡£
         /// </summary>
         /// <remarks>
-        /// è®¢å•çš„æŸ¥è¯¢é€šçŸ¥æ•°æ®é€šè¿‡è·Ÿæ”¯ä»˜é€šçŸ¥ä¸€æ ·çš„å½¢å¼åå›ã€‚ç”¨å¤„ç†ç½‘å…³é€šçŸ¥ä¸€æ ·çš„æ–¹æ³•æ¥å—æŸ¥è¯¢è®¢å•çš„æ•°æ®
+        /// Èç¹û´´½¨µÄÊÇ¶©µ¥µÄUrl»òForm±íµ¥½«Ìø×ªµ½ÏàÓ¦Íø¹ØÖ§¸¶£¬Èç¹ûÊÇ¶şÎ¬Âë½«Êä³ö¶şÎ¬ÂëÍ¼Æ¬¡£
         /// </remarks>
-        public void Query()
+        public void Payment()
         {
-            IQueryUrl url = t as IQueryUrl;
-            if (url != null)
+            IPaymentUrl paymentUrl = gateway as IPaymentUrl;
+            if (paymentUrl != null)
             {
-                HttpContext.Current.Response.Redirect(url.BuildQueryUrl());
+                HttpContext.Current.Response.Redirect(paymentUrl.BuildPaymentUrl());
                 return;
             }
 
-            IQueryForm form = t as IQueryForm;
-            if (form != null)
+            IPaymentForm paymentForm = gateway as IPaymentForm;
+            if (paymentForm != null)
             {
-
-                HttpContext.Current.Response.Write(form.BuildQueryForm());
+                HttpContext.Current.Response.Write(paymentForm.BuildPaymentForm());
                 return;
             }
 
-            throw new NotSupportedException(t.GatewayType + " æ²¡æœ‰å®ç°æŸ¥è¯¢æ¥å£");
+            IPaymentQRCode paymentQRCode = gateway as IPaymentQRCode;
+            if (paymentQRCode != null)
+            {
+                BuildQRCodeImage(paymentQRCode.GetPaymentQRCodeContent());
+                return;
+            }
+
+            throw new NotSupportedException(gateway.GatewayType + " Ã»ÓĞÊµÏÖÖ§¸¶½Ó¿Ú");
         }
 
 
         /// <summary>
-        /// è®¾ç½®ç½‘å…³çš„æ•°æ®
+        /// ²éÑ¯¶©µ¥£¬¶©µ¥µÄ²éÑ¯Í¨ÖªÊı¾İÍ¨¹ı¸úÖ§¸¶Í¨ÖªÒ»ÑùµÄĞÎÊ½·´»Ø¡£ÓÃ´¦ÀíÍø¹ØÍ¨ÖªÒ»ÑùµÄ·½·¨½ÓÊÜ²éÑ¯¶©µ¥µÄÊı¾İ¡£
         /// </summary>
-        /// <param name="gatewayParameterName">ç½‘å…³çš„å‚æ•°åç§°</param>
-        /// <param name="gatewayParameterValue">ç½‘å…³çš„å‚æ•°å€¼</param>
+        public void QueryNotify()
+        {
+            IQueryUrl queryUrl = gateway as IQueryUrl;
+            if (queryUrl != null)
+            {
+                HttpContext.Current.Response.Redirect(queryUrl.BuildQueryUrl());
+                return;
+            }
+
+            IQueryForm queryForm = gateway as IQueryForm;
+            if (queryForm != null)
+            {
+                HttpContext.Current.Response.Write(queryForm.BuildQueryForm());
+                return;
+            }
+
+            throw new NotSupportedException(gateway.GatewayType + " Ã»ÓĞÊµÏÖ IQueryUrl »ò IQueryForm ²éÑ¯½Ó¿Ú");
+        }
+
+        
+        /// <summary>
+        /// ²éÑ¯¶©µ¥£¬Á¢¼´»ñµÃ¶©µ¥µÄ²éÑ¯½á¹û
+        /// </summary>
+        /// <returns></returns>
+        public bool QueryNow()
+        {
+            IQueryNow queryNow = gateway as IQueryNow;
+            if (queryNow != null)
+            {
+                return queryNow.QueryNow();
+            }
+
+            throw new NotSupportedException(gateway.GatewayType + " Ã»ÓĞÊµÏÖ IQueryNow ²éÑ¯½Ó¿Ú");
+        }
+
+
+        /// <summary>
+        /// ÉèÖÃÍø¹ØµÄÊı¾İ
+        /// </summary>
+        /// <param name="gatewayParameterName">Íø¹ØµÄ²ÎÊıÃû³Æ</param>
+        /// <param name="gatewayParameterValue">Íø¹ØµÄ²ÎÊıÖµ</param>
         public void SetGatewayParameterValue(string gatewayParameterName, string gatewayParameterValue)
         {
             Gateway.SetGatewayParameterValue(gatewayParameterName, gatewayParameterValue);
+        }
+
+
+        /// <summary>
+        /// Éú³É²¢Êä³ö¶şÎ¬ÂëÍ¼Æ¬
+        /// </summary>
+        /// <param name="qrCodeContent">¶şÎ¬ÂëÄÚÈİ</param>
+        private void BuildQRCodeImage(string qrCodeContent)
+        {
+            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
+            qrCodeEncoder.QRCodeScale = 4;  // ¶şÎ¬Âë´óĞ¡
+            Bitmap image = qrCodeEncoder.Encode(qrCodeContent, Encoding.Default);
+            MemoryStream ms = new MemoryStream();
+            image.Save(ms, ImageFormat.Png);
+            HttpContext.Current.Response.ContentType = "image/x-png";
+            HttpContext.Current.Response.BinaryWrite(ms.GetBuffer());
         }
 
         #endregion

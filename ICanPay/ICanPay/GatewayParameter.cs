@@ -3,14 +3,14 @@
 namespace ICanPay
 {
     /// <summary>
-    /// 支付网关的Get、Post数据
+    /// 支付网关的Get与Post的数据
     /// </summary>
     public class GatewayParameter
     {
 
         #region 私有字段
 
-        string parameterName;
+        string name;
 
         #endregion
 
@@ -24,9 +24,9 @@ namespace ICanPay
 
         public GatewayParameter(string parameterName, string parameterValue, GatewayParameterType parameterType)
         {
-            this.parameterName = parameterName;
-            ParameterValue = parameterValue;
-            ParameterType = parameterType;
+            this.name = parameterName;
+            Value = parameterValue;
+            Type = parameterType;
         }
 
         #endregion
@@ -37,21 +37,21 @@ namespace ICanPay
         /// <summary>
         /// 参数名
         /// </summary>
-        public string ParameterName
+        public string Name
         {
             get
             {
-                return parameterName;
+                return name;
             }
 
             set
             {
-                if (string.IsNullOrEmpty(parameterName))
+                if (string.IsNullOrEmpty(name))
                 {
                     throw new ArgumentNullException("parameterName", "参数名不能为空");
                 }
 
-                parameterName = value;
+                name = value;
             }
         }
 
@@ -59,13 +59,13 @@ namespace ICanPay
         /// <summary>
         /// 参数值
         /// </summary>
-        public string ParameterValue { get; set; }
+        public string Value { get; set; }
 
 
         /// <summary>
         /// 参数类型
         /// </summary>
-        public GatewayParameterType ParameterType { get; set; }
+        public GatewayParameterType Type { get; set; }
 
         #endregion
 

@@ -22,7 +22,7 @@ namespace ICanPay.Providers
         /// 初始化未知网关
         /// </summary>
         /// <param name="gatewayParameterData">网关通知的数据集合</param>
-        public NullGateway(ICollection<GatewayParameter> gatewayParameterData)
+        public NullGateway(List<GatewayParameter> gatewayParameterData)
             : base(gatewayParameterData)
         {
         }

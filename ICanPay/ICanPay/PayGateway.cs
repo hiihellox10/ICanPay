@@ -1,26 +1,26 @@
-ï»¿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace ICanPay
 {
     /// <summary>
-    /// æ”¯ä»˜ç½‘å…³çš„æŠ½è±¡æ¥å£
+    /// Ö§¸¶Íø¹ØµÄ³éÏó½Ó¿Ú
     /// </summary>
     public abstract class PayGateway
     {
 
-        #region ç§æœ‰å­—æ®µ
+        #region Ë½ÓĞ×Ö¶Î
 
         Merchant merchant;
         Order order;
-        ICollection<GatewayParameter> gatewayParameterData;
+        List<GatewayParameter> gatewayParameterData;
         const string formItem = "<input type='hidden' name='{0}' value='{1}'>";
 
         #endregion
 
 
-        #region æ„é€ å‡½æ•°
+        #region ¹¹Ôìº¯Êı
 
 
         protected PayGateway()
@@ -28,19 +28,19 @@ namespace ICanPay
         }
 
 
-        protected PayGateway(ICollection<GatewayParameter> gatewayParameterData)
+        protected PayGateway(List<GatewayParameter> gatewayParameterData)
         {
-            GatewayParameterData = gatewayParameterData;
+            this.gatewayParameterData = gatewayParameterData;
         }
 
         #endregion
 
 
-        #region å±æ€§
+        #region ÊôĞÔ
 
 
         /// <summary>
-        /// å•†å®¶æ•°æ®
+        /// ÉÌ¼ÒÊı¾İ
         /// </summary>
         public Merchant Merchant
         {
@@ -62,7 +62,7 @@ namespace ICanPay
 
 
         /// <summary>
-        /// è®¢å•æ•°æ®
+        /// ¶©µ¥Êı¾İ
         /// </summary>
         public Order Order
         {
@@ -84,7 +84,7 @@ namespace ICanPay
 
 
         /// <summary>
-        /// æ”¯ä»˜ç½‘å…³çš„ç±»å‹
+        /// Ö§¸¶Íø¹ØµÄÀàĞÍ
         /// </summary>
         public abstract GatewayType GatewayType
         {
@@ -93,15 +93,15 @@ namespace ICanPay
 
 
         /// <summary>
-        /// æ”¯ä»˜é€šçŸ¥çš„è¿”å›æ–¹å¼
+        /// Ö§¸¶Í¨ÖªµÄ·µ»Ø·½Ê½
         /// </summary>
         /// <remarks>
-        /// ç›®å‰çš„æ”¯ä»˜ç½‘å…³åœ¨æ”¯ä»˜æˆåŠŸåä¼šä»¥Getæˆ–Postæ–¹å¼å°†æ”¯ä»˜ç»“æœè¿”å›ç»™å•†æˆ·ã€‚
-        /// POSTæ–¹å¼çš„è¿”å›ä¸€èˆ¬æ˜¯é€šè¿‡ç½‘å…³æœåŠ¡å™¨å‘é€ï¼Œè¿™é‡Œå¯èƒ½è¦æ±‚å•†æˆ·è¾“å‡ºå­—ç¬¦æ ‡è®°è¡¨ç¤ºå·²æˆåŠŸæ¥æ”¶åˆ°æ”¯ä»˜ç»“æœã€‚
-        /// è€Œå¦ä¸€ç§æ˜¯é€šè¿‡GETæ–¹å¼å°†ç”¨æˆ·è¿”å›åˆ°å•†æˆ·çš„ç½‘ç«™ï¼Œè¿™æ—¶å¦‚æœä»¥POSTæ•°æ®æ—¶çš„æ–¹å¼æ¥å¤„ç†å°†ä¼šè¾“å‡ºæ ‡è®°å·²æˆåŠŸæ¥æ”¶çš„å­—ç¬¦ä¸²ã€‚
-        /// å¦‚æœè¿™æ ·ç”¨æˆ·ä¼šæ„Ÿåˆ°å¾ˆå¥‡æ€ªï¼Œè¿™æ—¶æ˜¾ç¤ºæ”¯ä»˜æˆåŠŸçš„é¡µé¢å°†ä¼šæ›´åˆé€‚ã€‚æ‰€ä»¥å¯ä»¥é€šè¿‡PaymentNotifyMethodå±æ€§æ¥åˆ¤æ–­
-        /// æ”¯ä»˜ç»“æœçš„å‘é€æ–¹å¼ï¼Œä»¥å†³å®šæ˜¯åº”è¯¥è¾“å‡ºæ ‡è®°å·²æˆåŠŸæ¥æ”¶çš„å­—ç¬¦ä¸²è¿˜æ˜¯å‘ç”¨æˆ·æ˜¾ç¤ºæ”¯ä»˜æˆåŠŸçš„é¡µé¢ã€‚
-        /// æœåŠ¡å™¨å‘é€é€šçŸ¥æ—¶å±æ€§ä¸ºServerNotifyï¼Œå¦‚æœæ˜¯ç”¨æˆ·é€šè¿‡æµè§ˆå™¨è·³è½¬åˆ°æ¥æ”¶ç½‘å…³é€šçŸ¥çš„é¡µé¢å±æ€§ä¸ºAutoReturnã€‚
+        /// Ä¿Ç°µÄÖ§¸¶Íø¹ØÔÚÖ§¸¶³É¹¦ºó»áÒÔGet»òPost·½Ê½½«Ö§¸¶½á¹û·µ»Ø¸øÉÌ»§¡£
+        /// POST·½Ê½µÄ·µ»ØÒ»°ãÊÇÍ¨¹ıÍø¹Ø·şÎñÆ÷·¢ËÍ£¬ÕâÀï¿ÉÄÜÒªÇóÉÌ»§Êä³ö×Ö·û±ê¼Ç±íÊ¾ÒÑ³É¹¦½ÓÊÕµ½Ö§¸¶½á¹û¡£
+        /// ¶øÁíÒ»ÖÖÊÇÍ¨¹ıGET·½Ê½½«ÓÃ»§·µ»Øµ½ÉÌ»§µÄÍøÕ¾£¬ÕâÊ±Èç¹ûÒÔPOSTÊı¾İÊ±µÄ·½Ê½À´´¦Àí½«»áÊä³ö±ê¼ÇÒÑ³É¹¦½ÓÊÕµÄ×Ö·û´®¡£
+        /// Èç¹ûÕâÑùÓÃ»§»á¸Ğµ½ºÜÆæ¹Ö£¬ÕâÊ±ÏÔÊ¾Ö§¸¶³É¹¦µÄÒ³Ãæ½«»á¸üºÏÊÊ¡£ËùÒÔ¿ÉÒÔÍ¨¹ıPaymentNotifyMethodÊôĞÔÀ´ÅĞ¶Ï
+        /// Ö§¸¶½á¹ûµÄ·¢ËÍ·½Ê½£¬ÒÔ¾ö¶¨ÊÇÓ¦¸ÃÊä³ö±ê¼ÇÒÑ³É¹¦½ÓÊÕµÄ×Ö·û´®»¹ÊÇÏòÓÃ»§ÏÔÊ¾Ö§¸¶³É¹¦µÄÒ³Ãæ¡£
+        /// ·şÎñÆ÷·¢ËÍÍ¨ÖªÊ±ÊôĞÔÎªServerNotify£¬Èç¹ûÊÇÓÃ»§Í¨¹ıä¯ÀÀÆ÷Ìø×ªµ½½ÓÊÕÍø¹ØÍ¨ÖªµÄÒ³ÃæÊôĞÔÎªAutoReturn¡£
         /// </remarks>
         public abstract PaymentNotifyMethod PaymentNotifyMethod
         {
@@ -111,9 +111,9 @@ namespace ICanPay
 
 
         /// <summary>
-        /// æ”¯ä»˜ç½‘å…³çš„Getã€Postæ•°æ®çš„é›†åˆã€‚Getæ–¹å¼ä¼ å…¥QueryStringçš„å€¼å‡ä¸ºæœªè§£ç 
+        /// Ö§¸¶Íø¹ØµÄGet¡¢PostÊı¾İµÄ¼¯ºÏ¡£Get·½Ê½´«ÈëQueryStringµÄÖµ¾ùÎªÎ´½âÂë
         /// </summary>
-        public ICollection<GatewayParameter> GatewayParameterData
+        public List<GatewayParameter> GatewayParameterData
         {
             get
             {
@@ -124,37 +124,31 @@ namespace ICanPay
 
                 return gatewayParameterData;
             }
-
-            set
-            {
-                gatewayParameterData = value;
-            }
         }
 
 
         #endregion
 
 
-        #region æ–¹æ³•
+        #region ·½·¨
 
 
         /// <summary>
-        /// åˆ›å»ºForm HTMLä»£ç 
+        /// ´´½¨Form HTML´úÂë
         /// </summary>
-        /// <param name="parma">éœ€è¦æ·»åŠ çš„å‚æ•°</param>
-        /// <param name="url">ç½‘å…³çš„Url</param>
-        protected static string GetForm(Dictionary<string, string> parma, string url)
+        /// <param name="url">Íø¹ØµÄUrl</param>
+        protected string GetFormHtml(string url)
         {
             StringBuilder html = new StringBuilder();
-
             html.AppendLine("<body>");
             html.AppendLine("<form name='Gateway' method='post' action ='" + url + "'>");
-
-            foreach (KeyValuePair<string, string> item in parma)
+            foreach (GatewayParameter item in GatewayParameterData)
             {
-                html.AppendLine(string.Format(formItem, item.Key, item.Value));
+                if ((item.Type & GatewayParameterType.Post) == GatewayParameterType.Post)
+                {
+                    html.AppendLine(string.Format(formItem, item.Name, item.Value));
+                }
             }
-
             html.AppendLine("</form>");
             html.AppendLine("<script language='javascript' type='text/javascript'>");
             html.AppendLine("document.Gateway.submit();");
@@ -166,13 +160,28 @@ namespace ICanPay
 
 
         /// <summary>
-        /// éªŒè¯è®¢å•æ˜¯å¦æ”¯ä»˜æˆåŠŸ
+        /// »ñµÃ°´×ÖÄ¸ÉıĞòÅÅĞòºóµÄÍø¹Ø²ÎÊıµÄ¼¯ºÏ
+        /// </summary>
+        /// <returns></returns>
+        protected SortedDictionary<string, string> GetSortedGatewayParameter()
+        {
+            SortedDictionary<string, string> sortedDictionary = new SortedDictionary<string, string>();
+            foreach (GatewayParameter item in GatewayParameterData)
+            {
+                sortedDictionary.Add(item.Name, item.Value);
+            }
+
+            return sortedDictionary;
+        }
+
+
+        /// <summary>
+        /// ÑéÖ¤¶©µ¥ÊÇ·ñÖ§¸¶³É¹¦
         /// </summary>
         public bool ValidateNotify()
         {
             if (CheckNotifyData())
             {
-                WriteSucceedFlag();
                 return true;
             }
 
@@ -181,10 +190,27 @@ namespace ICanPay
 
 
         /// <summary>
-        /// è®¾ç½®ç½‘å…³çš„æ•°æ®
+        /// ÉèÖÃÍø¹ØµÄÊı¾İ
         /// </summary>
-        /// <param name="gatewayParameterName">ç½‘å…³çš„å‚æ•°åç§°</param>
-        /// <param name="gatewayParameterValue">ç½‘å…³çš„å‚æ•°å€¼</param>
+        /// <param name="gatewayParameterName">Íø¹ØµÄ²ÎÊıÃû³Æ</param>
+        /// <param name="gatewayParameterValue">Íø¹ØµÄ²ÎÊıÖµ</param>
+        /// <remarks>
+        /// ÉèÖÃµÄ²ÎÊı´æÔÚÊ±£¬Èç¹û²ÎÊıµÄÖµ²»Ò»ÖÂÔò±£´æĞÂµÄ²ÎÊıÖµ¡£
+        /// </remarks>
+        public void SetGatewayParameterValue(string gatewayParameterName, object gatewayParameterValue)
+        {
+            SetGatewayParameterValue(gatewayParameterName, gatewayParameterValue, GatewayParameterType.Both);
+        }
+
+
+        /// <summary>
+        /// ÉèÖÃÍø¹ØµÄÊı¾İ
+        /// </summary>
+        /// <param name="gatewayParameterName">Íø¹ØµÄ²ÎÊıÃû³Æ</param>
+        /// <param name="gatewayParameterValue">Íø¹ØµÄ²ÎÊıÖµ</param>
+        /// <remarks>
+        /// ÉèÖÃµÄ²ÎÊı´æÔÚÊ±£¬Èç¹û²ÎÊıµÄÖµ²»Ò»ÖÂÔò±£´æĞÂµÄ²ÎÊıÖµ¡£
+        /// </remarks>
         public void SetGatewayParameterValue(string gatewayParameterName, string gatewayParameterValue)
         {
             SetGatewayParameterValue(gatewayParameterName, gatewayParameterValue, GatewayParameterType.Both);
@@ -192,32 +218,56 @@ namespace ICanPay
 
 
         /// <summary>
-        /// è®¾ç½®ç½‘å…³çš„æ•°æ®
+        /// ÉèÖÃÍø¹ØµÄÊı¾İ
         /// </summary>
-        /// <param name="gatewayParameterName">ç½‘å…³çš„å‚æ•°åç§°</param>
-        /// <param name="gatewayParameterValue">ç½‘å…³çš„å‚æ•°å€¼</param>
-        /// <param name="gatewayParameterType">ç½‘å…³çš„å‚æ•°çš„ç±»å‹</param>
-        public void SetGatewayParameterValue(string gatewayParameterName, string gatewayParameterValue, GatewayParameterType gatewayParameterType)
+        /// <param name="gatewayParameterName">Íø¹ØµÄ²ÎÊıÃû³Æ</param>
+        /// <param name="gatewayParameterValue">Íø¹ØµÄ²ÎÊıÖµ</param>
+        /// <param name="gatewayParameterType">Íø¹ØµÄ²ÎÊıµÄÀàĞÍ</param>
+        /// <remarks>
+        /// ÉèÖÃµÄ²ÎÊı´æÔÚÊ±£¬Èç¹û²ÎÊıµÄÖµ²»Ò»ÖÂÔò±£´æĞÂµÄ²ÎÊıÖµ¡£
+        /// </remarks>
+        public void SetGatewayParameterValue(string gatewayParameterName, object gatewayParameterValue, GatewayParameterType gatewayParameterType)
         {
-            GatewayParameter param = new GatewayParameter(gatewayParameterName, gatewayParameterValue, gatewayParameterType);
-            if (gatewayParameterType != GatewayParameterType.Both)
-            {
-                GatewayParameter existsParam = GatewayParameterData.FirstOrDefault(p => p.ParameterName == param.ParameterName &&
-                                                                                   p.ParameterValue == param.ParameterValue);
-                if (existsParam.ParameterType != 0)
-                {
-                    param.ParameterType = param.ParameterType | existsParam.ParameterType;
-                }
-            }
-
-            GatewayParameterData.Add(param);
+            SetGatewayParameterValue(gatewayParameterName, gatewayParameterValue.ToString(), gatewayParameterType);
         }
 
 
         /// <summary>
-        /// è·å¾—ç½‘å…³çš„å‚æ•°å€¼ã€‚æ²¡æœ‰å‚æ•°å€¼æ—¶è¿”å›ç©ºå­—ç¬¦ä¸²ï¼ŒGetæ–¹å¼çš„å€¼å‡ä¸ºæœªè§£ç 
+        /// ÉèÖÃÍø¹ØµÄÊı¾İ
         /// </summary>
-        /// <param name="gatewayParameterName">ç½‘å…³çš„å‚æ•°åç§°</param>
+        /// <param name="gatewayParameterName">Íø¹ØµÄ²ÎÊıÃû³Æ</param>
+        /// <param name="gatewayParameterValue">Íø¹ØµÄ²ÎÊıÖµ</param>
+        /// <param name="gatewayParameterType">Íø¹ØµÄ²ÎÊıµÄÀàĞÍ</param>
+        /// <remarks>
+        /// ÉèÖÃµÄ²ÎÊı´æÔÚÊ±£¬Èç¹û²ÎÊıµÄÖµ²»Ò»ÖÂÔò±£´æĞÂµÄ²ÎÊıÖµ¡£
+        /// </remarks>
+        public void SetGatewayParameterValue(string gatewayParameterName, string gatewayParameterValue, GatewayParameterType gatewayParameterType)
+        {
+            GatewayParameter existsParam = GatewayParameterData.SingleOrDefault(p => string.Compare(p.Name, gatewayParameterName) == 0);
+            if (existsParam == null)
+            {
+                GatewayParameter param = new GatewayParameter(gatewayParameterName, gatewayParameterValue, gatewayParameterType);
+                GatewayParameterData.Add(param);
+            }
+            else
+            {
+                if (string.Compare(existsParam.Value, gatewayParameterValue) == 0)
+                {
+                    existsParam.Type = existsParam.Type | gatewayParameterType;
+                }
+                else
+                {
+                    existsParam.Type = gatewayParameterType;
+                    existsParam.Value = gatewayParameterValue;
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// »ñµÃÍø¹ØµÄ²ÎÊıÖµ¡£Ã»ÓĞ²ÎÊıÖµÊ±·µ»Ø¿Õ×Ö·û´®£¬Get·½Ê½µÄÖµ¾ùÎªÎ´½âÂë
+        /// </summary>
+        /// <param name="gatewayParameterName">Íø¹ØµÄ²ÎÊıÃû³Æ</param>
         public string GetGatewayParameterValue(string gatewayParameterName)
         {
             return GetGatewayParameterValue(gatewayParameterName, GatewayParameterType.Both);
@@ -225,22 +275,17 @@ namespace ICanPay
 
 
         /// <summary>
-        /// è·å¾—ç½‘å…³çš„å‚æ•°å€¼ã€‚æ²¡æœ‰å‚æ•°å€¼æ—¶è¿”å›ç©ºå­—ç¬¦ä¸²ï¼ŒGetæ–¹å¼çš„å€¼å‡ä¸ºæœªè§£ç 
+        /// »ñµÃÍø¹ØµÄ²ÎÊıÖµ¡£Ã»ÓĞ²ÎÊıÖµÊ±·µ»Ø¿Õ×Ö·û´®£¬Get·½Ê½µÄÖµ¾ùÎªÎ´½âÂë
         /// </summary>
-        /// <param name="gatewayParameterName">ç½‘å…³çš„å‚æ•°åç§°</param>
-        /// <param name="gatewayParameterType">ç½‘å…³çš„æ•°æ®çš„æ¥æ”¶ã€å‘é€æ–¹å¼</param>
+        /// <param name="gatewayParameterName">Íø¹ØµÄ²ÎÊıÃû³Æ</param>
+        /// <param name="gatewayParameterType">Íø¹ØµÄÊı¾İµÄ½ÓÊÕ¡¢·¢ËÍ·½Ê½</param>
         public string GetGatewayParameterValue(string gatewayParameterName, GatewayParameterType gatewayParameterType)
         {
-            foreach (GatewayParameter item in GatewayParameterData)
+            GatewayParameter parameter = GatewayParameterData.SingleOrDefault(p => string.Compare(p.Name, gatewayParameterName) == 0 &&
+                                                                                   (p.Type & gatewayParameterType) == p.Type);
+            if(parameter != null)
             {
-                if (string.Compare(item.ParameterName, gatewayParameterName) == 0)
-                {
-                    if (gatewayParameterType == GatewayParameterType.Both ||
-                        gatewayParameterType == item.ParameterType)
-                    {
-                        return item.ParameterValue;
-                    }
-                }
+                return parameter.Value;
             }
 
             return string.Empty;
@@ -248,39 +293,46 @@ namespace ICanPay
 
 
         /// <summary>
-        /// æ ¹æ®å‚æ•°é¡ºåºï¼Œè·å–æ•°æ®é¡¹ä¸­çš„å€¼
+        /// ¸ù¾İ²ÎÊıË³Ğò£¬»ñÈ¡Êı¾İÏîÖĞµÄÖµ
         /// </summary>
-        /// <param name="parmaName">å‚æ•°å</param>
+        /// <param name="parmaName">²ÎÊıÃû</param>
         protected string GetGatewayParameterValue(string[] parmaName)
         {
-            StringBuilder value = new StringBuilder();
-
-            foreach (string s in parmaName)
+            StringBuilder valueBuilder = new StringBuilder();
+            GatewayParameter parameter;
+            foreach (string item in parmaName)
             {
-                foreach (GatewayParameter item in GatewayParameterData)
+                parameter = GatewayParameterData.SingleOrDefault(p => string.Compare(p.Name, item) == 0);
+                if (parameter != null)
                 {
-                    if (string.Compare(s, item.ParameterName) == 0)
-                    {
-                        value.Append(item.ParameterValue);
-                        break;
-                    }
+                    valueBuilder.Append(parameter.Value);
                 }
             }
 
-            return value.ToString();
+            return valueBuilder.ToString();
         }
 
 
         /// <summary>
-        /// æ£€éªŒç½‘å…³è¿”å›çš„é€šçŸ¥ï¼Œç¡®è®¤è®¢å•æ˜¯å¦æ”¯ä»˜æˆåŠŸ
+        /// ÉèÖÃÍø¹ØµÄÊı¾İ
+        /// </summary>
+        /// <param name="gatewayParameterData">Íø¹ØµÄÊı¾İµÄ¼¯ºÏ</param>
+        protected void SetGatewayParameterData(List<GatewayParameter> gatewayParameterData)
+        {
+            this.gatewayParameterData = gatewayParameterData;
+        }
+
+
+        /// <summary>
+        /// ¼ìÑéÍø¹Ø·µ»ØµÄÍ¨Öª£¬È·ÈÏ¶©µ¥ÊÇ·ñÖ§¸¶³É¹¦
         /// </summary>
         protected abstract bool CheckNotifyData();
 
 
         /// <summary>
-        /// æŒ‰ç½‘å…³è¦æ±‚æ ¼å¼ï¼Œè¾“å‡ºæˆåŠŸæ¥æ”¶åˆ°ç½‘å…³é€šçŸ¥çš„æ ‡è®°å­—ç¬¦
+        /// °´Íø¹ØÒªÇó¸ñÊ½Êä³ö³É¹¦½ÓÊÕµ½Íø¹ØÍ¨ÖªµÄ±ê¼Ç×Ö·û
         /// </summary>
-        protected virtual void WriteSucceedFlag()
+        public virtual void WriteSucceedFlag()
         {
         }
 

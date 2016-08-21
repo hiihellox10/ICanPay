@@ -1,5 +1,4 @@
-﻿
-namespace ICanPay
+﻿namespace ICanPay
 {
     /// <summary>
     /// 网关类型
@@ -19,12 +18,6 @@ namespace ICanPay
 
 
         /// <summary>
-        /// 中国网银
-        /// </summary>
-        Chinabank,
-
-
-        /// <summary>
         /// 易宝
         /// </summary>
         Yeepay,
@@ -33,6 +26,12 @@ namespace ICanPay
         /// <summary>
         /// 支付宝
         /// </summary>
-        Alipay
+        Alipay,
+
+
+        /// <summary>
+        /// 微信支付
+        /// </summary>
+        WeChatPayment
     }
 }

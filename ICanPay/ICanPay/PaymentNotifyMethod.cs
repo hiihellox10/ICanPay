@@ -12,12 +12,12 @@ namespace ICanPay
         None = 0,
 
         /// <summary>
-        /// 自动返回
+        /// 浏览器自动返回
         /// </summary>
         AutoReturn,
 
         /// <summary>
-        /// 服务器通知
+        /// 服务器异步通知
         /// </summary>
         ServerNotify
     }
