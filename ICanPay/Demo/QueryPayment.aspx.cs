@@ -17,8 +17,9 @@ namespace Demo
         private void QueryYeepayOrder()
         {
             PaymentSetting paymentSetting = new PaymentSetting(GatewayType.Yeepay);
-            paymentSetting.Merchant.UserName = "10000000000";
+            paymentSetting.Merchant.UserName = "000000000000000";
             paymentSetting.Merchant.Key = "0000000000000000000000000000000000000000";
+            // 查询时需要设置订单的Id与金额，在查询结果中将会核对订单的Id与金额，如果不相符会返回查询失败。
             paymentSetting.Order.Id = "1564515";
             paymentSetting.Order.Amount = 0.01;
 
@@ -28,23 +29,44 @@ namespace Demo
             }
         }
 
+
         /// <summary>
         /// 查询微信的订单支付状态
         /// </summary>
         private void QueryWeChatPaymentOrder()
         {
             PaymentSetting paymentSetting = new PaymentSetting(GatewayType.WeChatPayment);
-            paymentSetting.SetGatewayParameterValue("appid", "wx8340ff249a2941bd");
-            paymentSetting.Merchant.UserName = "1358853202";
-            paymentSetting.Merchant.Key = "31b43e9966f05e3216bbdbd154fc34d1";
+            paymentSetting.SetGatewayParameterValue("appid", "wx000000000000000");
+            paymentSetting.Merchant.UserName = "000000000000000";
+            paymentSetting.Merchant.Key = "0000000000000000000000000000000000000000";
+            // 查询时需要设置订单的Id与金额，在查询结果中将会核对订单的Id与金额，如果不相符会返回查询失败。
             paymentSetting.Order.Id = "20";
             paymentSetting.Order.Amount = 0.01;
 
             if (paymentSetting.CanQueryNow && paymentSetting.QueryNow())
             {
                 // 订单已支付
-                Response.Write("成功");
             }
         }
+
+
+        /// <summary>
+        /// 查询财付通的订单支付状态
+        /// </summary>
+        private void QueryTenpayOrder()
+        {
+            PaymentSetting paymentSetting = new PaymentSetting(GatewayType.Tenpay);
+            paymentSetting.Merchant.UserName = "000000000000000";
+            paymentSetting.Merchant.Key = "0000000000000000000000000000000000000000";
+            // 查询时需要设置订单的Id与金额，在查询结果中将会核对订单的Id与金额，如果不相符会返回查询失败。
+            paymentSetting.Order.Id = "885";
+            paymentSetting.Order.Amount = 0.01;
+
+            if (paymentSetting.CanQueryNow && paymentSetting.QueryNow())
+            {
+                // 订单已支付
+            }
+        }
+
     }
 }

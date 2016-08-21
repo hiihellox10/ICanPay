@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace ICanPay
 {
     internal interface IPaymentQRCode
