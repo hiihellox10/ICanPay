@@ -16,14 +16,15 @@ namespace Demo
         /// </summary>
         private void QueryYeepayOrder()
         {
-            PaymentSetting paymentSetting = new PaymentSetting(GatewayType.Yeepay);
-            paymentSetting.Merchant.UserName = "000000000000000";
-            paymentSetting.Merchant.Key = "0000000000000000000000000000000000000000";
-            // 查询时需要设置订单的Id与金额，在查询结果中将会核对订单的Id与金额，如果不相符会返回查询失败。
-            paymentSetting.Order.Id = "1564515";
-            paymentSetting.Order.Amount = 0.01;
+            PaymentSetting querySetting = new PaymentSetting(GatewayType.Yeepay);
+            querySetting.Merchant.UserName = "000000000000000";
+            querySetting.Merchant.Key = "0000000000000000000000000000000000000000";
 
-            if (paymentSetting.CanQueryNow && paymentSetting.QueryNow())
+            // 查询时需要设置订单的Id与金额，在查询结果中将会核对订单的Id与金额，如果不相符会返回查询失败。
+            querySetting.Order.Id = "1564515";
+            querySetting.Order.Amount = 0.01;
+
+            if (querySetting.CanQueryNow && querySetting.QueryNow())
             {
                 // 订单已支付
             }
@@ -35,15 +36,16 @@ namespace Demo
         /// </summary>
         private void QueryWeChatPaymentOrder()
         {
-            PaymentSetting paymentSetting = new PaymentSetting(GatewayType.WeChatPayment);
-            paymentSetting.SetGatewayParameterValue("appid", "wx000000000000000");
-            paymentSetting.Merchant.UserName = "000000000000000";
-            paymentSetting.Merchant.Key = "0000000000000000000000000000000000000000";
-            // 查询时需要设置订单的Id与金额，在查询结果中将会核对订单的Id与金额，如果不相符会返回查询失败。
-            paymentSetting.Order.Id = "20";
-            paymentSetting.Order.Amount = 0.01;
+            PaymentSetting querySetting = new PaymentSetting(GatewayType.WeChatPayment);
+            querySetting.SetGatewayParameterValue("appid", "wx000000000000000");
+            querySetting.Merchant.UserName = "000000000000000";
+            querySetting.Merchant.Key = "0000000000000000000000000000000000000000";
 
-            if (paymentSetting.CanQueryNow && paymentSetting.QueryNow())
+            // 查询时需要设置订单的Id与金额，在查询结果中将会核对订单的Id与金额，如果不相符会返回查询失败。
+            querySetting.Order.Id = "20";
+            querySetting.Order.Amount = 0.01;
+
+            if (querySetting.CanQueryNow && querySetting.QueryNow())
             {
                 // 订单已支付
             }
@@ -55,14 +57,15 @@ namespace Demo
         /// </summary>
         private void QueryTenpayOrder()
         {
-            PaymentSetting paymentSetting = new PaymentSetting(GatewayType.Tenpay);
-            paymentSetting.Merchant.UserName = "000000000000000";
-            paymentSetting.Merchant.Key = "0000000000000000000000000000000000000000";
-            // 查询时需要设置订单的Id与金额，在查询结果中将会核对订单的Id与金额，如果不相符会返回查询失败。
-            paymentSetting.Order.Id = "885";
-            paymentSetting.Order.Amount = 0.01;
+            PaymentSetting querySetting = new PaymentSetting(GatewayType.Tenpay);
+            querySetting.Merchant.UserName = "000000000000000";
+            querySetting.Merchant.Key = "0000000000000000000000000000000000000000";
 
-            if (paymentSetting.CanQueryNow && paymentSetting.QueryNow())
+            // 查询时需要设置订单的Id与金额，在查询结果中将会核对订单的Id与金额，如果不相符会返回查询失败。
+            querySetting.Order.Id = "885";
+            querySetting.Order.Amount = 0.01;
+
+            if (querySetting.CanQueryNow && querySetting.QueryNow())
             {
                 // 订单已支付
             }
