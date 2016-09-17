@@ -12,7 +12,7 @@ namespace ICanPay.Providers
     /// <remarks>
     /// 当前支付宝的实现仅支持MD5密钥。
     /// </remarks>
-    public sealed class AlipayGateway : PayGateway, IPaymentForm, IPaymentUrl
+    public sealed class AlipayGateway : GatewayBase, IPaymentForm, IPaymentUrl
     {
 
         #region 私有字段

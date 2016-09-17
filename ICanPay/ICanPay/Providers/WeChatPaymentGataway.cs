@@ -14,7 +14,7 @@ namespace ICanPay.Providers
     /// <remarks>
     /// 使用模式二实现微信支付
     /// </remarks>
-    public sealed class WeChatPaymentGataway : PayGateway, IPaymentQRCode, IQueryNow
+    public sealed class WeChatPaymentGataway : GatewayBase, IPaymentQRCode, IQueryNow
     {
 
         #region 私有字段

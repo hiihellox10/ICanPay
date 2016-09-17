@@ -5,7 +5,7 @@ namespace ICanPay.Providers
     /// <summary>
     /// 未知网关
     /// </summary>
-    public class NullGateway : PayGateway
+    public class NullGateway : GatewayBase
     {
 
         #region 构造函数

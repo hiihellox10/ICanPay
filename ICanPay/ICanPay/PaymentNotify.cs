@@ -108,7 +108,7 @@ namespace ICanPay
         /// </summary>
         public void Received()
         {
-            PayGateway gateway = NotifyProcess.GetGateway();
+            GatewayBase gateway = NotifyProcess.GetGateway();
             if (gateway.GatewayType != GatewayType.None)
             {
                 gateway.Merchant = GetMerchant(gateway.GatewayType);

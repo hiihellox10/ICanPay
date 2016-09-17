@@ -9,7 +9,7 @@ namespace ICanPay.Providers
     /// <summary>
     /// Ò×±¦Íø¹Ø
     /// </summary>
-    public sealed class YeepayGateway : PayGateway, IPaymentForm, IPaymentUrl, IQueryNow
+    public sealed class YeepayGateway : GatewayBase, IPaymentForm, IPaymentUrl, IQueryNow
     {
 
         #region Ë½ÓÐ×Ö¶Î

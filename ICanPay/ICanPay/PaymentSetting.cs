@@ -14,7 +14,7 @@ namespace ICanPay
     /// </summary>
     /// <remarks>
     /// 因为部分支付网关的编码仅支持GB2312，所以所有支付网关统一使用GB2312编码。
-    /// 你需要保证输出HTML代码的页面为GB2312编码，否则创建的支付订单跟网关接收到的数据可能会产生乱码。
+    /// 你需要保证输出HTML代码的页面为GB2312编码，否则可能会因为乱码而造成无法正常创建支付订单和识别支付网关的支付通知。
     /// 通过在 Web.config 中的 configuration/system.web 节点设置 <globalization requestEncoding="gb2312" responseEncoding="gb2312" />
     /// 可以将页面的默认编码设置为GB2312。目前只能使用RMB支付，其他货币支付请阅读相关网关接口文档修改。
     /// </remarks>
@@ -23,7 +23,7 @@ namespace ICanPay
 
         #region 字段
 
-        PayGateway gateway;
+        GatewayBase gateway;
 
         #endregion
 
@@ -51,7 +51,7 @@ namespace ICanPay
         /// <summary>
         /// 网关
         /// </summary>
-        public PayGateway Gateway
+        public GatewayBase Gateway
         {
             get
             {
@@ -122,7 +122,7 @@ namespace ICanPay
         #region 方法
 
 
-        private PayGateway CreateGateway(GatewayType gatewayType)
+        private GatewayBase CreateGateway(GatewayType gatewayType)
         {
             switch (gatewayType)
             {
@@ -130,18 +130,22 @@ namespace ICanPay
                     {
                         return new AlipayGateway();
                     }
+
                 case GatewayType.Tenpay:
                     {
                         return new TenpayGateway();
                     }
+
                 case GatewayType.Yeepay:
                     {
                         return new YeepayGateway();
                     }
+
                 case GatewayType.WeChatPayment:
                     {
                         return new WeChatPaymentGataway();
                     }
+
                 default:
                     {
                         return new NullGateway();

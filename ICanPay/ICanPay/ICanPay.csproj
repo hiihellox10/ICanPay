@@ -85,7 +85,7 @@
     <Compile Include="Merchant.cs" />
     <Compile Include="NotifyProcess.cs" />
     <Compile Include="Order.cs" />
-    <Compile Include="PayGateway.cs" />
+    <Compile Include="GatewayBase.cs" />
     <Compile Include="PaymentEventArgs.cs" />
     <Compile Include="PaymentFailedEventArgs.cs" />
     <Compile Include="PaymentNotifyMethod.cs" />

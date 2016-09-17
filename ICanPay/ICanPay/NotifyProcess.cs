@@ -32,7 +32,7 @@ namespace ICanPay
         /// <summary>
         /// 验证网关的类型
         /// </summary>
-        public static PayGateway GetGateway()
+        public static GatewayBase GetGateway()
         {
             List<GatewayParameter> gatewayParameterData = ReadNotifyData();
             if (IsAlipayGateway(gatewayParameterData))

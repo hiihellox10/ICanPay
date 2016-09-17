@@ -5,9 +5,9 @@ using System.Text;
 namespace ICanPay
 {
     /// <summary>
-    /// 支付网关的抽象接口
+    /// 支付网关的抽象基类
     /// </summary>
-    public abstract class PayGateway
+    public abstract class GatewayBase
     {
 
         #region 私有字段
@@ -23,12 +23,12 @@ namespace ICanPay
         #region 构造函数
 
 
-        protected PayGateway()
+        protected GatewayBase()
         {
         }
 
 
-        protected PayGateway(List<GatewayParameter> gatewayParameterData)
+        protected GatewayBase(List<GatewayParameter> gatewayParameterData)
         {
             this.gatewayParameterData = gatewayParameterData;
         }

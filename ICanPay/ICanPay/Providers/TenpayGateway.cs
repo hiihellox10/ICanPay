@@ -9,7 +9,7 @@ namespace ICanPay.Providers
     /// <summary>
     /// 财付通网关
     /// </summary>
-    public sealed class TenpayGateway : PayGateway, IPaymentUrl, IPaymentForm, IQueryNow
+    public sealed class TenpayGateway : GatewayBase, IPaymentUrl, IPaymentForm, IQueryNow
     {
 
         #region 私有字段

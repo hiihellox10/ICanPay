@@ -11,7 +11,7 @@ namespace ICanPay
 
         #region 私有字段
 
-        protected PayGateway gateway;
+        protected GatewayBase gateway;
         string notifyServerHostAddress;
 
         #endregion
@@ -23,7 +23,7 @@ namespace ICanPay
         /// 初始化支付事件数据的基类
         /// </summary>
         /// <param name="gateway">支付网关</param>
-        public PaymentEventArgs(PayGateway gateway)
+        public PaymentEventArgs(GatewayBase gateway)
         {
             this.gateway = gateway;
             notifyServerHostAddress = System.Web.HttpContext.Current.Request.UserHostAddress;
@@ -84,7 +84,7 @@ namespace ICanPay
         /// <summary>
         /// 支付网关的Get、Post数据的集合
         /// </summary>
-        public ICollection<GatewayParameter> GatewayParameterData
+        public List<GatewayParameter> GatewayParameterData
         {
             get
             {

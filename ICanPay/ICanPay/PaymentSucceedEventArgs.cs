@@ -13,7 +13,7 @@ namespace ICanPay
         /// 初始化支付成功网关事件数据
         /// </summary>
         /// <param name="gateway">支付网关</param>
-        public PaymentSucceedEventArgs(PayGateway gateway)
+        public PaymentSucceedEventArgs(GatewayBase gateway)
             : base(gateway)
         {
         }
