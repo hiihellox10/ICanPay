@@ -141,19 +141,18 @@ namespace ICanPay.Providers
         /// <returns></returns>
         private string NotifySign()
         {
-            return YeepayHmacMD5.HmacSign(GetGatewayParameterValue(notifyParmaName), Merchant.Key);
+            return YeepayHmacMD5.HmacSign(GetNotifySignParameterValue(), Merchant.Key);
         }
 
 
         /// <summary>
-        /// 根据参数顺序，获取数据项中的值
+        /// 获得通知签名需要的参数的值
         /// </summary>
-        /// <param name="parmaName">参数名</param>
-        private string GetGatewayParameterValue(string[] parmaName)
+        private string GetNotifySignParameterValue()
         {
             StringBuilder valueBuilder = new StringBuilder();
             GatewayParameter parameter;
-            foreach (string item in parmaName)
+            foreach (string item in notifyParmaName)
             {
                 parameter = GatewayParameterData.SingleOrDefault(p => string.Compare(p.Name, item) == 0);
                 if (parameter != null)
