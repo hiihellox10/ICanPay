@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Web;
 
@@ -15,6 +16,7 @@ namespace ICanPay.Providers
         #region 私有字段
 
         const string payGatewayUrl = "https://www.yeepay.com/app-merchant-proxy/node";
+        static string[] notifyParmaName = new string[] { "p1_MerId", "r0_Cmd", "r1_Code", "r2_TrxId", "r3_Amt", "r4_Cur", "r5_Pid", "r6_Order", "r7_Uid", "r8_MP", "r9_BType" };
 
         #endregion
 
@@ -139,9 +141,28 @@ namespace ICanPay.Providers
         /// <returns></returns>
         private string NotifySign()
         {
-            // 生成签名参数的顺序
-            string[] notifyParmaName = new string[] { "p1_MerId", "r0_Cmd", "r1_Code", "r2_TrxId", "r3_Amt", "r4_Cur", "r5_Pid", "r6_Order", "r7_Uid", "r8_MP", "r9_BType" };
             return YeepayHmacMD5.HmacSign(GetGatewayParameterValue(notifyParmaName), Merchant.Key);
+        }
+
+
+        /// <summary>
+        /// 根据参数顺序，获取数据项中的值
+        /// </summary>
+        /// <param name="parmaName">参数名</param>
+        private string GetGatewayParameterValue(string[] parmaName)
+        {
+            StringBuilder valueBuilder = new StringBuilder();
+            GatewayParameter parameter;
+            foreach (string item in parmaName)
+            {
+                parameter = GatewayParameterData.SingleOrDefault(p => string.Compare(p.Name, item) == 0);
+                if (parameter != null)
+                {
+                    valueBuilder.Append(parameter.Value);
+                }
+            }
+
+            return valueBuilder.ToString();
         }
 
 

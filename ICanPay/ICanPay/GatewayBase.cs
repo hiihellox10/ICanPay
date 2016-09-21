@@ -23,7 +23,7 @@ namespace ICanPay
         #region 构造函数
 
 
-        protected GatewayBase()
+        protected GatewayBase() : this(new List<GatewayParameter>())
         {
         }
 
@@ -117,11 +117,6 @@ namespace ICanPay
         {
             get
             {
-                if (gatewayParameterData == null)
-                {
-                    gatewayParameterData = new List<GatewayParameter>();
-                }
-
                 return gatewayParameterData;
             }
         }
@@ -290,38 +285,7 @@ namespace ICanPay
 
             return string.Empty;
         }
-
-
-        /// <summary>
-        /// 根据参数顺序，获取数据项中的值
-        /// </summary>
-        /// <param name="parmaName">参数名</param>
-        protected string GetGatewayParameterValue(string[] parmaName)
-        {
-            StringBuilder valueBuilder = new StringBuilder();
-            GatewayParameter parameter;
-            foreach (string item in parmaName)
-            {
-                parameter = GatewayParameterData.SingleOrDefault(p => string.Compare(p.Name, item) == 0);
-                if (parameter != null)
-                {
-                    valueBuilder.Append(parameter.Value);
-                }
-            }
-
-            return valueBuilder.ToString();
-        }
-
-
-        /// <summary>
-        /// 设置网关的数据
-        /// </summary>
-        /// <param name="gatewayParameterData">网关的数据的集合</param>
-        protected void SetGatewayParameterData(List<GatewayParameter> gatewayParameterData)
-        {
-            this.gatewayParameterData = gatewayParameterData;
-        }
-
+        
 
         /// <summary>
         /// 检验网关返回的通知，确认订单是否支付成功

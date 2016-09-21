@@ -295,7 +295,10 @@ namespace ICanPay.Providers
         /// <param name="gatewayParameterData">网关的数据的集合</param>
         private void RestoreGatewayParameter(List<GatewayParameter> gatewayParameterData)
         {
-            SetGatewayParameterData(gatewayParameterData);
+            foreach(GatewayParameter item in gatewayParameterData)
+            {
+                SetGatewayParameterValue(item.Name, item.Value, item.Type);
+            }
         }
 
 
