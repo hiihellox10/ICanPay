@@ -39,18 +39,15 @@ namespace ICanPay
             {
                 return new AlipayGateway(gatewayParameterData);
             }
-
-            if (IsWeixinpayGateway(gatewayParameterData))
+            else if (IsWeixinpayGateway(gatewayParameterData))
             {
                 return new WeChatPaymentGataway(gatewayParameterData);
             }
-
-            if (IsTenpayGateway(gatewayParameterData))
+            else if (IsTenpayGateway(gatewayParameterData))
             {
                 return new TenpayGateway(gatewayParameterData);
             }
-
-            if (IsYeepayGateway(gatewayParameterData))
+            else if (IsYeepayGateway(gatewayParameterData))
             {
                 return new YeepayGateway(gatewayParameterData);
             }
