@@ -55,7 +55,7 @@ namespace ICanPay
             {
                 if (value < 0.01)
                 {
-                    throw new ArgumentOutOfRangeException("订单金额必须大于或等于0.01", "Amount");
+                    throw new ArgumentOutOfRangeException("Amount", "订单金额必须大于或等于0.01");
                 }
 
                 amount = value;
