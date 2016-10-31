@@ -297,7 +297,7 @@ namespace ICanPay.Providers
         {
             foreach(GatewayParameter item in gatewayParameterData)
             {
-                SetGatewayParameterValue(item.Name, item.Value, item.Type);
+                SetGatewayParameterValue(item.Name, item.Value, item.RequestMethod);
             }
         }
 

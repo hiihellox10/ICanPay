@@ -3,10 +3,10 @@
 namespace ICanPay
 {
     /// <summary>
-    /// 向网关发送或接收到的网关的数据的方式类型
+    /// 向网关发送或接收到的网关的数据的请求方式类型
     /// </summary>
     [Flags]
-    public enum GatewayParameterType
+    public enum GatewayParameterRequestMethod
     {
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace ICanPay
         /// <summary>
         /// Get 和 Post
         /// </summary>
-        Both = GatewayParameterType.Get | GatewayParameterType.Post
+        Both = GatewayParameterRequestMethod.Get | GatewayParameterRequestMethod.Post
 
     }
 }

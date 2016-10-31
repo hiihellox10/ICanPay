@@ -14,7 +14,7 @@ namespace ICanPay
 
         Merchant merchant;
         Order order;
-        List<GatewayParameter> gatewayParameterData;
+        ICollection<GatewayParameter> gatewayParameterData;
         const string formItem = "<input type='hidden' name='{0}' value='{1}'>";
 
         #endregion
@@ -28,7 +28,7 @@ namespace ICanPay
         }
 
 
-        protected GatewayBase(List<GatewayParameter> gatewayParameterData)
+        protected GatewayBase(ICollection<GatewayParameter> gatewayParameterData)
         {
             this.gatewayParameterData = gatewayParameterData;
         }
@@ -113,7 +113,7 @@ namespace ICanPay
         /// <summary>
         /// 支付网关的Get、Post数据的集合。Get方式传入QueryString的值均为未解码
         /// </summary>
-        public List<GatewayParameter> GatewayParameterData
+        public ICollection<GatewayParameter> GatewayParameterData
         {
             get
             {
@@ -139,7 +139,7 @@ namespace ICanPay
             html.AppendLine("<form name='Gateway' method='post' action ='" + url + "'>");
             foreach (GatewayParameter item in GatewayParameterData)
             {
-                if ((item.Type & GatewayParameterType.Post) == GatewayParameterType.Post)
+                if ((item.RequestMethod & GatewayParameterRequestMethod.Post) == GatewayParameterRequestMethod.Post)
                 {
                     html.AppendLine(string.Format(formItem, item.Name, item.Value));
                 }
@@ -194,7 +194,7 @@ namespace ICanPay
         /// </remarks>
         public void SetGatewayParameterValue(string gatewayParameterName, object gatewayParameterValue)
         {
-            SetGatewayParameterValue(gatewayParameterName, gatewayParameterValue, GatewayParameterType.Both);
+            SetGatewayParameterValue(gatewayParameterName, gatewayParameterValue, GatewayParameterRequestMethod.Both);
         }
 
 
@@ -208,7 +208,7 @@ namespace ICanPay
         /// </remarks>
         public void SetGatewayParameterValue(string gatewayParameterName, string gatewayParameterValue)
         {
-            SetGatewayParameterValue(gatewayParameterName, gatewayParameterValue, GatewayParameterType.Both);
+            SetGatewayParameterValue(gatewayParameterName, gatewayParameterValue, GatewayParameterRequestMethod.Both);
         }
 
 
@@ -217,13 +217,13 @@ namespace ICanPay
         /// </summary>
         /// <param name="gatewayParameterName">网关的参数名称</param>
         /// <param name="gatewayParameterValue">网关的参数值</param>
-        /// <param name="gatewayParameterType">网关的参数的类型</param>
+        /// <param name="gatewayParameterRequestMethod">网关的参数的请求方法的类型</param>
         /// <remarks>
         /// 设置的参数存在时，如果参数的值不一致则保存新的参数值。
         /// </remarks>
-        public void SetGatewayParameterValue(string gatewayParameterName, object gatewayParameterValue, GatewayParameterType gatewayParameterType)
+        public void SetGatewayParameterValue(string gatewayParameterName, object gatewayParameterValue, GatewayParameterRequestMethod gatewayParameterRequestMethod)
         {
-            SetGatewayParameterValue(gatewayParameterName, gatewayParameterValue.ToString(), gatewayParameterType);
+            SetGatewayParameterValue(gatewayParameterName, gatewayParameterValue.ToString(), gatewayParameterRequestMethod);
         }
 
 
@@ -232,27 +232,27 @@ namespace ICanPay
         /// </summary>
         /// <param name="gatewayParameterName">网关的参数名称</param>
         /// <param name="gatewayParameterValue">网关的参数值</param>
-        /// <param name="gatewayParameterType">网关的参数的类型</param>
+        /// <param name="gatewayParameterRequestMethod">网关的参数的请求方法的类型</param>
         /// <remarks>
-        /// 设置的参数存在时，如果参数的值不一致则保存新的参数值。
+        /// 当设置的参数存在时，如果参数的值不一致则修改为新的参数值。
         /// </remarks>
-        public void SetGatewayParameterValue(string gatewayParameterName, string gatewayParameterValue, GatewayParameterType gatewayParameterType)
+        public void SetGatewayParameterValue(string gatewayParameterName, string gatewayParameterValue, GatewayParameterRequestMethod gatewayParameterRequestMethod)
         {
             GatewayParameter existsParam = GatewayParameterData.SingleOrDefault(p => string.Compare(p.Name, gatewayParameterName) == 0);
             if (existsParam == null)
             {
-                GatewayParameter param = new GatewayParameter(gatewayParameterName, gatewayParameterValue, gatewayParameterType);
+                GatewayParameter param = new GatewayParameter(gatewayParameterName, gatewayParameterValue, gatewayParameterRequestMethod);
                 GatewayParameterData.Add(param);
             }
             else
             {
                 if (string.Compare(existsParam.Value, gatewayParameterValue) == 0)
                 {
-                    existsParam.Type = existsParam.Type | gatewayParameterType;
+                    existsParam.RequestMethod = existsParam.RequestMethod | gatewayParameterRequestMethod;
                 }
                 else
                 {
-                    existsParam.Type = gatewayParameterType;
+                    existsParam.RequestMethod = gatewayParameterRequestMethod;
                     existsParam.Value = gatewayParameterValue;
                 }
             }
@@ -260,24 +260,24 @@ namespace ICanPay
 
 
         /// <summary>
-        /// 获得网关的参数值。没有参数值时返回空字符串，Get方式的值均为未解码
+        /// 获得网关的参数值。没有参数值时返回空字符串，Get方式的值均为未解码。
         /// </summary>
         /// <param name="gatewayParameterName">网关的参数名称</param>
         public string GetGatewayParameterValue(string gatewayParameterName)
         {
-            return GetGatewayParameterValue(gatewayParameterName, GatewayParameterType.Both);
+            return GetGatewayParameterValue(gatewayParameterName, GatewayParameterRequestMethod.Both);
         }
 
 
         /// <summary>
-        /// 获得网关的参数值。没有参数值时返回空字符串，Get方式的值均为未解码
+        /// 获得网关的参数值。没有参数值时返回空字符串，Get方式的值均为未解码。
         /// </summary>
         /// <param name="gatewayParameterName">网关的参数名称</param>
-        /// <param name="gatewayParameterType">网关的数据的接收、发送方式</param>
-        public string GetGatewayParameterValue(string gatewayParameterName, GatewayParameterType gatewayParameterType)
+        /// <param name="gatewayParameterRequestMethod">网关的数据的请求方法的类型</param>
+        public string GetGatewayParameterValue(string gatewayParameterName, GatewayParameterRequestMethod gatewayParameterRequestMethod)
         {
             GatewayParameter parameter = GatewayParameterData.SingleOrDefault(p => string.Compare(p.Name, gatewayParameterName) == 0 &&
-                                                                                   (p.Type & gatewayParameterType) == p.Type);
+                                                                                   (p.RequestMethod & gatewayParameterRequestMethod) == p.RequestMethod);
             if(parameter != null)
             {
                 return parameter.Value;
@@ -294,11 +294,9 @@ namespace ICanPay
 
 
         /// <summary>
-        /// 按网关要求格式输出成功接收到网关通知的标记字符
+        /// 当接收到支付网关通知并验证无误时按照支付网关要求格式输出表示成功接收到网关通知的字符串
         /// </summary>
-        public virtual void WriteSucceedFlag()
-        {
-        }
+        public abstract void WriteSucceedFlag();
 
         #endregion
 

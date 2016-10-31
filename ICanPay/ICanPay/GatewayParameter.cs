@@ -22,11 +22,11 @@ namespace ICanPay
         }
 
 
-        public GatewayParameter(string parameterName, string parameterValue, GatewayParameterType parameterType)
+        public GatewayParameter(string parameterName, string parameterValue, GatewayParameterRequestMethod parameterType)
         {
             this.name = parameterName;
             Value = parameterValue;
-            Type = parameterType;
+            RequestMethod = parameterType;
         }
 
         #endregion
@@ -63,9 +63,9 @@ namespace ICanPay
 
 
         /// <summary>
-        /// 参数类型
+        /// 参数的请求方法的类型
         /// </summary>
-        public GatewayParameterType Type { get; set; }
+        public GatewayParameterRequestMethod RequestMethod { get; set; }
 
         #endregion
 

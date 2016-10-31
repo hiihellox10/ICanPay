@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ICanPay.Providers
 {
@@ -51,6 +52,10 @@ namespace ICanPay.Providers
         protected override bool CheckNotifyData()
         {
             return false;
+        }
+
+        public override void WriteSucceedFlag()
+        {
         }
 
         #endregion

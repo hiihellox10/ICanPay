@@ -50,7 +50,7 @@ namespace Demo
         private void CreateAlipayOrder()
         {
             PaymentSetting paymentSetting = new PaymentSetting(GatewayType.Alipay);
-            paymentSetting.SetGatewayParameterValue("seller_email", "youremail@email.com");
+            paymentSetting.SetGatewayParameterValue("seller_email", "yourname@address.com");
             paymentSetting.Merchant.UserName = "000000000000000";
             paymentSetting.Merchant.Key = "000000000000000000000000000000000000000000";
             paymentSetting.Merchant.NotifyUrl = new Uri("http://yourwebsite.com/Notify.aspx");

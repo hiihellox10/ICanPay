@@ -140,25 +140,25 @@ namespace ICanPay
         /// <param name="gatewayParameterList">保存网关参数的集合</param>
         /// <param name="gatewayParameterName">网关的参数名称</param>
         /// <param name="gatewayParameterValue">网关的参数值</param>
-        /// <param name="gatewayParameterType">网关的参数的类型</param>
+        /// <param name="gatewayParameterRequestMethod">网关的参数的请求方式的类型</param>
         private static void SetGatewayParameterValue(List<GatewayParameter> gatewayParameterList, string gatewayParameterName,
-            string gatewayParameterValue, GatewayParameterType gatewayParameterType)
+            string gatewayParameterValue, GatewayParameterRequestMethod gatewayParameterRequestMethod)
         {
             GatewayParameter existsParam = gatewayParameterList.SingleOrDefault(p => string.Compare(p.Name, gatewayParameterName) == 0);
             if (existsParam == null)
             {
-                GatewayParameter param = new GatewayParameter(gatewayParameterName, gatewayParameterValue, gatewayParameterType);
+                GatewayParameter param = new GatewayParameter(gatewayParameterName, gatewayParameterValue, gatewayParameterRequestMethod);
                 gatewayParameterList.Add(param);
             }
             else
             {
                 if (string.Compare(existsParam.Value, gatewayParameterValue) == 0)
                 {
-                    existsParam.Type = existsParam.Type | gatewayParameterType;
+                    existsParam.RequestMethod = existsParam.RequestMethod | gatewayParameterRequestMethod;
                 }
                 else
                 {
-                    existsParam.Type = gatewayParameterType;
+                    existsParam.RequestMethod = gatewayParameterRequestMethod;
                     existsParam.Value = gatewayParameterValue;
                 }
             }
@@ -175,7 +175,7 @@ namespace ICanPay
             string[] allKeys = queryString.AllKeys;
             for (int i = 0; i < allKeys.Length; i++)
             {
-                SetGatewayParameterValue(gatewayParameterList, allKeys[i], queryString[allKeys[i]], GatewayParameterType.Get);
+                SetGatewayParameterValue(gatewayParameterList, allKeys[i], queryString[allKeys[i]], GatewayParameterRequestMethod.Get);
             }
         }
 
@@ -190,7 +190,7 @@ namespace ICanPay
             string[] allKeys = form.AllKeys;
             for (int i = 0; i < allKeys.Length; i++)
             {
-                SetGatewayParameterValue(gatewayParameterList, allKeys[i], form[allKeys[i]], GatewayParameterType.Post);
+                SetGatewayParameterValue(gatewayParameterList, allKeys[i], form[allKeys[i]], GatewayParameterRequestMethod.Post);
             }
         }
 
@@ -215,7 +215,7 @@ namespace ICanPay
                 {
                     foreach (XmlNode item in xmlDocument.FirstChild.ChildNodes)
                     {
-                        SetGatewayParameterValue(gatewayParameterList, item.Name, item.InnerText, GatewayParameterType.Post);
+                        SetGatewayParameterValue(gatewayParameterList, item.Name, item.InnerText, GatewayParameterRequestMethod.Post);
                     }
                 }
             }
