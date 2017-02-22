@@ -148,11 +148,26 @@ namespace ICanPay.Providers
         /// <remarks>这里处理查询订单的网关通知跟支付订单的网关通知</remarks>
         protected override bool CheckNotifyData()
         {
+            if (IsSuccessResult())
+            {
+                ReadNotifyOrder();
+                return true;
+            }
+
+            return false;
+        }
+
+
+        /// <summary>
+        /// 是否是已成功支付的支付通知
+        /// </summary>
+        /// <returns></returns>
+        private bool IsSuccessResult()
+        {
             if (ValidateNotifyParameter())
             {
                 if (ValidateNotifyId())
                 {
-                    ReadNotifyOrderParameter();
                     return true;
                 }
             }
@@ -162,15 +177,15 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// 检查通知签名是否正确、货币类型是否为RMB、是否支付成功。
+        /// 检查支付通知，是否支付成功，货币类型是否为RMB，签名是否正确。
         /// </summary>
         /// <returns></returns>
         private bool ValidateNotifyParameter()
         {
-            if (string.Compare(GetGatewayParameterValue("sign"), GetOrderSign()) == 0 &&
-                string.Compare(GetGatewayParameterValue("fee_type"), "1") == 0 &&
+            if (string.Compare(GetGatewayParameterValue("trade_state"), "0") == 0 &&
                 string.Compare(GetGatewayParameterValue("trade_mode"), "1") == 0 &&
-                string.Compare(GetGatewayParameterValue("trade_state"), "0") == 0)
+                string.Compare(GetGatewayParameterValue("fee_type"), "1") == 0 &&
+                string.Compare(GetGatewayParameterValue("sign"), GetOrderSign()) == 0)
             {
                 return true;
             }
@@ -182,7 +197,7 @@ namespace ICanPay.Providers
         /// <summary>
         /// 读取通知中的订单金额、订单编号
         /// </summary>
-        private void ReadNotifyOrderParameter()
+        private void ReadNotifyOrder()
         {
             Order.Amount = Convert.ToDouble(GetGatewayParameterValue("total_fee")) * 0.01;
             Order.Id = GetGatewayParameterValue("out_trade_no");
@@ -194,7 +209,7 @@ namespace ICanPay.Providers
         {
             if (PaymentNotifyMethod == PaymentNotifyMethod.ServerNotify)
             {
-                System.Web.HttpContext.Current.Response.Write("success");
+                HttpContext.Current.Response.Write("success");
             }
         }
 

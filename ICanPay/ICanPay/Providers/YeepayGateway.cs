@@ -73,16 +73,40 @@ namespace ICanPay.Providers
         /// <returns></returns>
         protected override bool CheckNotifyData()
         {
-            if (string.Compare(GetGatewayParameterValue("hmac"), NotifySign()) == 0 && 
-                string.Compare(GetGatewayParameterValue("r1_Code"), "1") == 0 && 
-                string.Compare(GetGatewayParameterValue("r4_Cur"), "RMB") == 0)
+            if (IsSuccessResult())
             {
-                Order.Amount = Convert.ToDouble(GetGatewayParameterValue("r3_Amt"));
-                Order.Id = GetGatewayParameterValue("r6_Order");
-
+                ReadNotifyOrder();
                 return true;
             }
+
             return false;
+        }
+
+
+        /// <summary>
+        /// 是否是已成功支付的支付通知
+        /// </summary>
+        /// <returns></returns>
+        private bool IsSuccessResult()
+        {
+            if (string.Compare(GetGatewayParameterValue("r1_Code"), "1") == 0 &&
+                string.Compare(GetGatewayParameterValue("r4_Cur"), "RMB") == 0 &&
+                string.Compare(GetGatewayParameterValue("hmac"), NotifySign()) == 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
+        /// <summary>
+        /// 读取通知中的订单金额、订单编号
+        /// </summary>
+        private void ReadNotifyOrder()
+        {
+            Order.Amount = Convert.ToDouble(GetGatewayParameterValue("r3_Amt"));
+            Order.Id = GetGatewayParameterValue("r6_Order");
         }
 
 

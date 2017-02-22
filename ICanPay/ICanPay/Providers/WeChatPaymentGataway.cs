@@ -61,7 +61,7 @@ namespace ICanPay.Providers
         {
             if (IsSuccessResult())
             {
-                ReadNotifyOrderParameter();
+                ReadNotifyOrder();
                 return true;
             }
 
@@ -99,7 +99,10 @@ namespace ICanPay.Providers
         }
 
 
-        private void ReadNotifyOrderParameter()
+        /// <summary>
+        /// 读取通知中的订单金额、订单编号
+        /// </summary>
+        private void ReadNotifyOrder()
         {
             Order.Id = GetGatewayParameterValue("out_trade_no");
             Order.Amount = Convert.ToInt32(GetGatewayParameterValue("total_fee")) * 0.01;
@@ -122,11 +125,11 @@ namespace ICanPay.Providers
         /// <returns></returns>
         private string ConvertGatewayParameterDataToXml()
         {
-            StringBuilder xmlBuilder = new StringBuilder();
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
             settings.OmitXmlDeclaration = true;
 
+            StringBuilder xmlBuilder = new StringBuilder();
             using (XmlWriter writer = XmlWriter.Create(xmlBuilder, settings))
             {
                 writer.WriteStartElement("xml");
@@ -251,52 +254,21 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// 是否是成功的结果
+        /// 是否是已成功支付的支付通知
         /// </summary>
-        /// <param name="parma"></param>
         /// <returns></returns>
         private bool IsSuccessResult()
         {
-            if (ValidateResult() && ValidateSign())
+            if (string.Compare(GetGatewayParameterValue("return_code"), "SUCCESS") == 0 &&
+                string.Compare(GetGatewayParameterValue("result_code"), "SUCCESS") == 0 &&
+                string.Compare(GetGatewayParameterValue("sign"), GetSign()) == 0)
             {
                 return true;
             }
 
             return false;
         }
-
-
-        /// <summary>
-        /// 验证返回的结果
-        /// </summary>
-        /// <returns></returns>
-        private bool ValidateResult()
-        {
-            if (string.Compare(GetGatewayParameterValue("return_code"), "SUCCESS") == 0 && 
-                string.Compare(GetGatewayParameterValue("result_code"), "SUCCESS") == 0)
-            {
-                return true;
-            }
-
-            return false;
-
-        }
-
-
-        /// <summary>
-        /// 验证签名
-        /// </summary>
-        /// <returns></returns>
-        private bool ValidateSign()
-        {
-            if (string.Compare(GetGatewayParameterValue("sign"), GetSign()) == 0)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
+        
 
         /// <summary>
         /// 检查查询结果

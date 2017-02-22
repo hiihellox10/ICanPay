@@ -154,7 +154,7 @@ namespace ICanPay.Providers
             if (string.IsNullOrEmpty(GetGatewayParameterValue("seller_email")))
             {
                 throw new ArgumentNullException("seller_email", "订单缺少seller_email参数，seller_email是卖家支付宝账号的邮箱。" +
-                                                "你需要使用PaymentSetting<T>.SetGatewayParameterValue(\"seller_email\", \"youname@email.com\")方法设置卖家支付宝账号的邮箱。");
+                                                "你需要使用PaymentSetting.SetGatewayParameterValue(\"seller_email\", \"yourname@email.com\")方法设置卖家支付宝账号的邮箱。");
             }
 
             if (!IsEmail(GetGatewayParameterValue("seller_email")))
@@ -166,15 +166,36 @@ namespace ICanPay.Providers
 
         protected override bool CheckNotifyData()
         {
-            if (ValidateAlipayNotify() && ValidateAlipayNotifySign())
+            if (IsSuccessResult())
             {
-                // 支付状态是否为成功。TRADE_FINISHED（普通即时到账的交易成功状态，TRADE_SUCCESS（开通了高级即时到账或机票分销产品后的交易成功状态）
-                if (string.Compare(GetGatewayParameterValue("trade_status"), "TRADE_FINISHED") == 0 ||
-                    string.Compare(GetGatewayParameterValue("trade_status"), "TRADE_SUCCESS") == 0)
-                {
-                    Order.Amount = double.Parse(GetGatewayParameterValue("total_fee"));
-                    Order.Id = GetGatewayParameterValue("out_trade_no");
+                ReadNotifyOrder();
+                return true;
+            }
 
+            return false;
+        }
+
+
+        /// <summary>
+        /// 读取通知中的订单金额、订单编号
+        /// </summary>
+        private void ReadNotifyOrder()
+        {
+            Order.Amount = double.Parse(GetGatewayParameterValue("total_fee"));
+            Order.Id = GetGatewayParameterValue("out_trade_no");
+        }
+
+
+        /// <summary>
+        /// 是否是已成功支付的支付通知
+        /// </summary>
+        /// <returns></returns>
+        private bool IsSuccessResult()
+        {
+            if(ValidateNotifyParameter() && ValidateNotifySign())
+            {
+                if(ValidateNotifyId())
+                {
                     return true;
                 }
             }
@@ -184,9 +205,28 @@ namespace ICanPay.Providers
 
 
         /// <summary>
+        /// 检查支付通知，是否支付成功，签名是否正确。
+        /// </summary>
+        /// <returns></returns>
+        private bool ValidateNotifyParameter()
+        {
+            // 支付状态是否为成功。
+            // TRADE_FINISHED（普通即时到账的交易成功状态）
+            // TRADE_SUCCESS（开通了高级即时到账或机票分销产品后的交易成功状态）
+            if (string.Compare(GetGatewayParameterValue("trade_status"), "TRADE_FINISHED") == 0 ||
+                string.Compare(GetGatewayParameterValue("trade_status"), "TRADE_SUCCESS") == 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
+        /// <summary>
         /// 验证支付宝通知的签名
         /// </summary>
-        private bool ValidateAlipayNotifySign()
+        private bool ValidateNotifySign()
         {
             // 验证通知的签名
             if (string.Compare(GetGatewayParameterValue("sign"), GetOrderSign()) == 0)
@@ -228,7 +268,7 @@ namespace ICanPay.Providers
         {
             if (PaymentNotifyMethod == PaymentNotifyMethod.ServerNotify)
             {
-                System.Web.HttpContext.Current.Response.Write("success");
+                HttpContext.Current.Response.Write("success");
             }
         }
 
@@ -236,11 +276,11 @@ namespace ICanPay.Providers
         /// <summary>
         /// 验证网关的通知Id是否有效
         /// </summary>
-        private bool ValidateAlipayNotify()
+        private bool ValidateNotifyId()
         {
             // 浏览器自动返回的通知Id会在验证后1分钟失效，
             // 服务器异步通知的通知Id则会在输出标志成功接收到通知的success字符串后失效。
-            if (string.Compare(Utility.ReadPage(GetValidateAlipayNotifyUrl()), "true") == 0)
+            if (string.Compare(Utility.ReadPage(GetValidateNotifyUrl()), "true") == 0)
             {
                 return true;
             }
@@ -252,7 +292,7 @@ namespace ICanPay.Providers
         /// <summary>
         /// 获得验证支付宝通知的Url
         /// </summary>
-        private string GetValidateAlipayNotifyUrl()
+        private string GetValidateNotifyUrl()
         {
             return string.Format("{0}?service=notify_verify&partner={1}&notify_id={2}", payGatewayUrl, Merchant.UserName,
                                  GetGatewayParameterValue("notify_id"));
@@ -263,7 +303,7 @@ namespace ICanPay.Providers
         /// 是否是正确格式的Email地址
         /// </summary>
         /// <param name="emailAddress">Email地址</param>
-        public bool IsEmail(string emailAddress)
+        private bool IsEmail(string emailAddress)
         {
             if (string.IsNullOrEmpty(emailAddress))
             {
