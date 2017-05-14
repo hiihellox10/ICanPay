@@ -25,7 +25,7 @@ namespace Demo
             tenpayMerchant.Key = "000000000000000000000000000000000000000000";
 
             Merchant weChatPaymentMerchant = new Merchant();
-            weChatPaymentMerchant.GatewayType = GatewayType.WeChatPayment;
+            weChatPaymentMerchant.GatewayType = GatewayType.WeChatPay;
             weChatPaymentMerchant.UserName = "000000000000000";
             weChatPaymentMerchant.Key = "000000000000000000000000000000000000000000";
 

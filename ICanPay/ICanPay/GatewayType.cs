@@ -32,6 +32,6 @@
         /// <summary>
         /// 微信支付
         /// </summary>
-        WeChatPayment
+        WeChatPay
     }
 }

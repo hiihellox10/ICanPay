@@ -34,9 +34,9 @@ namespace Demo
         /// <summary>
         /// 查询微信的订单支付状态
         /// </summary>
-        private void QueryWeChatPaymentOrder()
+        private void QueryWeChatPayOrder()
         {
-            PaymentSetting querySetting = new PaymentSetting(GatewayType.WeChatPayment);
+            PaymentSetting querySetting = new PaymentSetting(GatewayType.WeChatPay);
             querySetting.SetGatewayParameterValue("appid", "wx000000000000000");
             querySetting.Merchant.UserName = "000000000000000";
             querySetting.Merchant.Key = "0000000000000000000000000000000000000000";

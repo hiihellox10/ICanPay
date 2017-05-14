@@ -66,9 +66,9 @@ namespace Demo
         /// <summary>
         /// 创建微信的支付订单
         /// </summary>
-        private void CreateWeChatPaymentOrder()
+        private void CreateWeChatPayOrder()
         {
-            PaymentSetting paymentSetting = new PaymentSetting(GatewayType.WeChatPayment);
+            PaymentSetting paymentSetting = new PaymentSetting(GatewayType.WeChatPay);
             paymentSetting.SetGatewayParameterValue("appid", "wx000000000000000");
             paymentSetting.Merchant.UserName = "000000000000000";
             paymentSetting.Merchant.Key = "000000000000000000000000000000000000000000";

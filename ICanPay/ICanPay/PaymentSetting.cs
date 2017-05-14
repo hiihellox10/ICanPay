@@ -131,9 +131,9 @@ namespace ICanPay
                         return new AlipayGateway();
                     }
 
-                case GatewayType.WeChatPayment:
+                case GatewayType.WeChatPay:
                     {
-                        return new WeChatPaymentGataway();
+                        return new WeChatPayGataway();
                     }
 
                 case GatewayType.Tenpay:

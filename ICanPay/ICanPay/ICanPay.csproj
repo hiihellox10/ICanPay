@@ -97,7 +97,7 @@
     <Compile Include="Providers\AlipayGateway.cs" />
     <Compile Include="Providers\NullGateway.cs" />
     <Compile Include="Providers\TenpayGateway.cs" />
-    <Compile Include="Providers\WeChatPaymentGataway.cs" />
+    <Compile Include="Providers\WeChatPayGataway.cs" />
     <Compile Include="Providers\YeepayGateway.cs" />
     <Compile Include="UnknownGatewayEventArgs.cs" />
     <Compile Include="Utility.cs" />

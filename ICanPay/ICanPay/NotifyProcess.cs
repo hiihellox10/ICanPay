@@ -42,7 +42,7 @@ namespace ICanPay
 
             if (IsWeixinpayGateway(gatewayParameterData))
             {
-                return new WeChatPaymentGataway(gatewayParameterData);
+                return new WeChatPayGataway(gatewayParameterData);
             }
 
             if (IsTenpayGateway(gatewayParameterData))
