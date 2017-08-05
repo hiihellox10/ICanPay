@@ -70,14 +70,24 @@ namespace ICanPay.Providers
 
         public string GetPaymentQRCodeContent()
         {
+            return GetWeixinPaymentUrl(CreateOrder());
+        }
+
+        private string CreateOrder()
+        {
             InitPaymentOrderParameter();
-            return GetWeixinPaymentUrl(PostOrder(ConvertGatewayParameterDataToXml(), payGatewayUrl));
+            return PostOrder(ConvertGatewayParameterDataToXml(), payGatewayUrl);
         }
 
         public bool QueryNow()
         {
+            return CheckQueryResult(QueryOrder());
+        }
+
+        private string QueryOrder()
+        {
             InitQueryOrderParameter();
-            return CheckQueryResult(PostOrder(ConvertGatewayParameterDataToXml(), queryGatewayUrl));
+            return PostOrder(ConvertGatewayParameterDataToXml(), queryGatewayUrl);
         }
 
 
