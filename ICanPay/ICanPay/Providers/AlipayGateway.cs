@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
 
 namespace ICanPay.Providers
 {
@@ -15,16 +14,16 @@ namespace ICanPay.Providers
     public sealed class AlipayGateway : GatewayBase, IPaymentForm, IPaymentUrl
     {
 
-        #region 私有字段
+#region 私有字段
 
         const string payGatewayUrl = "https://mapi.alipay.com/gateway.do";
         const string emailRegexString = @"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
         static Encoding pageEncoding = Encoding.GetEncoding("gb2312");
 
-        #endregion
+#endregion
 
 
-        #region 构造函数
+#region 构造函数
 
         /// <summary>
         /// 初始化支付宝网关
@@ -43,10 +42,10 @@ namespace ICanPay.Providers
         {
         }
 
-        #endregion
+#endregion
 
 
-        #region 属性
+#region 属性
 
         public override GatewayType GatewayType
         {
@@ -73,10 +72,10 @@ namespace ICanPay.Providers
         }
 
 
-        #endregion
+#endregion
 
 
-        #region 方法
+#region 方法
 
         public string BuildPaymentForm()
         {
@@ -313,7 +312,7 @@ namespace ICanPay.Providers
             return Regex.IsMatch(emailAddress, emailRegexString);
         }
 
-        #endregion
+#endregion
 
     }
 }

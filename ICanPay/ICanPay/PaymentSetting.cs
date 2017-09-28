@@ -1,11 +1,13 @@
 using ICanPay.Providers;
 using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
-using System.Web;
+#if NET35
+using System.Drawing;
+using System.Drawing.Imaging;
 using ThoughtWorks.QRCode.Codec;
+#endif
+
 
 namespace ICanPay
 {
@@ -21,14 +23,14 @@ namespace ICanPay
     public class PaymentSetting
     {
 
-        #region 字段
+#region 字段
 
         GatewayBase gateway;
 
-        #endregion
+#endregion
 
 
-        #region 构造函数
+#region 构造函数
 
         public PaymentSetting(GatewayType gatewayType)
         {
@@ -43,10 +45,10 @@ namespace ICanPay
             gateway.Order = order;
         }
 
-        #endregion
+#endregion
 
 
-        #region 属性
+#region 属性
 
         /// <summary>
         /// 网关
@@ -116,10 +118,10 @@ namespace ICanPay
             }
         }
 
-        #endregion
+#endregion
 
 
-        #region 方法
+#region 方法
 
 
         private GatewayBase CreateGateway(GatewayType gatewayType)
@@ -243,6 +245,7 @@ namespace ICanPay
         /// <param name="qrCodeContent">二维码内容</param>
         private void BuildQRCodeImage(string qrCodeContent)
         {
+#if NET35
             QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
             qrCodeEncoder.QRCodeScale = 4;  // 二维码大小
             Bitmap image = qrCodeEncoder.Encode(qrCodeContent, Encoding.Default);
@@ -250,9 +253,10 @@ namespace ICanPay
             image.Save(ms, ImageFormat.Png);
             HttpContext.Current.Response.ContentType = "image/x-png";
             HttpContext.Current.Response.BinaryWrite(ms.GetBuffer());
+#endif
         }
 
-        #endregion
+#endregion
 
     }
 }
