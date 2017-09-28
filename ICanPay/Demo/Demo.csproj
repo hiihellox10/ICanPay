@@ -31,6 +31,8 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -88,7 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ICanPay\ICanPay.csproj">
-      <Project>{8CC9F719-2537-4B54-BAD7-268057B946FA}</Project>
+      <Project>{9bfa992a-20a6-48c4-83b2-65bc00a49565}</Project>
       <Name>ICanPay</Name>
     </ProjectReference>
   </ItemGroup>
