@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ICanPay", "ICanPay\ICanPay.csproj", "{9BFA992A-20A6-48C4-83B2-65BC00A49565}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ICanPay.Core", "ICanPay.Core\ICanPay.Core.csproj", "{9BFA992A-20A6-48C4-83B2-65BC00A49565}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "Demo\Demo.csproj", "{1A3D9970-3E5C-4B9B-ABC9-D39767C861F1}"
 EndProject

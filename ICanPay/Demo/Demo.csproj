@@ -105,9 +105,9 @@
       <Project>{7f6e1bdf-2415-4f15-a712-6802b8b6d00a}</Project>
       <Name>ICanPay.Yeepay</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ICanPay\ICanPay.csproj">
+    <ProjectReference Include="..\ICanPay.Core\ICanPay.Core.csproj">
       <Project>{9bfa992a-20a6-48c4-83b2-65bc00a49565}</Project>
-      <Name>ICanPay</Name>
+      <Name>ICanPay.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

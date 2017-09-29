@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ICanPay\ICanPay.csproj" />
+    <ProjectReference Include="..\ICanPay.Core\ICanPay.Core.csproj" />
   </ItemGroup>
 
 </Project>

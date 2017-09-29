@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 #endif
 
-namespace ICanPay
+namespace ICanPay.Core
 {
 #if NETSTANDARD2_0
 

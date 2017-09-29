@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ICanPay
+namespace ICanPay.Core
 {
     /// <summary>
     /// 未知网关
