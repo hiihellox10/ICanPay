@@ -89,6 +89,22 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ICanPay.Alipay\ICanPay.Alipay.csproj">
+      <Project>{c4804c42-aac4-4e73-b964-009c5e8b30d7}</Project>
+      <Name>ICanPay.Alipay</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ICanPay.Tenpay\ICanPay.Tenpay.csproj">
+      <Project>{d61f8622-f322-4ace-963b-7faf5963b03c}</Project>
+      <Name>ICanPay.Tenpay</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ICanPay.Wechatpay\ICanPay.Wechatpay.csproj">
+      <Project>{f75c199c-e7b3-4c24-97cf-e20a43aa6e04}</Project>
+      <Name>ICanPay.Wechatpay</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ICanPay.Yeepay\ICanPay.Yeepay.csproj">
+      <Project>{7f6e1bdf-2415-4f15-a712-6802b8b6d00a}</Project>
+      <Name>ICanPay.Yeepay</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ICanPay\ICanPay.csproj">
       <Project>{9bfa992a-20a6-48c4-83b2-65bc00a49565}</Project>
       <Name>ICanPay</Name>

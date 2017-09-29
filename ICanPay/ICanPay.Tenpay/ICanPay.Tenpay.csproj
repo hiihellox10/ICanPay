@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net35</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/hiihellox10/ICanPay</PackageProjectUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net35'">
+    <Reference Include="System.Web" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ICanPay\ICanPay.csproj" />
+  </ItemGroup>
+
+</Project>

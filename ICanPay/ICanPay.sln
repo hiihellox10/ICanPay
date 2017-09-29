@@ -7,6 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ICanPay", "ICanPay\ICanPay.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "Demo\Demo.csproj", "{1A3D9970-3E5C-4B9B-ABC9-D39767C861F1}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ICanPay.Alipay", "ICanPay.Alipay\ICanPay.Alipay.csproj", "{C4804C42-AAC4-4E73-B964-009C5E8B30D7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ICanPay.Tenpay", "ICanPay.Tenpay\ICanPay.Tenpay.csproj", "{D61F8622-F322-4ACE-963B-7FAF5963B03C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ICanPay.Wechatpay", "ICanPay.Wechatpay\ICanPay.Wechatpay.csproj", "{F75C199C-E7B3-4C24-97CF-E20A43AA6E04}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ICanPay.Yeepay", "ICanPay.Yeepay\ICanPay.Yeepay.csproj", "{7F6E1BDF-2415-4F15-A712-6802B8B6D00A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +29,22 @@ Global
 		{1A3D9970-3E5C-4B9B-ABC9-D39767C861F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A3D9970-3E5C-4B9B-ABC9-D39767C861F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A3D9970-3E5C-4B9B-ABC9-D39767C861F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4804C42-AAC4-4E73-B964-009C5E8B30D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4804C42-AAC4-4E73-B964-009C5E8B30D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4804C42-AAC4-4E73-B964-009C5E8B30D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4804C42-AAC4-4E73-B964-009C5E8B30D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D61F8622-F322-4ACE-963B-7FAF5963B03C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D61F8622-F322-4ACE-963B-7FAF5963B03C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D61F8622-F322-4ACE-963B-7FAF5963B03C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D61F8622-F322-4ACE-963B-7FAF5963B03C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F75C199C-E7B3-4C24-97CF-E20A43AA6E04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F75C199C-E7B3-4C24-97CF-E20A43AA6E04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F75C199C-E7B3-4C24-97CF-E20A43AA6E04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F75C199C-E7B3-4C24-97CF-E20A43AA6E04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F6E1BDF-2415-4F15-A712-6802B8B6D00A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F6E1BDF-2415-4F15-A712-6802B8B6D00A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F6E1BDF-2415-4F15-A712-6802B8B6D00A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F6E1BDF-2415-4F15-A712-6802B8B6D00A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

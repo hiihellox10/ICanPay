@@ -1,4 +1,5 @@
-﻿namespace ICanPay
+﻿
+namespace ICanPay
 {
     /// <summary>
     /// 网关类型
@@ -32,6 +33,6 @@
         /// <summary>
         /// 微信支付
         /// </summary>
-        WeChatPay
+        Wechatpay
     }
 }

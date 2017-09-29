@@ -1,14 +1,14 @@
-#if NETSTANDARD2_0
-using Microsoft.AspNetCore.Http;
-#endif
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Xml;
+#if NETSTANDARD2_0
+using Microsoft.AspNetCore.Http;
+#endif
 
-namespace ICanPay.Providers
+namespace ICanPay.Wechatpay
 {
     /// <summary>
     /// 微信支付网关
@@ -16,7 +16,7 @@ namespace ICanPay.Providers
     /// <remarks>
     /// 使用模式二实现微信支付
     /// </remarks>
-    public sealed class WeChatPayGataway : GatewayBase, IPaymentQRCode, IQueryNow
+    public sealed class WechatpayGataway : GatewayBase, IPaymentQRCode, IQueryNow
     {
 
         #region 私有字段
@@ -32,7 +32,7 @@ namespace ICanPay.Providers
         /// <summary>
         /// 初始化微信支付网关
         /// </summary>
-        public WeChatPayGataway()
+        public WechatpayGataway()
         {
         }
 
@@ -41,7 +41,7 @@ namespace ICanPay.Providers
         /// 初始化微信支付网关
         /// </summary>
         /// <param name="gatewayParameterData">网关通知的数据集合</param>
-        public WeChatPayGataway(List<GatewayParameter> gatewayParameterData)
+        public WechatpayGataway(List<GatewayParameter> gatewayParameterData)
             : base(gatewayParameterData)
         {
         }
@@ -51,7 +51,7 @@ namespace ICanPay.Providers
 
         public override GatewayType GatewayType
         {
-            get { return GatewayType.WeChatPay; }
+            get { return GatewayType.Wechatpay; }
         }
 
         public override PaymentNotifyMethod PaymentNotifyMethod

@@ -10,13 +10,13 @@ namespace ICanPay
 
 #elif NETSTANDARD2_0
 
-        private static Microsoft.AspNetCore.Http.IHttpContextAccessor _accessor;
+        private static Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
 
-        public static Microsoft.AspNetCore.Http.HttpContext Current => _accessor.HttpContext;
+        public static Microsoft.AspNetCore.Http.HttpContext Current => HttpContextAccessor.HttpContext;
 
-        internal static void Configure(Microsoft.AspNetCore.Http.IHttpContextAccessor accessor)
+        internal static void Configure(Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor)
         {
-            _accessor = accessor;
+            HttpContextAccessor = httpContextAccessor;
         }
 
 #endif

@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Text;
 #if NET35
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -5,10 +8,6 @@ using ThoughtWorks.QRCode.Codec;
 #elif NETSTANDARD2_0
 using Microsoft.AspNetCore.Http;
 #endif
-using ICanPay.Providers;
-using System;
-using System.IO;
-using System.Text;
 
 namespace ICanPay
 {
@@ -134,9 +133,9 @@ namespace ICanPay
                         return new AlipayGateway();
                     }
 
-                case GatewayType.WeChatPay:
+                case GatewayType.Wechatpay:
                     {
-                        return new WeChatPayGataway();
+                        return new WechatpayGataway();
                     }
 
                 case GatewayType.Tenpay:

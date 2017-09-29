@@ -36,7 +36,7 @@ namespace Demo
         /// </summary>
         private void QueryWeChatPayOrder()
         {
-            PaymentSetting querySetting = new PaymentSetting(GatewayType.WeChatPay);
+            PaymentSetting querySetting = new PaymentSetting(GatewayType.Wechatpay);
             querySetting.SetGatewayParameterValue("appid", "wx000000000000000");
             querySetting.Merchant.UserName = "000000000000000";
             querySetting.Merchant.Key = "0000000000000000000000000000000000000000";
