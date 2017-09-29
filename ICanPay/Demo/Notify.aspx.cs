@@ -24,17 +24,17 @@ namespace Demo
             tenpayMerchant.UserName = "000000000000000";
             tenpayMerchant.Key = "000000000000000000000000000000000000000000";
 
-            Merchant weChatPaymentMerchant = new Merchant();
-            weChatPaymentMerchant.GatewayType = GatewayType.WeChatPay;
-            weChatPaymentMerchant.UserName = "000000000000000";
-            weChatPaymentMerchant.Key = "000000000000000000000000000000000000000000";
+            Merchant wechatpayMerchant = new Merchant();
+            wechatpayMerchant.GatewayType = GatewayType.Wechatpay;
+            wechatpayMerchant.UserName = "000000000000000";
+            wechatpayMerchant.Key = "000000000000000000000000000000000000000000";
 
             // 添加到商户数据集合
             List<Merchant> merchantList = new List<Merchant>();
             merchantList.Add(alipayMerchant);
             merchantList.Add(yeepayMerchant);
             merchantList.Add(tenpayMerchant);
-            merchantList.Add(weChatPaymentMerchant);
+            merchantList.Add(wechatpayMerchant);
 
             // 订阅支付通知事件
             PaymentNotify notify = new PaymentNotify(merchantList);
