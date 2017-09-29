@@ -177,7 +177,7 @@ namespace ICanPay
             var allKeys = queryString.Keys;
 #endif
 
-            foreach(var item in allKeys)
+            foreach (var item in allKeys)
             {
                 SetGatewayParameterValue(gatewayParameterList, item, queryString[item], GatewayParameterRequestMethod.Get);
             }
@@ -261,7 +261,7 @@ namespace ICanPay
             return false;
         }
 
-#endregion
+        #endregion
 
     }
 }

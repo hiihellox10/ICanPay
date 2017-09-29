@@ -278,14 +278,14 @@ namespace ICanPay
         {
             GatewayParameter parameter = GatewayParameterData.SingleOrDefault(p => string.Compare(p.Name, gatewayParameterName) == 0 &&
                                                                                    (p.RequestMethod & gatewayParameterRequestMethod) == p.RequestMethod);
-            if(parameter != null)
+            if (parameter != null)
             {
                 return parameter.Value;
             }
 
             return string.Empty;
         }
-        
+
 
         /// <summary>
         /// 检验网关返回的通知，确认订单是否支付成功

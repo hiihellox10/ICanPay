@@ -154,7 +154,6 @@ namespace ICanPay.Providers
         }
 
 
-
         /// <summary>
         /// 验证支付订单的参数设置
         /// </summary>

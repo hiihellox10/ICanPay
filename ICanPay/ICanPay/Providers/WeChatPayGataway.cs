@@ -137,9 +137,11 @@ namespace ICanPay.Providers
         /// <returns></returns>
         private string ConvertGatewayParameterDataToXml()
         {
-            XmlWriterSettings settings = new XmlWriterSettings();
-            settings.Indent = true;
-            settings.OmitXmlDeclaration = true;
+            XmlWriterSettings settings = new XmlWriterSettings
+            {
+                Indent = true,
+                OmitXmlDeclaration = true
+            };
 
             StringBuilder xmlBuilder = new StringBuilder();
             using (XmlWriter writer = XmlWriter.Create(xmlBuilder, settings))
