@@ -1,9 +1,7 @@
 ﻿using ICanPay.Providers;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Xml;
 
 namespace ICanPay
@@ -171,11 +169,17 @@ namespace ICanPay
         /// <param name="gatewayParameterList">网关通知的参数列表</param>
         private static void ReadQueryString(List<GatewayParameter> gatewayParameterList)
         {
-            NameValueCollection queryString = HttpContext.Current.Request.QueryString;
-            string[] allKeys = queryString.AllKeys;
-            for (int i = 0; i < allKeys.Length; i++)
+#if NET35
+            var queryString = HttpContext.Current.Request.QueryString;
+            var allKeys = queryString.AllKeys;
+#elif NETSTANDARD2_0
+            var queryString = HttpContext.Current.Request.Query;
+            var allKeys = queryString.Keys;
+#endif
+
+            foreach(var item in allKeys)
             {
-                SetGatewayParameterValue(gatewayParameterList, allKeys[i], queryString[allKeys[i]], GatewayParameterRequestMethod.Get);
+                SetGatewayParameterValue(gatewayParameterList, item, queryString[item], GatewayParameterRequestMethod.Get);
             }
         }
 
@@ -186,11 +190,16 @@ namespace ICanPay
         /// <param name="gatewayParameterList">网关通知的参数列表</param>
         private static void ReadForm(List<GatewayParameter> gatewayParameterList)
         {
-            NameValueCollection form = HttpContext.Current.Request.Form;
-            string[] allKeys = form.AllKeys;
-            for (int i = 0; i < allKeys.Length; i++)
+            var form = HttpContext.Current.Request.Form;
+#if NET35
+            var allKeys = form.AllKeys;
+#elif NETSTANDARD2_0
+            var allKeys = form.Keys;
+#endif
+
+            foreach (var item in allKeys)
             {
-                SetGatewayParameterValue(gatewayParameterList, allKeys[i], form[allKeys[i]], GatewayParameterRequestMethod.Post);
+                SetGatewayParameterValue(gatewayParameterList, item, form[item], GatewayParameterRequestMethod.Get);
             }
         }
 
@@ -206,7 +215,11 @@ namespace ICanPay
                 XmlDocument xmlDocument = new XmlDocument();
                 try
                 {
+#if NET35
                     StreamReader reader = new StreamReader(HttpContext.Current.Request.InputStream);
+#elif NETSTANDARD2_0
+                    StreamReader reader = new StreamReader(HttpContext.Current.Request.Body);
+#endif
                     xmlDocument.LoadXml(reader.ReadToEnd());
                 }
                 catch (XmlException) { }
@@ -228,9 +241,19 @@ namespace ICanPay
         /// <returns></returns>
         private static bool IsWeixinpayNotify()
         {
-            if (string.Compare(HttpContext.Current.Request.RequestType, "POST") == 0 &&
-                string.Compare(HttpContext.Current.Request.ContentType, "text/xml") == 0 &&
-                string.Compare(HttpContext.Current.Request.UserAgent, "Mozilla/4.0") == 0)
+#if NET35
+            string requestType = HttpContext.Current.Request.RequestType;
+            string userAgent = HttpContext.Current.Request.UserAgent;
+#elif NETSTANDARD2_0
+            string requestType = HttpContext.Current.Request.Headers["RequestType"];
+            string userAgent = HttpContext.Current.Request.Headers["UserAgent"];
+#endif
+
+            string contentType = HttpContext.Current.Request.ContentType;
+
+            if (string.Compare(requestType, "POST") == 0 &&
+                string.Compare(contentType, "text/xml") == 0 &&
+                string.Compare(userAgent, "Mozilla/4.0") == 0)
             {
                 return true;
             }
@@ -238,7 +261,7 @@ namespace ICanPay
             return false;
         }
 
-        #endregion
+#endregion
 
     }
 }

@@ -1,9 +1,11 @@
+#if NETSTANDARD2_0
+using Microsoft.AspNetCore.Http;
+#endif
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Web;
 using System.Xml;
 
 namespace ICanPay.Providers
@@ -278,7 +280,7 @@ namespace ICanPay.Providers
 
             return false;
         }
-        
+
 
         /// <summary>
         /// 检查查询结果
@@ -292,17 +294,17 @@ namespace ICanPay.Providers
             ReadResultXml(resultXml);
             if (IsSuccessResult())
             {
-               if(string.Compare(Order.Id, GetGatewayParameterValue("out_trade_no")) == 0 &&
-                  Order.Amount == int.Parse(GetGatewayParameterValue("total_fee")) / 100.0)
-               {
-                   return true;
-               }
+                if (string.Compare(Order.Id, GetGatewayParameterValue("out_trade_no")) == 0 &&
+                   Order.Amount == int.Parse(GetGatewayParameterValue("total_fee")) / 100.0)
+                {
+                    return true;
+                }
             }
 
             return false;
         }
 
-          /// <summary>
+        /// <summary>
         /// 初始化查询订单参数
         /// </summary>
         private void InitQueryOrderParameter()
@@ -322,7 +324,7 @@ namespace ICanPay.Providers
             GatewayParameterData.Clear();
         }
 
-        
+
         /// <summary>
         /// 初始化表示已成功接收到支付通知的数据
         /// </summary>
@@ -337,7 +339,11 @@ namespace ICanPay.Providers
             // 需要先清除之前接收到的通知的参数，否则会对生成标志成功接收到通知的XML造成干扰。
             ClearGatewayParameterData();
             InitProcessSuccessParameter();
+#if NET35
             HttpContext.Current.Response.Write(ConvertGatewayParameterDataToXml());
+#elif NETSTANDARD2_0
+            HttpContext.Current.Response.WriteAsync(ConvertGatewayParameterDataToXml()).GetAwaiter();
+#endif
         }
     }
 }

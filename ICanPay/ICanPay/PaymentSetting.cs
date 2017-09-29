@@ -1,11 +1,14 @@
-using ICanPay.Providers;
-using System;
+#if NET35
 using System.Drawing;
 using System.Drawing.Imaging;
+using ThoughtWorks.QRCode.Codec;
+#elif NETSTANDARD2_0
+using Microsoft.AspNetCore.Http;
+#endif
+using ICanPay.Providers;
+using System;
 using System.IO;
 using System.Text;
-using System.Web;
-using ThoughtWorks.QRCode.Codec;
 
 namespace ICanPay
 {
@@ -21,14 +24,14 @@ namespace ICanPay
     public class PaymentSetting
     {
 
-        #region 字段
+#region 字段
 
         GatewayBase gateway;
 
-        #endregion
+#endregion
 
 
-        #region 构造函数
+#region 构造函数
 
         public PaymentSetting(GatewayType gatewayType)
         {
@@ -43,10 +46,10 @@ namespace ICanPay
             gateway.Order = order;
         }
 
-        #endregion
+#endregion
 
 
-        #region 属性
+#region 属性
 
         /// <summary>
         /// 网关
@@ -116,10 +119,10 @@ namespace ICanPay
             }
         }
 
-        #endregion
+#endregion
 
 
-        #region 方法
+#region 方法
 
 
         private GatewayBase CreateGateway(GatewayType gatewayType)
@@ -172,7 +175,11 @@ namespace ICanPay
             IPaymentForm paymentForm = gateway as IPaymentForm;
             if (paymentForm != null)
             {
+#if NET35
                 HttpContext.Current.Response.Write(paymentForm.BuildPaymentForm());
+#elif NETSTANDARD2_0
+                HttpContext.Current.Response.WriteAsync(paymentForm.BuildPaymentForm()).GetAwaiter();
+#endif
                 return;
             }
 
@@ -202,7 +209,11 @@ namespace ICanPay
             IQueryForm queryForm = gateway as IQueryForm;
             if (queryForm != null)
             {
+#if NET35
                 HttpContext.Current.Response.Write(queryForm.BuildQueryForm());
+#elif NETSTANDARD2_0
+                HttpContext.Current.Response.WriteAsync(queryForm.BuildQueryForm()).GetAwaiter();
+#endif
                 return;
             }
 
@@ -243,6 +254,7 @@ namespace ICanPay
         /// <param name="qrCodeContent">二维码内容</param>
         private void BuildQRCodeImage(string qrCodeContent)
         {
+#if NET35
             QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
             qrCodeEncoder.QRCodeScale = 4;  // 二维码大小
             Bitmap image = qrCodeEncoder.Encode(qrCodeContent, Encoding.Default);
@@ -250,9 +262,10 @@ namespace ICanPay
             image.Save(ms, ImageFormat.Png);
             HttpContext.Current.Response.ContentType = "image/x-png";
             HttpContext.Current.Response.BinaryWrite(ms.GetBuffer());
+#endif
         }
 
-        #endregion
+#endregion
 
     }
 }
