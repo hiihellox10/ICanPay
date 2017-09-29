@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace ICanPay
 {
     public static class HttpContext
@@ -9,21 +8,17 @@ namespace ICanPay
 
         public static System.Web.HttpContext Current => System.Web.HttpContext.Current;
 
-#endif
+#elif NETSTANDARD2_0
 
-#if NETSTANDARD2_0
-        private static IServiceProvider ServiceProvider;
+        private static Microsoft.AspNetCore.Http.IHttpContextAccessor _accessor;
 
-        public static Microsoft.AspNetCore.Http.HttpContext Current
+        public static Microsoft.AspNetCore.Http.HttpContext Current => _accessor.HttpContext;
+
+        internal static void Configure(Microsoft.AspNetCore.Http.IHttpContextAccessor accessor)
         {
-            get
-            {
-                object factory = ServiceProvider.GetService(typeof(Microsoft.AspNetCore.Http.IHttpContextAccessor));
-                Microsoft.AspNetCore.Http.HttpContext context = ((Microsoft.AspNetCore.Http.HttpContextAccessor)factory).HttpContext;
-                return context;
-            }
+            _accessor = accessor;
         }
-#endif
 
+#endif
     }
 }

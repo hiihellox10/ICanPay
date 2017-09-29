@@ -1,3 +1,6 @@
+#if NETSTANDARD2_0
+using Microsoft.AspNetCore.Http;
+#endif
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -216,15 +219,15 @@ namespace ICanPay.Providers
 
         private bool ValidateQuery()
         {
-             if(string.Compare(GetGatewayParameterValue("r1_Code"), "1") == 0 && 
-                string.Compare(GetGatewayParameterValue("rb_PayStatus"), "SUCCESS") == 0 && 
-                string.Compare(GetGatewayParameterValue("r6_Order"), Order.Id) == 0 && 
-                Order.Amount == Convert.ToDouble(GetGatewayParameterValue("r3_Amt")))
-             {
-                 return true;
-             }
+            if (string.Compare(GetGatewayParameterValue("r1_Code"), "1") == 0 &&
+               string.Compare(GetGatewayParameterValue("rb_PayStatus"), "SUCCESS") == 0 &&
+               string.Compare(GetGatewayParameterValue("r6_Order"), Order.Id) == 0 &&
+               Order.Amount == Convert.ToDouble(GetGatewayParameterValue("r3_Amt")))
+            {
+                return true;
+            }
 
-             return false;
+            return false;
         }
 
 
@@ -232,7 +235,12 @@ namespace ICanPay.Providers
         {
             if (PaymentNotifyMethod == PaymentNotifyMethod.ServerNotify)
             {
-                HttpContext.Current.Response.Write("SUCCESS");
+                string success = "SUCCESS";
+#if NET35
+                HttpContext.Current.Response.Write(success);
+#elif NETSTANDARD2_0
+                HttpContext.Current.Response.WriteAsync(success).GetAwaiter();
+#endif
             }
         }
 
@@ -255,7 +263,12 @@ namespace ICanPay.Providers
         {
             get
             {
-                if (string.Compare(HttpContext.Current.Request.RequestType, "GET") == 0)
+#if NET35
+                string requestType = HttpContext.Current.Request.RequestType;
+#elif NETSTANDARD2_0
+                string requestType = HttpContext.Current.Request.Headers["RequestType"];
+#endif
+                if (string.Compare(requestType, "GET") == 0)
                 {
                     return PaymentNotifyMethod.ServerNotify;
                 }
@@ -400,10 +413,10 @@ namespace ICanPay.Providers
                 }
 
                 private static byte[] pad = new byte[64] {
-													 0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-													 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-													 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-													 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+                                                     0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
                 public byte[] finalize()
                 {
                     byte[] bits = new byte[8];

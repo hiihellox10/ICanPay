@@ -1,7 +1,11 @@
-﻿using System;
+﻿#if NETSTANDARD2_0
+using Microsoft.AspNetCore.Http;
+#endif
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+
 
 namespace ICanPay.Providers
 {
@@ -61,9 +65,17 @@ namespace ICanPay.Providers
         {
             get
             {
+#if NET35
+                string requestType = HttpContext.Current.Request.RequestType;
+                string userAgent = HttpContext.Current.Request.UserAgent;
+#elif NETSTANDARD2_0
+                string requestType = HttpContext.Current.Request.Headers["RequestType"];
+                string userAgent = HttpContext.Current.Request.Headers["UserAgent"];
+#endif
+
                 // 通过RequestType、UserAgent来判断是否为服务器通知
-                if (string.Compare(HttpContext.Current.Request.RequestType, "GET") == 0 &&
-                    string.IsNullOrEmpty(HttpContext.Current.Request.UserAgent))
+                if (string.Compare(requestType, "GET") == 0 &&
+                    string.IsNullOrEmpty(userAgent))
                 {
                     return PaymentNotifyMethod.ServerNotify;
                 }
@@ -105,7 +117,11 @@ namespace ICanPay.Providers
             SetGatewayParameterValue("out_trade_no", Order.Id);
             SetGatewayParameterValue("partner", Merchant.UserName);
             SetGatewayParameterValue("return_url", Merchant.NotifyUrl);
+#if NET35
             SetGatewayParameterValue("spbill_create_ip", HttpContext.Current.Request.UserHostAddress);
+#elif NETSTANDARD2_0
+            SetGatewayParameterValue("spbill_create_ip", HttpContext.Current.Request.Host.Value);
+#endif
             SetGatewayParameterValue("total_fee", Order.Amount * 100);
             SetGatewayParameterValue("input_charset", "GBK");
             SetGatewayParameterValue("sign", GetOrderSign());    // 签名需要在最后设置，以免缺少参数。
@@ -208,7 +224,12 @@ namespace ICanPay.Providers
         {
             if (PaymentNotifyMethod == PaymentNotifyMethod.ServerNotify)
             {
-                HttpContext.Current.Response.Write("success");
+                string success = "success";
+#if NET35
+                HttpContext.Current.Response.Write(success);
+#elif NETSTANDARD2_0
+                HttpContext.Current.Response.WriteAsync(success).GetAwaiter();
+#endif
             }
         }
 
@@ -236,8 +257,8 @@ namespace ICanPay.Providers
         /// <returns></returns>
         private bool ValidateOrder()
         {
-            if(Order.Amount == Convert.ToDouble(GetGatewayParameterValue("total_fee")) * 0.01 &&
-               string.Compare(Order.Id , GetGatewayParameterValue("out_trade_no")) == 0)
+            if (Order.Amount == Convert.ToDouble(GetGatewayParameterValue("total_fee")) * 0.01 &&
+               string.Compare(Order.Id, GetGatewayParameterValue("out_trade_no")) == 0)
             {
                 return true;
             }
@@ -309,7 +330,7 @@ namespace ICanPay.Providers
         /// <param name="gatewayParameterData">网关的数据的集合</param>
         private void RestoreGatewayParameter(List<GatewayParameter> gatewayParameterData)
         {
-            foreach(GatewayParameter item in gatewayParameterData)
+            foreach (GatewayParameter item in gatewayParameterData)
             {
                 SetGatewayParameterValue(item.Name, item.Value, item.RequestMethod);
             }

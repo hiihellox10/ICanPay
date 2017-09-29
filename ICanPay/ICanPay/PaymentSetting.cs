@@ -1,13 +1,14 @@
-using ICanPay.Providers;
-using System;
-using System.IO;
-using System.Text;
 #if NET35
 using System.Drawing;
 using System.Drawing.Imaging;
 using ThoughtWorks.QRCode.Codec;
+#elif NETSTANDARD2_0
+using Microsoft.AspNetCore.Http;
 #endif
-
+using ICanPay.Providers;
+using System;
+using System.IO;
+using System.Text;
 
 namespace ICanPay
 {
@@ -174,7 +175,11 @@ namespace ICanPay
             IPaymentForm paymentForm = gateway as IPaymentForm;
             if (paymentForm != null)
             {
+#if NET35
                 HttpContext.Current.Response.Write(paymentForm.BuildPaymentForm());
+#elif NETSTANDARD2_0
+                HttpContext.Current.Response.WriteAsync(paymentForm.BuildPaymentForm()).GetAwaiter();
+#endif
                 return;
             }
 
@@ -204,7 +209,11 @@ namespace ICanPay
             IQueryForm queryForm = gateway as IQueryForm;
             if (queryForm != null)
             {
+#if NET35
                 HttpContext.Current.Response.Write(queryForm.BuildQueryForm());
+#elif NETSTANDARD2_0
+                HttpContext.Current.Response.WriteAsync(queryForm.BuildQueryForm()).GetAwaiter();
+#endif
                 return;
             }
 

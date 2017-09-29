@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+#if NETSTANDARD2_0
+using Microsoft.AspNetCore.Http;
+#endif
 
 namespace ICanPay.Providers
 {
@@ -14,16 +17,16 @@ namespace ICanPay.Providers
     public sealed class AlipayGateway : GatewayBase, IPaymentForm, IPaymentUrl
     {
 
-#region 私有字段
+        #region 私有字段
 
         const string payGatewayUrl = "https://mapi.alipay.com/gateway.do";
         const string emailRegexString = @"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
         static Encoding pageEncoding = Encoding.GetEncoding("gb2312");
 
-#endregion
+        #endregion
 
 
-#region 构造函数
+        #region 构造函数
 
         /// <summary>
         /// 初始化支付宝网关
@@ -42,10 +45,10 @@ namespace ICanPay.Providers
         {
         }
 
-#endregion
+        #endregion
 
 
-#region 属性
+        #region 属性
 
         public override GatewayType GatewayType
         {
@@ -60,9 +63,16 @@ namespace ICanPay.Providers
         {
             get
             {
+#if NET35
+                string requestType = HttpContext.Current.Request.RequestType;
+                string userAgent = HttpContext.Current.Request.UserAgent;
+#elif NETSTANDARD2_0
+                string requestType = HttpContext.Current.Request.Headers["RequestType"];
+                string userAgent = HttpContext.Current.Request.Headers["UserAgent"];
+#endif
                 // 通过RequestType、UserAgent来判断是否为服务器通知
-                if (string.Compare(HttpContext.Current.Request.RequestType, "POST") == 0 &&
-                    string.Compare(HttpContext.Current.Request.UserAgent, "Mozilla/4.0") == 0)
+                if (string.Compare(requestType, "POST") == 0 &&
+                    string.Compare(userAgent, "Mozilla/4.0") == 0)
                 {
                     return PaymentNotifyMethod.ServerNotify;
                 }
@@ -72,10 +82,10 @@ namespace ICanPay.Providers
         }
 
 
-#endregion
+        #endregion
 
 
-#region 方法
+        #region 方法
 
         public string BuildPaymentForm()
         {
@@ -132,7 +142,7 @@ namespace ICanPay.Providers
         private string GetSignParameter()
         {
             StringBuilder signBuilder = new StringBuilder();
-            foreach(KeyValuePair<string, string> item in GetSortedGatewayParameter())
+            foreach (KeyValuePair<string, string> item in GetSortedGatewayParameter())
             {
                 if (string.Compare("sign", item.Key) != 0 && string.Compare("sign_type", item.Key) != 0)
                 {
@@ -191,9 +201,9 @@ namespace ICanPay.Providers
         /// <returns></returns>
         private bool IsSuccessResult()
         {
-            if(ValidateNotifyParameter() && ValidateNotifySign())
+            if (ValidateNotifyParameter() && ValidateNotifySign())
             {
-                if(ValidateNotifyId())
+                if (ValidateNotifyId())
                 {
                     return true;
                 }
@@ -267,7 +277,12 @@ namespace ICanPay.Providers
         {
             if (PaymentNotifyMethod == PaymentNotifyMethod.ServerNotify)
             {
-                HttpContext.Current.Response.Write("success");
+                string success = "success";
+#if NET35
+                HttpContext.Current.Response.Write(success);
+#elif NETSTANDARD2_0
+                HttpContext.Current.Response.WriteAsync(success).GetAwaiter();
+#endif
             }
         }
 
@@ -312,7 +327,7 @@ namespace ICanPay.Providers
             return Regex.IsMatch(emailAddress, emailRegexString);
         }
 
-#endregion
+        #endregion
 
     }
 }
