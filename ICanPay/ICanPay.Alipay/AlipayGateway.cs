@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using ICanPay.Core;
 #if NETSTANDARD2_0
 using Microsoft.AspNetCore.Http;
 #endif

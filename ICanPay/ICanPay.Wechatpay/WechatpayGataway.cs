@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Xml;
+using ICanPay.Core;
 #if NETSTANDARD2_0
 using Microsoft.AspNetCore.Http;
 #endif

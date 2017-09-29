@@ -1,5 +1,5 @@
 ﻿
-namespace ICanPay.Core
+namespace ICanPay
 {
     public static class HttpContext
     {

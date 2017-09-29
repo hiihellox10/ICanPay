@@ -4,7 +4,7 @@ namespace ICanPay.Core
     /// <summary>
     /// 订单是使用二维码支付时创建订单的支付二维码
     /// </summary>
-    internal interface IPaymentQRCode
+    public interface IPaymentQRCode
     {
 
         /// <summary>
