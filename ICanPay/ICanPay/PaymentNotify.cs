@@ -73,34 +73,13 @@ namespace ICanPay
 
         #region ·½·¨
 
-        protected virtual void OnPaymentFailed(PaymentFailedEventArgs e)
-        {
-            PaymentFailedEventHandler handler = PaymentFailed;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
+        protected virtual void OnPaymentFailed(PaymentFailedEventArgs e) => PaymentFailed?.Invoke(this, e);
 
 
-        protected virtual void OnPaymentSucceed(PaymentSucceedEventArgs e)
-        {
-            PaymentSucceedEventHandler handler = PaymentSucceed;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
+        protected virtual void OnPaymentSucceed(PaymentSucceedEventArgs e) => PaymentSucceed?.Invoke(this, e);
 
 
-        protected virtual void OnUnknownGateway(UnknownGatewayEventArgs e)
-        {
-            UnknownGatewayEventHandler handler = UnknownGateway;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
+        protected virtual void OnUnknownGateway(UnknownGatewayEventArgs e) => UnknownGateway?.Invoke(this, e);
 
 
         /// <summary>

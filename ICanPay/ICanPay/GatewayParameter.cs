@@ -24,7 +24,7 @@ namespace ICanPay
 
         public GatewayParameter(string parameterName, string parameterValue, GatewayParameterRequestMethod parameterType)
         {
-            this.name = parameterName;
+            Name = parameterName;
             Value = parameterValue;
             RequestMethod = parameterType;
         }

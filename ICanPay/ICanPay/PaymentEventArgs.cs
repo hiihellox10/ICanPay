@@ -26,7 +26,12 @@ namespace ICanPay
         public PaymentEventArgs(GatewayBase gateway)
         {
             this.gateway = gateway;
-            notifyServerHostAddress = System.Web.HttpContext.Current.Request.UserHostAddress;
+
+#if NET35
+            notifyServerHostAddress = HttpContext.Current.Request.UserHostAddress;
+#elif NETSTANDARD2_0
+            notifyServerHostAddress = HttpContext.Current.Request.Host.Value;
+#endif
         }
 
 

@@ -1,11 +1,14 @@
-using ICanPay.Providers;
-using System;
+#if NET35
 using System.Drawing;
 using System.Drawing.Imaging;
+using ThoughtWorks.QRCode.Codec;
+#elif NETSTANDARD2_0
+using Microsoft.AspNetCore.Http;
+#endif
+using ICanPay.Providers;
+using System;
 using System.IO;
 using System.Text;
-using System.Web;
-using ThoughtWorks.QRCode.Codec;
 
 namespace ICanPay
 {
@@ -162,22 +165,23 @@ namespace ICanPay
         /// </remarks>
         public void Payment()
         {
-            IPaymentUrl paymentUrl = gateway as IPaymentUrl;
-            if (paymentUrl != null)
+            if (gateway is IPaymentUrl paymentUrl)
             {
                 HttpContext.Current.Response.Redirect(paymentUrl.BuildPaymentUrl());
                 return;
             }
 
-            IPaymentForm paymentForm = gateway as IPaymentForm;
-            if (paymentForm != null)
+            if (gateway is IPaymentForm paymentForm)
             {
+#if NET35
                 HttpContext.Current.Response.Write(paymentForm.BuildPaymentForm());
+#elif NETSTANDARD2_0
+                HttpContext.Current.Response.WriteAsync(paymentForm.BuildPaymentForm()).GetAwaiter();
+#endif
                 return;
             }
 
-            IPaymentQRCode paymentQRCode = gateway as IPaymentQRCode;
-            if (paymentQRCode != null)
+            if (gateway is IPaymentQRCode paymentQRCode)
             {
                 BuildQRCodeImage(paymentQRCode.GetPaymentQRCodeContent());
                 return;
@@ -192,32 +196,33 @@ namespace ICanPay
         /// </summary>
         public void QueryNotify()
         {
-            IQueryUrl queryUrl = gateway as IQueryUrl;
-            if (queryUrl != null)
+            if (gateway is IQueryUrl queryUrl)
             {
                 HttpContext.Current.Response.Redirect(queryUrl.BuildQueryUrl());
                 return;
             }
 
-            IQueryForm queryForm = gateway as IQueryForm;
-            if (queryForm != null)
+            if (gateway is IQueryForm queryForm)
             {
+#if NET35
                 HttpContext.Current.Response.Write(queryForm.BuildQueryForm());
+#elif NETSTANDARD2_0
+                HttpContext.Current.Response.WriteAsync(queryForm.BuildQueryForm()).GetAwaiter();
+#endif
                 return;
             }
 
             throw new NotSupportedException(gateway.GatewayType + " 没有实现 IQueryUrl 或 IQueryForm 查询接口");
         }
 
-        
+
         /// <summary>
         /// 查询订单，立即获得订单的查询结果
         /// </summary>
         /// <returns></returns>
         public bool QueryNow()
         {
-            IQueryNow queryNow = gateway as IQueryNow;
-            if (queryNow != null)
+            if (gateway is IQueryNow queryNow)
             {
                 return queryNow.QueryNow();
             }
@@ -243,13 +248,17 @@ namespace ICanPay
         /// <param name="qrCodeContent">二维码内容</param>
         private void BuildQRCodeImage(string qrCodeContent)
         {
-            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
-            qrCodeEncoder.QRCodeScale = 4;  // 二维码大小
+#if NET35
+            QRCodeEncoder qrCodeEncoder = new QRCodeEncoder
+            {
+                QRCodeScale = 4  // 二维码大小
+            };
             Bitmap image = qrCodeEncoder.Encode(qrCodeContent, Encoding.Default);
             MemoryStream ms = new MemoryStream();
             image.Save(ms, ImageFormat.Png);
             HttpContext.Current.Response.ContentType = "image/x-png";
             HttpContext.Current.Response.BinaryWrite(ms.GetBuffer());
+#endif
         }
 
         #endregion

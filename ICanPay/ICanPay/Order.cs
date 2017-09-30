@@ -97,7 +97,7 @@ namespace ICanPay
         {
             get
             {
-                if(string.IsNullOrEmpty(subject))
+                if (string.IsNullOrEmpty(subject))
                 {
                     return id;
                 }
