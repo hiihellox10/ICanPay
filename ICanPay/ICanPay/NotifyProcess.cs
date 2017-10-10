@@ -171,11 +171,9 @@ namespace ICanPay
         /// <param name="gatewayParameterList">网关通知的参数列表</param>
         private static void ReadQueryString(List<GatewayParameter> gatewayParameterList)
         {
-            NameValueCollection queryString = HttpContext.Current.Request.QueryString;
-            string[] allKeys = queryString.AllKeys;
-            for (int i = 0; i < allKeys.Length; i++)
+            foreach(string item in HttpContext.Current.Request.QueryString.AllKeys)
             {
-                SetGatewayParameterValue(gatewayParameterList, allKeys[i], queryString[allKeys[i]], GatewayParameterRequestMethod.Get);
+                SetGatewayParameterValue(gatewayParameterList, item, HttpContext.Current.Request.QueryString[item], GatewayParameterRequestMethod.Get);
             }
         }
 
@@ -186,11 +184,9 @@ namespace ICanPay
         /// <param name="gatewayParameterList">网关通知的参数列表</param>
         private static void ReadForm(List<GatewayParameter> gatewayParameterList)
         {
-            NameValueCollection form = HttpContext.Current.Request.Form;
-            string[] allKeys = form.AllKeys;
-            for (int i = 0; i < allKeys.Length; i++)
+            foreach(string item in HttpContext.Current.Request.Form.AllKeys)
             {
-                SetGatewayParameterValue(gatewayParameterList, allKeys[i], form[allKeys[i]], GatewayParameterRequestMethod.Post);
+                SetGatewayParameterValue(gatewayParameterList, item, HttpContext.Current.Request.Form[item], GatewayParameterRequestMethod.Post);
             }
         }
 

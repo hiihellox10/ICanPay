@@ -24,7 +24,7 @@ namespace ICanPay
         /// <summary>
         /// Get 和 Post
         /// </summary>
-        Both = GatewayParameterRequestMethod.Get | GatewayParameterRequestMethod.Post
+        Both = Get | Post
 
     }
 }

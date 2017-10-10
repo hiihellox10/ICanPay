@@ -24,7 +24,7 @@ namespace ICanPay
 
         public GatewayParameter(string parameterName, string parameterValue, GatewayParameterRequestMethod parameterType)
         {
-            this.name = parameterName;
+            Name = parameterName;
             Value = parameterValue;
             RequestMethod = parameterType;
         }
@@ -46,9 +46,9 @@ namespace ICanPay
 
             set
             {
-                if (string.IsNullOrEmpty(name))
+                if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentNullException("parameterName", "参数名不能为空");
+                    throw new ArgumentNullException("Name", "参数名不能为空");
                 }
 
                 name = value;
