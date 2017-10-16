@@ -49,18 +49,6 @@ namespace ICanPay
         #region 属性
 
         /// <summary>
-        /// 网关
-        /// </summary>
-        public GatewayBase Gateway
-        {
-            get
-            {
-                return gateway;
-            }
-        }
-
-
-        /// <summary>
         /// 商家数据
         /// </summary>
         public Merchant Merchant
@@ -233,7 +221,7 @@ namespace ICanPay
         /// <param name="gatewayParameterValue">网关的参数值</param>
         public void SetGatewayParameterValue(string gatewayParameterName, string gatewayParameterValue)
         {
-            Gateway.SetGatewayParameterValue(gatewayParameterName, gatewayParameterValue);
+            gateway.SetGatewayParameterValue(gatewayParameterName, gatewayParameterValue);
         }
 
 

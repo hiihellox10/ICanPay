@@ -100,9 +100,9 @@ namespace ICanPay.Providers
             SetGatewayParameterValue("nonce_str", GenerateNonceString());
             SetGatewayParameterValue("body", Order.Subject);
             SetGatewayParameterValue("out_trade_no", Order.Id);
-            SetGatewayParameterValue("total_fee", (Order.Amount * 100).ToString());
+            SetGatewayParameterValue("total_fee", Order.Amount * 100);
             SetGatewayParameterValue("spbill_create_ip", "127.0.0.1");
-            SetGatewayParameterValue("notify_url", Merchant.NotifyUrl.ToString());
+            SetGatewayParameterValue("notify_url", Merchant.NotifyUrl);
             SetGatewayParameterValue("trade_type", "NATIVE");
             SetGatewayParameterValue("product_id", Order.Id);
             SetGatewayParameterValue("sign", GetSign());    // 签名需要在最后设置，以免缺少参数。

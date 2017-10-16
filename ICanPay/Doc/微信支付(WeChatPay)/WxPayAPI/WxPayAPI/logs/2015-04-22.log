@@ -1,0 +1,4 @@
+2015-04-22 09:58:40.389 DEBUG ASP.default_aspx: page load
+2015-04-22 09:58:42.008 INFO ASP.example_productpage_aspx: page load
+2015-04-22 09:58:43.321 INFO ASP.example_productpage_aspx: page load
+2015-04-22 09:58:43.355 DEBUG ASP.example_productpage_aspx: Will Redirect to URL : https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx426b3015555a46be&redirect_uri=http%3a%2f%2fpaysdk.weixin.qq.com%2fexample%2fJsApiPayPage.aspx&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect

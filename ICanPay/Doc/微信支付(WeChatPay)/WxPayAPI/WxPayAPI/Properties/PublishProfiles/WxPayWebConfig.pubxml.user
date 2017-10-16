@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+您 Web 项目的发布/打包进程将使用此文件。您可以通过编辑此 MSBuild 文件
+来自定义该进程的行为。若要了解与此相关的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkID=208121。
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>D:\WebSite0421</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="App_Data/sdf.PNG">
+      <publishTime>04/16/2015 17:07:14</publishTime>
+    </File>
+    <File Include="bin/LitJson.dll">
+      <publishTime>05/19/2014 21:40:52</publishTime>
+    </File>
+    <File Include="bin/QuickMark.dll">
+      <publishTime>10/12/2013 10:34:23</publishTime>
+    </File>
+    <File Include="bin/RestSharp.dll">
+      <publishTime>03/04/2015 17:40:06</publishTime>
+    </File>
+    <File Include="bin/ThoughtWorks.QRCode.dll">
+      <publishTime>10/12/2013 10:34:23</publishTime>
+    </File>
+    <File Include="bin/WxPayAPI.dll">
+      <publishTime>04/28/2015 22:38:40</publishTime>
+    </File>
+    <File Include="cert/apiclient_cert.p12">
+      <publishTime>04/17/2015 17:25:14</publishTime>
+    </File>
+    <File Include="crossdomain.xml">
+      <publishTime>04/24/2015 19:21:19</publishTime>
+    </File>
+    <File Include="Default.aspx">
+      <publishTime>04/28/2015 13:14:53</publishTime>
+    </File>
+    <File Include="DownloadBillPage.aspx">
+      <publishTime>04/17/2015 15:17:35</publishTime>
+    </File>
+    <File Include="example/Downloadbillpage.aspx">
+      <publishTime>04/23/2015 17:54:28</publishTime>
+    </File>
+    <File Include="example/ExceptionPage.aspx">
+      <publishTime>04/27/2015 15:06:38</publishTime>
+    </File>
+    <File Include="example/JsApiPayPage.aspx">
+      <publishTime>04/28/2015 20:55:30</publishTime>
+    </File>
+    <File Include="example/MakeQRCode.aspx">
+      <publishTime>04/26/2015 16:00:43</publishTime>
+    </File>
+    <File Include="example/MicroPayPage.aspx">
+      <publishTime>04/28/2015 22:38:36</publishTime>
+    </File>
+    <File Include="example/NativeNotifyPage.aspx">
+      <publishTime>04/09/2015 17:27:57</publishTime>
+    </File>
+    <File Include="example/NativePayPage.aspx">
+      <publishTime>04/16/2015 19:28:29</publishTime>
+    </File>
+    <File Include="example/OrderQueryPage.aspx">
+      <publishTime>04/08/2015 19:32:51</publishTime>
+    </File>
+    <File Include="example/ProductPage.aspx">
+      <publishTime>04/28/2015 20:47:37</publishTime>
+    </File>
+    <File Include="example/RefundPage.aspx">
+      <publishTime>04/08/2015 23:32:43</publishTime>
+    </File>
+    <File Include="example/RefundQueryPage.aspx">
+      <publishTime>04/08/2015 23:32:43</publishTime>
+    </File>
+    <File Include="example/ResultNotifyPage.aspx">
+      <publishTime>04/09/2015 16:28:38</publishTime>
+    </File>
+    <File Include="JsApiPayPage.aspx">
+      <publishTime>04/21/2015 15:21:38</publishTime>
+    </File>
+    <File Include="MicroPayPage.aspx">
+      <publishTime>04/17/2015 15:17:35</publishTime>
+    </File>
+    <File Include="NativeNotifyPage.aspx">
+      <publishTime>04/09/2015 17:27:57</publishTime>
+    </File>
+    <File Include="NativePayPage.aspx">
+      <publishTime>04/16/2015 19:28:29</publishTime>
+    </File>
+    <File Include="OrderQueryPage.aspx">
+      <publishTime>04/08/2015 19:32:51</publishTime>
+    </File>
+    <File Include="ProductPage.aspx">
+      <publishTime>04/21/2015 14:06:54</publishTime>
+    </File>
+    <File Include="RefundPage.aspx">
+      <publishTime>04/08/2015 23:32:43</publishTime>
+    </File>
+    <File Include="RefundQueryPage.aspx">
+      <publishTime>04/08/2015 23:32:43</publishTime>
+    </File>
+    <File Include="ResultNotifyPage.aspx">
+      <publishTime>04/09/2015 16:28:38</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.7.1.intellisense.js">
+      <publishTime>04/08/2015 15:01:35</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.7.1.js">
+      <publishTime>04/08/2015 15:01:35</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.7.1.min.js">
+      <publishTime>04/08/2015 15:01:35</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>04/28/2015 22:38:45</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

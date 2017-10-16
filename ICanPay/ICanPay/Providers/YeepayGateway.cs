@@ -144,15 +144,16 @@ namespace ICanPay.Providers
             return string.Format("{0}?p0_Cmd=QueryOrdDetail&p1_MerId={1}&p2_Order={2}&hmac={3}", payGatewayUrl, Merchant.UserName, Order.Id, hmac);
         }
 
+
         private void InitOrderParameter()
         {
             SetGatewayParameterValue("p0_Cmd", "Buy");
             SetGatewayParameterValue("p1_MerId", Merchant.UserName);
             SetGatewayParameterValue("p2_Order", Order.Id);
-            SetGatewayParameterValue("p3_Amt", Order.Amount.ToString());
+            SetGatewayParameterValue("p3_Amt", Order.Amount);
             SetGatewayParameterValue("p4_Cur", "CNY");
             SetGatewayParameterValue("p5_Pid", Order.Subject);
-            SetGatewayParameterValue("p8_Url", Merchant.NotifyUrl.ToString());
+            SetGatewayParameterValue("p8_Url", Merchant.NotifyUrl);
             SetGatewayParameterValue("p9_SAF", "0");
             SetGatewayParameterValue("pr_NeedResponse", "1");
             SetGatewayParameterValue("hmac", GetOrderSign());

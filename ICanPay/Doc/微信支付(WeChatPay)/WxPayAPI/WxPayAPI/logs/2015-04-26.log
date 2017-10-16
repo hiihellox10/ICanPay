@@ -1,0 +1,288 @@
+2015-04-26 15:38:13.802 INFO WxPayAPI.NativePay: Native pay mode 1 url is producing...
+2015-04-26 15:38:13.974 INFO WxPayAPI.NativePay: Get native pay mode 1 url : weixin://wxpay/bizpayurl?appid=wx2428e34e0e7dc6ef&mch_id=1233410002&nonce_str=821ecd77b24249628074dcd533749673&product_id=123456789&sign=211B68369DCACB721C002E40E58DB6B3&time_stamp=1430033894
+2015-04-26 15:38:13.977 INFO WxPayAPI.NativePay: Native pay mode 2 url is producing...
+2015-04-26 15:38:13.986 DEBUG WxPayApi: UnfiedOrder request : <xml><appid><![CDATA[wx2428e34e0e7dc6ef]]></appid><attach><![CDATA[test]]></attach><body><![CDATA[test]]></body><goods_tag><![CDATA[jjj]]></goods_tag><mch_id><![CDATA[1233410002]]></mch_id><nonce_str><![CDATA[c68d60355a0d4389868b2a6fb49adf07]]></nonce_str><notify_url><![CDATA[http://paysdk.weixin.qq.com/example/ResultNotifyPage.aspx]]></notify_url><out_trade_no><![CDATA[123341000220150426153813730]]></out_trade_no><product_id><![CDATA[123456789]]></product_id><sign><![CDATA[ADFC6D6B7BFF4175F59A6263AC0949D4]]></sign><spbill_create_ip><![CDATA[8.8.8.8]]></spbill_create_ip><time_expire><![CDATA[20150426154813]]></time_expire><time_start><![CDATA[20150426153813]]></time_start><total_fee>1</total_fee><trade_type><![CDATA[NATIVE]]></trade_type></xml>
+2015-04-26 15:38:14.044 DEBUG HttpService: 1
+2015-04-26 15:38:14.045 DEBUG HttpService: 2
+2015-04-26 15:38:14.046 DEBUG HttpService: 3
+2015-04-26 15:38:14.047 DEBUG HttpService: 4
+2015-04-26 15:38:14.047 DEBUG HttpService: 8
+2015-04-26 15:38:14.874 DEBUG HttpService: 9
+2015-04-26 15:38:14.876 DEBUG HttpService: 10
+2015-04-26 15:38:14.876 DEBUG WxPayApi: UnfiedOrder response : <xml><return_code><![CDATA[SUCCESS]]></return_code>
+<return_msg><![CDATA[OK]]></return_msg>
+<appid><![CDATA[wx2428e34e0e7dc6ef]]></appid>
+<mch_id><![CDATA[1233410002]]></mch_id>
+<nonce_str><![CDATA[PDrTb1LVlcTRruE0]]></nonce_str>
+<sign><![CDATA[B47988CFDE1DA4A06D641804B24B2440]]></sign>
+<result_code><![CDATA[SUCCESS]]></result_code>
+<prepay_id><![CDATA[wx20150426153816e1583e270e0900782345]]></prepay_id>
+<trade_type><![CDATA[NATIVE]]></trade_type>
+<code_url><![CDATA[weixin://wxpay/bizpayurl?pr=c8xbLsG]]></code_url>
+</xml>
+2015-04-26 15:38:14.920 INFO WxPayAPI.NativePay: Get native pay mode 2 url : weixin://wxpay/bizpayurl?pr=c8xbLsG
+2015-04-26 16:05:44.815 DEBUG ASP.default_aspx: page load
+2015-04-26 16:05:46.333 INFO WxPayAPI.NativePay: Native pay mode 1 url is producing...
+2015-04-26 16:05:46.351 INFO WxPayAPI.NativePay: Get native pay mode 1 url : weixin://wxpay/bizpayurl?appid=wx2428e34e0e7dc6ef&mch_id=1233410002&nonce_str=9cb4de36dba3447782562a0d2b0382ad&product_id=123456789&sign=44C64C4497557E8A019070F2B3E081E7&time_stamp=1430035546
+2015-04-26 16:05:46.354 INFO WxPayAPI.NativePay: Native pay mode 2 url is producing...
+2015-04-26 16:05:46.360 DEBUG WxPayApi: UnfiedOrder request : <xml><appid><![CDATA[wx2428e34e0e7dc6ef]]></appid><attach><![CDATA[test]]></attach><body><![CDATA[test]]></body><goods_tag><![CDATA[jjj]]></goods_tag><mch_id><![CDATA[1233410002]]></mch_id><nonce_str><![CDATA[a6eb05e6ce0c4e6e83367b499b37b72c]]></nonce_str><notify_url><![CDATA[http://paysdk.weixin.qq.com/example/ResultNotifyPage.aspx]]></notify_url><out_trade_no><![CDATA[123341000220150426160546254]]></out_trade_no><product_id><![CDATA[123456789]]></product_id><sign><![CDATA[2CCF6084E8DCE47D5C604DDF1EF76E86]]></sign><spbill_create_ip><![CDATA[8.8.8.8]]></spbill_create_ip><time_expire><![CDATA[20150426161546]]></time_expire><time_start><![CDATA[20150426160546]]></time_start><total_fee>1</total_fee><trade_type><![CDATA[NATIVE]]></trade_type></xml>
+2015-04-26 16:05:46.369 DEBUG HttpService: 1
+2015-04-26 16:05:46.370 DEBUG HttpService: 2
+2015-04-26 16:05:46.371 DEBUG HttpService: 3
+2015-04-26 16:05:46.372 DEBUG HttpService: 4
+2015-04-26 16:05:46.372 DEBUG HttpService: 8
+2015-04-26 16:05:46.893 DEBUG HttpService: 9
+2015-04-26 16:05:46.895 DEBUG HttpService: 10
+2015-04-26 16:05:46.896 DEBUG WxPayApi: UnfiedOrder response : <xml><return_code><![CDATA[SUCCESS]]></return_code>
+<return_msg><![CDATA[OK]]></return_msg>
+<appid><![CDATA[wx2428e34e0e7dc6ef]]></appid>
+<mch_id><![CDATA[1233410002]]></mch_id>
+<nonce_str><![CDATA[XFSduCu7yVRGJNmU]]></nonce_str>
+<sign><![CDATA[2E37E8C8B3B48649D97D71A86C240254]]></sign>
+<result_code><![CDATA[SUCCESS]]></result_code>
+<prepay_id><![CDATA[wx2015042616054653b5278c5f0419048918]]></prepay_id>
+<trade_type><![CDATA[NATIVE]]></trade_type>
+<code_url><![CDATA[weixin://wxpay/bizpayurl?pr=dsTY2Zi]]></code_url>
+</xml>
+2015-04-26 16:05:46.900 INFO WxPayAPI.NativePay: Get native pay mode 2 url : weixin://wxpay/bizpayurl?pr=dsTY2Zi
+2015-04-26 16:26:22.479 DEBUG ASP.default_aspx: page load
+2015-04-26 16:26:24.346 DEBUG ASP.example_refundpage_aspx: page load
+2015-04-26 16:27:19.243 DEBUG ASP.example_refundpage_aspx: page load
+2015-04-26 16:27:19.243 INFO Refund: Refund is processing...
+2015-04-26 16:27:19.264 INFO WxPayApi: Refund request : <xml><appid><![CDATA[wx2428e34e0e7dc6ef]]></appid><mch_id><![CDATA[1233410002]]></mch_id><nonce_str><![CDATA[75b80cffe34d45c095620f9b03c13d95]]></nonce_str><op_user_id><![CDATA[1233410002]]></op_user_id><out_refund_no><![CDATA[123341000220150426162719805]]></out_refund_no><refund_fee>1</refund_fee><sign><![CDATA[D17215FED618C7D13D317C981A0B62A4]]></sign><total_fee>1</total_fee><transaction_id><![CDATA[1000930669201504260091046978]]></transaction_id></xml>
+2015-04-26 16:27:19.274 DEBUG HttpService: 1
+2015-04-26 16:27:19.275 DEBUG HttpService: 2
+2015-04-26 16:27:19.276 DEBUG HttpService: 3
+2015-04-26 16:27:19.277 DEBUG HttpService: 4
+2015-04-26 16:27:19.278 DEBUG HttpService: 5
+2015-04-26 16:27:19.279 DEBUG HttpService: Cert path : F:\WxPayAPI\WxPayAPI\cert/apiclient_cert.p12
+2015-04-26 16:27:19.279 DEBUG HttpService: 6
+2015-04-26 16:27:19.506 DEBUG HttpService: 7
+2015-04-26 16:27:19.528 ERROR HttpService: System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 WxPayAPI.HttpService.Post(String xml, String url, Boolean isUseCert, Int32 timeout) 位置 f:\WxPayAPI\WxPayAPI\lib\HttpService.cs:行号 308
+2015-04-26 16:29:07.706 DEBUG ASP.default_aspx: page load
+2015-04-26 16:29:09.164 DEBUG ASP.example_refundpage_aspx: page load
+2015-04-26 16:29:29.223 DEBUG ASP.example_refundpage_aspx: page load
+2015-04-26 16:29:29.223 INFO Refund: Refund is processing...
+2015-04-26 16:29:29.224 INFO WxPayApi: Refund request : <xml><appid><![CDATA[wx2428e34e0e7dc6ef]]></appid><mch_id><![CDATA[1233410002]]></mch_id><nonce_str><![CDATA[f5527ef85f1d4b8f80d7546a8cf07ecc]]></nonce_str><op_user_id><![CDATA[1233410002]]></op_user_id><out_refund_no><![CDATA[12334100022015042616292994]]></out_refund_no><refund_fee>1</refund_fee><sign><![CDATA[BB4C31C143BE96CFD968AE980D3A920D]]></sign><total_fee>1</total_fee><transaction_id><![CDATA[1000930669201504260091046978]]></transaction_id></xml>
+2015-04-26 16:29:29.224 DEBUG HttpService: 1
+2015-04-26 16:29:29.224 DEBUG HttpService: 2
+2015-04-26 16:29:29.225 DEBUG HttpService: 3
+2015-04-26 16:29:29.225 DEBUG HttpService: 4
+2015-04-26 16:29:29.226 DEBUG HttpService: 5
+2015-04-26 16:29:29.227 DEBUG HttpService: Cert path : F:\WxPayAPI\WxPayAPI\cert\apiclient_cert.p12
+2015-04-26 16:29:29.227 DEBUG HttpService: 6
+2015-04-26 16:29:29.286 DEBUG HttpService: 7
+2015-04-26 16:29:29.290 ERROR HttpService: System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 WxPayAPI.HttpService.Post(String xml, String url, Boolean isUseCert, Int32 timeout) 位置 f:\WxPayAPI\WxPayAPI\lib\HttpService.cs:行号 308
+2015-04-26 16:30:44.524 DEBUG ASP.default_aspx: page load
+2015-04-26 16:30:51.262 DEBUG ASP.example_refundpage_aspx: page load
+2015-04-26 16:30:57.805 DEBUG ASP.example_refundpage_aspx: page load
+2015-04-26 16:30:57.805 INFO Refund: Refund is processing...
+2015-04-26 16:30:57.806 INFO WxPayApi: Refund request : <xml><appid><![CDATA[wx2428e34e0e7dc6ef]]></appid><mch_id><![CDATA[1233410002]]></mch_id><nonce_str><![CDATA[9bb1dca89d5840b9bead37ddf1536718]]></nonce_str><op_user_id><![CDATA[1233410002]]></op_user_id><out_refund_no><![CDATA[123341000220150426163057483]]></out_refund_no><refund_fee>1</refund_fee><sign><![CDATA[969ABC447CCEA9A7E136E44E6D2BFAB9]]></sign><total_fee>1</total_fee><transaction_id><![CDATA[1000930669201504260091046978]]></transaction_id></xml>
+2015-04-26 16:30:57.808 DEBUG HttpService: 1
+2015-04-26 16:30:57.809 DEBUG HttpService: 2
+2015-04-26 16:30:57.810 DEBUG HttpService: 3
+2015-04-26 16:30:57.811 DEBUG HttpService: 4
+2015-04-26 16:30:57.812 DEBUG HttpService: 5
+2015-04-26 16:30:57.812 DEBUG HttpService: Cert path : F:\WxPayAPI\WxPayAPI\cert\apiclient_cert.p12
+2015-04-26 16:30:57.813 DEBUG HttpService: 6
+2015-04-26 16:30:57.843 DEBUG HttpService: 7
+2015-04-26 16:30:57.843 DEBUG WxPayApi: PostXml used cert
+2015-04-26 16:30:57.844 DEBUG HttpService: 8
+2015-04-26 16:30:58.877 DEBUG HttpService: 9
+2015-04-26 16:30:58.878 DEBUG HttpService: 10
+2015-04-26 16:30:58.878 INFO WxPayApi: Refund response : <xml><return_code><![CDATA[SUCCESS]]></return_code>
+<return_msg><![CDATA[OK]]></return_msg>
+<appid><![CDATA[wx2428e34e0e7dc6ef]]></appid>
+<mch_id><![CDATA[1233410002]]></mch_id>
+<nonce_str><![CDATA[0CnwxhukL8ihpaMQ]]></nonce_str>
+<sign><![CDATA[9926F0336A2DBF91DCA0B71AEAA99C92]]></sign>
+<result_code><![CDATA[SUCCESS]]></result_code>
+<transaction_id><![CDATA[1000930669201504260091046978]]></transaction_id>
+<out_trade_no><![CDATA[123341000220150426162042430]]></out_trade_no>
+<out_refund_no><![CDATA[123341000220150426163057483]]></out_refund_no>
+<refund_id><![CDATA[2000930669201504260003895955]]></refund_id>
+<refund_channel><![CDATA[]]></refund_channel>
+<refund_fee>1</refund_fee>
+<coupon_refund_fee>0</coupon_refund_fee>
+<total_fee>1</total_fee>
+<cash_fee>1</cash_fee>
+<coupon_refund_count>0</coupon_refund_count>
+<cash_refund_fee>1</cash_refund_fee>
+</xml>
+2015-04-26 16:30:58.880 INFO Refund: Refund process complete, result : <xml><appid><![CDATA[wx2428e34e0e7dc6ef]]></appid><cash_fee><![CDATA[1]]></cash_fee><cash_refund_fee><![CDATA[1]]></cash_refund_fee><coupon_refund_count><![CDATA[0]]></coupon_refund_count><coupon_refund_fee><![CDATA[0]]></coupon_refund_fee><mch_id><![CDATA[1233410002]]></mch_id><nonce_str><![CDATA[0CnwxhukL8ihpaMQ]]></nonce_str><out_refund_no><![CDATA[123341000220150426163057483]]></out_refund_no><out_trade_no><![CDATA[123341000220150426162042430]]></out_trade_no><refund_channel><![CDATA[]]></refund_channel><refund_fee><![CDATA[1]]></refund_fee><refund_id><![CDATA[2000930669201504260003895955]]></refund_id><result_code><![CDATA[SUCCESS]]></result_code><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg><sign><![CDATA[9926F0336A2DBF91DCA0B71AEAA99C92]]></sign><total_fee><![CDATA[1]]></total_fee><transaction_id><![CDATA[1000930669201504260091046978]]></transaction_id></xml>
+2015-04-26 16:30:58.881 DEBUG WxPayAPI.WxPayData: Print in Web Page : appid=wx2428e34e0e7dc6ef<br>cash_fee=1<br>cash_refund_fee=1<br>coupon_refund_count=0<br>coupon_refund_fee=0<br>mch_id=1233410002<br>nonce_str=0CnwxhukL8ihpaMQ<br>out_refund_no=123341000220150426163057483<br>out_trade_no=123341000220150426162042430<br>refund_channel=<br>refund_fee=1<br>refund_id=2000930669201504260003895955<br>result_code=SUCCESS<br>return_code=SUCCESS<br>return_msg=OK<br>sign=9926F0336A2DBF91DCA0B71AEAA99C92<br>total_fee=1<br>transaction_id=1000930669201504260091046978<br>
+2015-04-26 16:31:10.539 DEBUG ASP.example_refundpage_aspx: page load
+2015-04-26 16:31:29.312 DEBUG ASP.default_aspx: page load
+2015-04-26 16:31:30.749 DEBUG ASP.example_refundpage_aspx: page load
+2015-04-26 16:31:40.679 DEBUG ASP.example_refundpage_aspx: page load
+2015-04-26 16:31:40.679 INFO Refund: Refund is processing...
+2015-04-26 16:31:40.679 INFO WxPayApi: Refund request : <xml><appid><![CDATA[wx2428e34e0e7dc6ef]]></appid><mch_id><![CDATA[1233410002]]></mch_id><nonce_str><![CDATA[ecee39dea7f1417e9443d4f2e55a78b6]]></nonce_str><op_user_id><![CDATA[1233410002]]></op_user_id><out_refund_no><![CDATA[123341000220150426163140529]]></out_refund_no><refund_fee>1</refund_fee><sign><![CDATA[D549C921D57745408E036391DC04BD7E]]></sign><total_fee>1</total_fee><transaction_id><![CDATA[1000930669201504260091046978]]></transaction_id></xml>
+2015-04-26 16:31:40.685 DEBUG HttpService: 1
+2015-04-26 16:31:40.685 DEBUG HttpService: 2
+2015-04-26 16:31:40.686 DEBUG HttpService: 3
+2015-04-26 16:31:40.686 DEBUG HttpService: 4
+2015-04-26 16:31:40.686 DEBUG HttpService: 5
+2015-04-26 16:31:40.687 DEBUG HttpService: Cert path : F:\WxPayAPI\WxPayAPI\cert/apiclient_cert.p12
+2015-04-26 16:31:40.687 DEBUG HttpService: 6
+2015-04-26 16:31:40.716 DEBUG HttpService: 7
+2015-04-26 16:31:40.717 DEBUG WxPayApi: PostXml used cert
+2015-04-26 16:31:40.717 DEBUG HttpService: 8
+2015-04-26 16:31:41.421 DEBUG HttpService: 9
+2015-04-26 16:31:41.422 DEBUG HttpService: 10
+2015-04-26 16:31:41.423 INFO WxPayApi: Refund response : <xml><return_code><![CDATA[SUCCESS]]></return_code>
+<return_msg><![CDATA[OK]]></return_msg>
+<appid><![CDATA[wx2428e34e0e7dc6ef]]></appid>
+<mch_id><![CDATA[1233410002]]></mch_id>
+<nonce_str><![CDATA[dfbPA3ROinRmAYZX]]></nonce_str>
+<sign><![CDATA[05106247E83A1281A0A13ECB051A5426]]></sign>
+<result_code><![CDATA[FAIL]]></result_code>
+<err_code><![CDATA[REFUND_FEE_INVALID]]></err_code>
+<err_code_des><![CDATA[退款金额大于支付金额]]></err_code_des>
+</xml>
+2015-04-26 16:31:41.429 INFO Refund: Refund process complete, result : <xml><appid><![CDATA[wx2428e34e0e7dc6ef]]></appid><err_code><![CDATA[REFUND_FEE_INVALID]]></err_code><err_code_des><![CDATA[退款金额大于支付金额]]></err_code_des><mch_id><![CDATA[1233410002]]></mch_id><nonce_str><![CDATA[dfbPA3ROinRmAYZX]]></nonce_str><result_code><![CDATA[FAIL]]></result_code><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg><sign><![CDATA[05106247E83A1281A0A13ECB051A5426]]></sign></xml>
+2015-04-26 16:31:41.430 DEBUG WxPayAPI.WxPayData: Print in Web Page : appid=wx2428e34e0e7dc6ef<br>err_code=REFUND_FEE_INVALID<br>err_code_des=退款金额大于支付金额<br>mch_id=1233410002<br>nonce_str=dfbPA3ROinRmAYZX<br>result_code=FAIL<br>return_code=SUCCESS<br>return_msg=OK<br>sign=05106247E83A1281A0A13ECB051A5426<br>
+2015-04-26 16:31:45.608 DEBUG ASP.example_refundpage_aspx: page load
+2015-04-26 16:32:13.133 DEBUG ASP.default_aspx: page load
+2015-04-26 16:32:14.375 DEBUG ASP.example_refundpage_aspx: page load
+2015-04-26 16:32:44.875 DEBUG ASP.example_refundpage_aspx: page load
+2015-04-26 16:32:44.875 INFO Refund: Refund is processing...
+2015-04-26 16:32:44.875 INFO WxPayApi: Refund request : <xml><appid><![CDATA[wx2428e34e0e7dc6ef]]></appid><mch_id><![CDATA[1233410002]]></mch_id><nonce_str><![CDATA[97350cd7858d4a38a0dce30f939cd3fd]]></nonce_str><op_user_id><![CDATA[1233410002]]></op_user_id><out_refund_no><![CDATA[123341000220150426163244264]]></out_refund_no><refund_fee>1</refund_fee><sign><![CDATA[5D92F3A26250A0D27733F3CC4FA2C027]]></sign><total_fee>1</total_fee><transaction_id><![CDATA[1000930669201504260091064602]]></transaction_id></xml>
+2015-04-26 16:32:44.875 DEBUG HttpService: 1
+2015-04-26 16:32:44.875 DEBUG HttpService: 2
+2015-04-26 16:32:44.875 DEBUG HttpService: 3
+2015-04-26 16:32:44.876 DEBUG HttpService: 4
+2015-04-26 16:32:44.876 DEBUG HttpService: 5
+2015-04-26 16:32:44.876 DEBUG HttpService: Cert path : F:\WxPayAPI\WxPayAPI\cert/apiclient_cert.p12
+2015-04-26 16:32:44.876 DEBUG HttpService: 6
+2015-04-26 16:32:44.921 DEBUG HttpService: 7
+2015-04-26 16:32:44.921 DEBUG WxPayApi: PostXml used cert
+2015-04-26 16:32:44.922 DEBUG HttpService: 8
+2015-04-26 16:32:45.658 DEBUG HttpService: 9
+2015-04-26 16:32:45.659 DEBUG HttpService: 10
+2015-04-26 16:32:45.660 INFO WxPayApi: Refund response : <xml><return_code><![CDATA[SUCCESS]]></return_code>
+<return_msg><![CDATA[OK]]></return_msg>
+<appid><![CDATA[wx2428e34e0e7dc6ef]]></appid>
+<mch_id><![CDATA[1233410002]]></mch_id>
+<nonce_str><![CDATA[QnkxTGACu68u71Ja]]></nonce_str>
+<sign><![CDATA[270A7C6B55CFE742A26975AEF76C085C]]></sign>
+<result_code><![CDATA[SUCCESS]]></result_code>
+<transaction_id><![CDATA[1000930669201504260091064602]]></transaction_id>
+<out_trade_no><![CDATA[123341000220150426161912301]]></out_trade_no>
+<out_refund_no><![CDATA[123341000220150426163244264]]></out_refund_no>
+<refund_id><![CDATA[2000930669201504260003897638]]></refund_id>
+<refund_channel><![CDATA[]]></refund_channel>
+<refund_fee>1</refund_fee>
+<coupon_refund_fee>0</coupon_refund_fee>
+<total_fee>1</total_fee>
+<cash_fee>1</cash_fee>
+<coupon_refund_count>0</coupon_refund_count>
+<cash_refund_fee>1</cash_refund_fee>
+</xml>
+2015-04-26 16:32:45.660 INFO Refund: Refund process complete, result : <xml><appid><![CDATA[wx2428e34e0e7dc6ef]]></appid><cash_fee><![CDATA[1]]></cash_fee><cash_refund_fee><![CDATA[1]]></cash_refund_fee><coupon_refund_count><![CDATA[0]]></coupon_refund_count><coupon_refund_fee><![CDATA[0]]></coupon_refund_fee><mch_id><![CDATA[1233410002]]></mch_id><nonce_str><![CDATA[QnkxTGACu68u71Ja]]></nonce_str><out_refund_no><![CDATA[123341000220150426163244264]]></out_refund_no><out_trade_no><![CDATA[123341000220150426161912301]]></out_trade_no><refund_channel><![CDATA[]]></refund_channel><refund_fee><![CDATA[1]]></refund_fee><refund_id><![CDATA[2000930669201504260003897638]]></refund_id><result_code><![CDATA[SUCCESS]]></result_code><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg><sign><![CDATA[270A7C6B55CFE742A26975AEF76C085C]]></sign><total_fee><![CDATA[1]]></total_fee><transaction_id><![CDATA[1000930669201504260091064602]]></transaction_id></xml>
+2015-04-26 16:32:45.661 DEBUG WxPayAPI.WxPayData: Print in Web Page : appid=wx2428e34e0e7dc6ef<br>cash_fee=1<br>cash_refund_fee=1<br>coupon_refund_count=0<br>coupon_refund_fee=0<br>mch_id=1233410002<br>nonce_str=QnkxTGACu68u71Ja<br>out_refund_no=123341000220150426163244264<br>out_trade_no=123341000220150426161912301<br>refund_channel=<br>refund_fee=1<br>refund_id=2000930669201504260003897638<br>result_code=SUCCESS<br>return_code=SUCCESS<br>return_msg=OK<br>sign=270A7C6B55CFE742A26975AEF76C085C<br>total_fee=1<br>transaction_id=1000930669201504260091064602<br>
+2015-04-26 16:32:54.129 DEBUG ASP.example_refundpage_aspx: page load
+2015-04-26 16:33:05.579 DEBUG ASP.example_refundquerypage_aspx: page load
+2015-04-26 16:33:10.954 DEBUG ASP.example_refundquerypage_aspx: page load
+2015-04-26 16:33:10.954 INFO RefundQuery: RefundQuery is processing...
+2015-04-26 16:33:10.954 INFO WxPayApi: RefundQuery request : <xml><appid><![CDATA[wx2428e34e0e7dc6ef]]></appid><mch_id><![CDATA[1233410002]]></mch_id><nonce_str><![CDATA[767a09bef960488e9145541fe60c15f9]]></nonce_str><sign><![CDATA[445748B26E0D0F12086D91018D107E22]]></sign><transaction_id><![CDATA[1000930669201504260091046978]]></transaction_id></xml>
+2015-04-26 16:33:10.954 DEBUG HttpService: 1
+2015-04-26 16:33:10.954 DEBUG HttpService: 2
+2015-04-26 16:33:10.955 DEBUG HttpService: 3
+2015-04-26 16:33:10.955 DEBUG HttpService: 4
+2015-04-26 16:33:10.955 DEBUG HttpService: 8
+2015-04-26 16:33:11.429 DEBUG HttpService: 9
+2015-04-26 16:33:11.430 DEBUG HttpService: 10
+2015-04-26 16:33:11.431 INFO WxPayApi: RefundQuery response : <xml>
+<appid><![CDATA[wx2428e34e0e7dc6ef]]></appid>
+<cash_fee><![CDATA[1]]></cash_fee>
+<mch_id><![CDATA[1233410002]]></mch_id>
+<nonce_str><![CDATA[OKz1KjOfuMcLhYVb]]></nonce_str>
+<out_refund_no_0><![CDATA[123341000220150426163057483]]></out_refund_no_0>
+<out_trade_no><![CDATA[123341000220150426162042430]]></out_trade_no>
+<refund_count>1</refund_count>
+<refund_fee>1</refund_fee>
+<refund_fee_0>1</refund_fee_0>
+<refund_id_0><![CDATA[2000930669201504260003895955]]></refund_id_0>
+<refund_status_0><![CDATA[PROCESSING]]></refund_status_0>
+<result_code><![CDATA[SUCCESS]]></result_code>
+<return_code><![CDATA[SUCCESS]]></return_code>
+<return_msg><![CDATA[OK]]></return_msg>
+<sign><![CDATA[90788BDE8A0384749D39FBD6FA899924]]></sign>
+<total_fee><![CDATA[1]]></total_fee>
+<transaction_id><![CDATA[1000930669201504260091046978]]></transaction_id>
+</xml>
+2015-04-26 16:33:11.432 INFO RefundQuery: RefundQuery process complete, result : <xml><appid><![CDATA[wx2428e34e0e7dc6ef]]></appid><cash_fee><![CDATA[1]]></cash_fee><mch_id><![CDATA[1233410002]]></mch_id><nonce_str><![CDATA[OKz1KjOfuMcLhYVb]]></nonce_str><out_refund_no_0><![CDATA[123341000220150426163057483]]></out_refund_no_0><out_trade_no><![CDATA[123341000220150426162042430]]></out_trade_no><refund_count><![CDATA[1]]></refund_count><refund_fee><![CDATA[1]]></refund_fee><refund_fee_0><![CDATA[1]]></refund_fee_0><refund_id_0><![CDATA[2000930669201504260003895955]]></refund_id_0><refund_status_0><![CDATA[PROCESSING]]></refund_status_0><result_code><![CDATA[SUCCESS]]></result_code><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg><sign><![CDATA[90788BDE8A0384749D39FBD6FA899924]]></sign><total_fee><![CDATA[1]]></total_fee><transaction_id><![CDATA[1000930669201504260091046978]]></transaction_id></xml>
+2015-04-26 16:33:11.432 DEBUG WxPayAPI.WxPayData: Print in Web Page : appid=wx2428e34e0e7dc6ef<br>cash_fee=1<br>mch_id=1233410002<br>nonce_str=OKz1KjOfuMcLhYVb<br>out_refund_no_0=123341000220150426163057483<br>out_trade_no=123341000220150426162042430<br>refund_count=1<br>refund_fee=1<br>refund_fee_0=1<br>refund_id_0=2000930669201504260003895955<br>refund_status_0=PROCESSING<br>result_code=SUCCESS<br>return_code=SUCCESS<br>return_msg=OK<br>sign=90788BDE8A0384749D39FBD6FA899924<br>total_fee=1<br>transaction_id=1000930669201504260091046978<br>
+2015-04-26 16:33:16.237 DEBUG ASP.example_refundquerypage_aspx: page load
+2015-04-26 16:33:19.744 DEBUG ASP.example_downloadbillpage_aspx: page load
+2015-04-26 16:33:31.124 DEBUG ASP.example_downloadbillpage_aspx: page load
+2015-04-26 16:33:31.124 INFO DownloadBill: DownloadBill is processing...
+2015-04-26 16:33:31.124 DEBUG WxPayApi: DownloadBill request : <xml><appid><![CDATA[wx2428e34e0e7dc6ef]]></appid><bill_date><![CDATA[20150424]]></bill_date><bill_type><![CDATA[ALL]]></bill_type><mch_id><![CDATA[1233410002]]></mch_id><nonce_str><![CDATA[a2a2dedad79341ac9a265db2883b1c22]]></nonce_str><sign><![CDATA[C1AD020546A49F299A2C5E80FB061DB7]]></sign></xml>
+2015-04-26 16:33:31.124 DEBUG HttpService: 1
+2015-04-26 16:33:31.124 DEBUG HttpService: 2
+2015-04-26 16:33:31.124 DEBUG HttpService: 3
+2015-04-26 16:33:31.124 DEBUG HttpService: 4
+2015-04-26 16:33:31.124 DEBUG HttpService: 8
+2015-04-26 16:33:31.468 DEBUG HttpService: 9
+2015-04-26 16:33:31.469 DEBUG HttpService: 10
+2015-04-26 16:33:31.470 DEBUG WxPayApi: DownloadBill result : ﻿交易时间,公众账号ID,商户号,子商户号,设备号,微信订单号,商户订单号,用户标识,交易类型,交易状态,付款银行,货币种类,总金额,企业红包金额,微信退款单号,商户退款单号,退款金额,企业红包退款金额,退款类型,退款状态,商品名称,商户数据包,手续费,费率
+`2015-04-24 20:38:06,`wx2428e34e0e7dc6ef,`1233410002,`0,`,`1000930669201504240087159139,`123341000220150424203805992,`oS2tJt6GC9TcguyOJOSZG3_iEcZM,`MICROPAY,`SUCCESS,`CFT,`CNY,`0.01,`0.00,`0,`0,`0,`0,`,`,`test,`,`0.00000,`0.60%
+总交易单数,总交易额,总退款金额,总企业红包退款金额,手续费总金额
+`1,`0.01,`0.00,`0.00,`0.00000
+
+2015-04-26 16:33:31.471 INFO DownloadBill: DownloadBill process complete, result : <xml><result><![CDATA[﻿交易时间,公众账号ID,商户号,子商户号,设备号,微信订单号,商户订单号,用户标识,交易类型,交易状态,付款银行,货币种类,总金额,企业红包金额,微信退款单号,商户退款单号,退款金额,企业红包退款金额,退款类型,退款状态,商品名称,商户数据包,手续费,费率
+`2015-04-24 20:38:06,`wx2428e34e0e7dc6ef,`1233410002,`0,`,`1000930669201504240087159139,`123341000220150424203805992,`oS2tJt6GC9TcguyOJOSZG3_iEcZM,`MICROPAY,`SUCCESS,`CFT,`CNY,`0.01,`0.00,`0,`0,`0,`0,`,`,`test,`,`0.00000,`0.60%
+总交易单数,总交易额,总退款金额,总企业红包退款金额,手续费总金额
+`1,`0.01,`0.00,`0.00,`0.00000
+]]></result></xml>
+2015-04-26 16:33:31.471 DEBUG WxPayAPI.WxPayData: Print in Web Page : result=﻿交易时间,公众账号ID,商户号,子商户号,设备号,微信订单号,商户订单号,用户标识,交易类型,交易状态,付款银行,货币种类,总金额,企业红包金额,微信退款单号,商户退款单号,退款金额,企业红包退款金额,退款类型,退款状态,商品名称,商户数据包,手续费,费率
+`2015-04-24 20:38:06,`wx2428e34e0e7dc6ef,`1233410002,`0,`,`1000930669201504240087159139,`123341000220150424203805992,`oS2tJt6GC9TcguyOJOSZG3_iEcZM,`MICROPAY,`SUCCESS,`CFT,`CNY,`0.01,`0.00,`0,`0,`0,`0,`,`,`test,`,`0.00000,`0.60%
+总交易单数,总交易额,总退款金额,总企业红包退款金额,手续费总金额
+`1,`0.01,`0.00,`0.00,`0.00000
+<br>
+2015-04-26 16:33:35.258 DEBUG ASP.example_downloadbillpage_aspx: page load
+2015-04-26 16:33:35.258 INFO DownloadBill: DownloadBill is processing...
+2015-04-26 16:33:35.258 DEBUG WxPayApi: DownloadBill request : <xml><appid><![CDATA[wx2428e34e0e7dc6ef]]></appid><bill_date><![CDATA[20150425]]></bill_date><bill_type><![CDATA[ALL]]></bill_type><mch_id><![CDATA[1233410002]]></mch_id><nonce_str><![CDATA[594dc71f33544265ae1e7c0ed2a00220]]></nonce_str><sign><![CDATA[92BF1A0C2C96C434457F5F5593D57853]]></sign></xml>
+2015-04-26 16:33:35.258 DEBUG HttpService: 1
+2015-04-26 16:33:35.258 DEBUG HttpService: 2
+2015-04-26 16:33:35.258 DEBUG HttpService: 3
+2015-04-26 16:33:35.258 DEBUG HttpService: 4
+2015-04-26 16:33:35.258 DEBUG HttpService: 8
+2015-04-26 16:33:35.420 DEBUG HttpService: 9
+2015-04-26 16:33:35.421 DEBUG HttpService: 10
+2015-04-26 16:33:35.422 DEBUG WxPayApi: DownloadBill result : <xml><return_code><![CDATA[FAIL]]></return_code>
+<return_msg><![CDATA[No Bill Exist]]></return_msg>
+</xml>
+2015-04-26 16:33:35.423 INFO DownloadBill: DownloadBill process complete, result : <xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[No Bill Exist]]></return_msg></xml>
+2015-04-26 16:33:35.423 DEBUG WxPayAPI.WxPayData: Print in Web Page : return_code=FAIL<br>return_msg=No Bill Exist<br>
+2015-04-26 16:33:39.572 DEBUG ASP.example_downloadbillpage_aspx: page load
+2015-04-26 16:33:39.572 INFO DownloadBill: DownloadBill is processing...
+2015-04-26 16:33:39.572 DEBUG WxPayApi: DownloadBill request : <xml><appid><![CDATA[wx2428e34e0e7dc6ef]]></appid><bill_date><![CDATA[20150423]]></bill_date><bill_type><![CDATA[ALL]]></bill_type><mch_id><![CDATA[1233410002]]></mch_id><nonce_str><![CDATA[428807844a1c445c8a6204d423bea2dd]]></nonce_str><sign><![CDATA[775DE3D2120033C3B7623BC5825DDBC0]]></sign></xml>
+2015-04-26 16:33:39.572 DEBUG HttpService: 1
+2015-04-26 16:33:39.572 DEBUG HttpService: 2
+2015-04-26 16:33:39.572 DEBUG HttpService: 3
+2015-04-26 16:33:39.572 DEBUG HttpService: 4
+2015-04-26 16:33:39.572 DEBUG HttpService: 8
+2015-04-26 16:33:39.735 DEBUG HttpService: 9
+2015-04-26 16:33:39.736 DEBUG HttpService: 10
+2015-04-26 16:33:39.737 DEBUG WxPayApi: DownloadBill result : ﻿交易时间,公众账号ID,商户号,子商户号,设备号,微信订单号,商户订单号,用户标识,交易类型,交易状态,付款银行,货币种类,总金额,企业红包金额,微信退款单号,商户退款单号,退款金额,企业红包退款金额,退款类型,退款状态,商品名称,商户数据包,手续费,费率
+`2015-04-23 17:59:21,`wx2428e34e0e7dc6ef,`1233410002,`0,`,`1000930669201504230084480462,`123341000220150423175920861,`oS2tJt6GC9TcguyOJOSZG3_iEcZM,`MICROPAY,`SUCCESS,`CFT,`CNY,`0.01,`0.00,`0,`0,`0,`0,`,`,`test,`,`0.00000,`0.60%
+`2015-04-23 19:18:36,`wx2428e34e0e7dc6ef,`1233410002,`0,`,`1000930669201504230084621591,`123341000220150423191750821,`oS2tJt6GC9TcguyOJOSZG3_iEcZM,`JSAPI,`SUCCESS,`CFT,`CNY,`0.01,`0.00,`0,`0,`0,`0,`,`,`test,`test,`0.00000,`0.60%
+总交易单数,总交易额,总退款金额,总企业红包退款金额,手续费总金额
+`2,`0.02,`0.00,`0.00,`0.00000
+
+2015-04-26 16:33:39.737 INFO DownloadBill: DownloadBill process complete, result : <xml><result><![CDATA[﻿交易时间,公众账号ID,商户号,子商户号,设备号,微信订单号,商户订单号,用户标识,交易类型,交易状态,付款银行,货币种类,总金额,企业红包金额,微信退款单号,商户退款单号,退款金额,企业红包退款金额,退款类型,退款状态,商品名称,商户数据包,手续费,费率
+`2015-04-23 17:59:21,`wx2428e34e0e7dc6ef,`1233410002,`0,`,`1000930669201504230084480462,`123341000220150423175920861,`oS2tJt6GC9TcguyOJOSZG3_iEcZM,`MICROPAY,`SUCCESS,`CFT,`CNY,`0.01,`0.00,`0,`0,`0,`0,`,`,`test,`,`0.00000,`0.60%
+`2015-04-23 19:18:36,`wx2428e34e0e7dc6ef,`1233410002,`0,`,`1000930669201504230084621591,`123341000220150423191750821,`oS2tJt6GC9TcguyOJOSZG3_iEcZM,`JSAPI,`SUCCESS,`CFT,`CNY,`0.01,`0.00,`0,`0,`0,`0,`,`,`test,`test,`0.00000,`0.60%
+总交易单数,总交易额,总退款金额,总企业红包退款金额,手续费总金额
+`2,`0.02,`0.00,`0.00,`0.00000
+]]></result></xml>
+2015-04-26 16:33:39.738 DEBUG WxPayAPI.WxPayData: Print in Web Page : result=﻿交易时间,公众账号ID,商户号,子商户号,设备号,微信订单号,商户订单号,用户标识,交易类型,交易状态,付款银行,货币种类,总金额,企业红包金额,微信退款单号,商户退款单号,退款金额,企业红包退款金额,退款类型,退款状态,商品名称,商户数据包,手续费,费率
+`2015-04-23 17:59:21,`wx2428e34e0e7dc6ef,`1233410002,`0,`,`1000930669201504230084480462,`123341000220150423175920861,`oS2tJt6GC9TcguyOJOSZG3_iEcZM,`MICROPAY,`SUCCESS,`CFT,`CNY,`0.01,`0.00,`0,`0,`0,`0,`,`,`test,`,`0.00000,`0.60%
+`2015-04-23 19:18:36,`wx2428e34e0e7dc6ef,`1233410002,`0,`,`1000930669201504230084621591,`123341000220150423191750821,`oS2tJt6GC9TcguyOJOSZG3_iEcZM,`JSAPI,`SUCCESS,`CFT,`CNY,`0.01,`0.00,`0,`0,`0,`0,`,`,`test,`test,`0.00000,`0.60%
+总交易单数,总交易额,总退款金额,总企业红包退款金额,手续费总金额
+`2,`0.02,`0.00,`0.00,`0.00000
+<br>
+2015-04-26 16:33:47.411 DEBUG ASP.example_downloadbillpage_aspx: page load

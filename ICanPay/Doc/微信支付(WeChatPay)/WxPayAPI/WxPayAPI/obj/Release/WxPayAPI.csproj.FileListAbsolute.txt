@@ -1,0 +1,6 @@
+F:\WxPayAPI\WxPayAPI\bin\WxPayAPI.dll.config
+F:\WxPayAPI\WxPayAPI\bin\WxPayAPI.dll
+F:\WxPayAPI\WxPayAPI\bin\WxPayAPI.pdb
+F:\WxPayAPI\WxPayAPI\obj\Release\WxPayAPI.dll
+F:\WxPayAPI\WxPayAPI\obj\Release\WxPayAPI.pdb
+F:\WxPayAPI\WxPayAPI\obj\Release\WxPayAPI.csprojResolveAssemblyReference.cache

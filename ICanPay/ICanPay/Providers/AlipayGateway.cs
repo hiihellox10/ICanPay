@@ -94,12 +94,12 @@ namespace ICanPay.Providers
         {
             SetGatewayParameterValue("service", "create_direct_pay_by_user");
             SetGatewayParameterValue("partner", Merchant.UserName);
-            SetGatewayParameterValue("notify_url", Merchant.NotifyUrl.ToString());
-            SetGatewayParameterValue("return_url", Merchant.NotifyUrl.ToString());
+            SetGatewayParameterValue("notify_url", Merchant.NotifyUrl);
+            SetGatewayParameterValue("return_url", Merchant.NotifyUrl);
             SetGatewayParameterValue("sign_type", "MD5");
             SetGatewayParameterValue("subject", Order.Subject);
             SetGatewayParameterValue("out_trade_no", Order.Id);
-            SetGatewayParameterValue("total_fee", Order.Amount.ToString());
+            SetGatewayParameterValue("total_fee", Order.Amount);
             SetGatewayParameterValue("payment_type", "1");
             SetGatewayParameterValue("_input_charset", "gb2312");
             SetGatewayParameterValue("sign", GetOrderSign());    // 签名需要在最后设置，以免缺少参数。

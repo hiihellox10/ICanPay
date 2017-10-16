@@ -1,0 +1,29 @@
+2015-04-21 16:26:56.398 DEBUG ASP.default_aspx: page load
+2015-04-21 16:26:57.730 DEBUG ASP.example_micropaypage_aspx: page load
+2015-04-21 19:15:35.052 INFO ASP.example_jsapipaypage_aspx: page load
+2015-04-21 19:16:01.060 INFO ASP.example_jsapipaypage_aspx: page load
+2015-04-21 19:16:01.061 DEBUG ASP.example_jsapipaypage_aspx: openid : 
+2015-04-21 19:16:01.061 DEBUG ASP.example_jsapipaypage_aspx: access_token : 
+2015-04-21 19:17:46.702 INFO ASP.example_jsapipaypage_aspx: page load
+2015-04-21 19:18:12.075 INFO ASP.example_jsapipaypage_aspx: page load
+2015-04-21 19:18:12.076 DEBUG ASP.example_jsapipaypage_aspx: openid : 
+2015-04-21 19:18:12.077 DEBUG ASP.example_jsapipaypage_aspx: access_token : 
+2015-04-21 19:18:49.004 INFO ASP.example_jsapipaypage_aspx: page load
+2015-04-21 19:18:49.005 DEBUG ASP.example_jsapipaypage_aspx: openid : 
+2015-04-21 19:18:49.005 DEBUG ASP.example_jsapipaypage_aspx: access_token : 
+2015-04-21 19:22:40.831 INFO ASP.example_jsapipaypage_aspx: page load
+2015-04-21 19:22:40.832 INFO ASP.example_jsapipaypage_aspx: This page have get param, cannot be inited, exit...
+2015-04-21 19:22:40.832 INFO ASP.example_jsapipaypage_aspx: Init Page...
+2015-04-21 19:22:40.833 DEBUG ASP.example_jsapipaypage_aspx: openid : 
+2015-04-21 19:22:40.833 DEBUG ASP.example_jsapipaypage_aspx: access_token : 
+2015-04-21 19:23:39.782 INFO ASP.example_jsapipaypage_aspx: page load
+2015-04-21 19:23:39.783 INFO ASP.example_jsapipaypage_aspx: This page have get param, cannot be inited, exit...
+2015-04-21 20:01:31.360 INFO ASP.example_productpage_aspx: page load
+2015-04-21 20:01:31.376 DEBUG WxPayAPI.JsApiPay: Current page URL : http%3a%2f%2flocalhost%2fexample%2fProductPage.aspx
+2015-04-21 20:01:31.378 DEBUG WxPayAPI.WxPayData: Sign url param : appid=wx426b3015555a46be&redirect_uri=http%3a%2f%2flocalhost%2fexample%2fProductPage.aspx&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect
+2015-04-21 20:01:31.378 DEBUG WxPayAPI.JsApiPay: Will Redirect to URL : https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx426b3015555a46be&redirect_uri=http%3a%2f%2flocalhost%2fexample%2fProductPage.aspx&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect
+2015-04-21 20:01:45.041 DEBUG ASP.default_aspx: page load
+2015-04-21 20:01:46.137 INFO ASP.example_productpage_aspx: page load
+2015-04-21 20:01:46.138 DEBUG WxPayAPI.JsApiPay: Current page URL : http%3a%2f%2flocalhost%2fexample%2fProductPage.aspx
+2015-04-21 20:01:46.138 DEBUG WxPayAPI.WxPayData: Sign url param : appid=wx426b3015555a46be&redirect_uri=http%3a%2f%2flocalhost%2fexample%2fProductPage.aspx&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect
+2015-04-21 20:01:46.138 DEBUG WxPayAPI.JsApiPay: Will Redirect to URL : https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx426b3015555a46be&redirect_uri=http%3a%2f%2flocalhost%2fexample%2fProductPage.aspx&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect
