@@ -164,7 +164,7 @@ namespace ICanPay.Providers
         }
 
 
-        protected override bool CheckNotifyData()
+        public override bool ValidateNotify()
         {
             if (IsSuccessResult())
             {

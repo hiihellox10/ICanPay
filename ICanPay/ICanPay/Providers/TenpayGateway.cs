@@ -146,7 +146,7 @@ namespace ICanPay.Providers
         /// 验证订单是否支付成功
         /// </summary>
         /// <remarks>这里处理查询订单的网关通知跟支付订单的网关通知</remarks>
-        protected override bool CheckNotifyData()
+        public override bool ValidateNotify()
         {
             if (IsSuccessResult())
             {

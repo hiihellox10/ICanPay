@@ -49,7 +49,7 @@ namespace ICanPay.Providers
 
         #region 方法
 
-        protected override bool CheckNotifyData()
+        public override bool ValidateNotify()
         {
             return false;
         }

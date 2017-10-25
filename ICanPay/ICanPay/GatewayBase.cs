@@ -171,17 +171,15 @@ namespace ICanPay
 
 
         /// <summary>
-        /// 验证订单是否支付成功
+        /// 检验网关返回的通知，验证订单是否支付成功。
         /// </summary>
-        public bool ValidateNotify()
-        {
-            if (CheckNotifyData())
-            {
-                return true;
-            }
+        public abstract bool ValidateNotify();
 
-            return false;
-        }
+
+        /// <summary>
+        /// 当接收到支付网关通知并验证无误时，按照支付网关要求格式输出表示成功接收到网关通知的字符串。
+        /// </summary>
+        public abstract void WriteSucceedFlag();
 
 
         /// <summary>
@@ -285,18 +283,6 @@ namespace ICanPay
 
             return string.Empty;
         }
-        
-
-        /// <summary>
-        /// 检验网关返回的通知，确认订单是否支付成功
-        /// </summary>
-        protected abstract bool CheckNotifyData();
-
-
-        /// <summary>
-        /// 当接收到支付网关通知并验证无误时按照支付网关要求格式输出表示成功接收到网关通知的字符串
-        /// </summary>
-        public abstract void WriteSucceedFlag();
 
         #endregion
 

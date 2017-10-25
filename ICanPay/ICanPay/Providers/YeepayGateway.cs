@@ -71,7 +71,7 @@ namespace ICanPay.Providers
         /// 验证订单是否支付成功
         /// </summary>
         /// <returns></returns>
-        protected override bool CheckNotifyData()
+        public override bool ValidateNotify()
         {
             if (IsSuccessResult())
             {

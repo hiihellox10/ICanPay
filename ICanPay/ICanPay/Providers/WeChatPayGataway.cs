@@ -57,7 +57,7 @@ namespace ICanPay.Providers
             get { return PaymentNotifyMethod.ServerNotify; }
         }
 
-        protected override bool CheckNotifyData()
+        public override bool ValidateNotify()
         {
             if (IsSuccessResult())
             {
