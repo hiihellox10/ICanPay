@@ -17,8 +17,8 @@ namespace Demo
         private void QueryYeepayOrder()
         {
             PaymentSetting querySetting = new PaymentSetting(GatewayType.Yeepay);
-            querySetting.Merchant.UserName = "000000000000000";
-            querySetting.Merchant.Key = "0000000000000000000000000000000000000000";
+            querySetting.Merchant.UserName = "000000000000000"; // 商户编号
+            querySetting.Merchant.Key = "0000000000000000000000000000000000000000"; // 商户密钥
 
             // 查询时需要设置订单的Id与金额，在查询结果中将会核对订单的Id与金额，如果不相符会返回查询失败。
             querySetting.Order.Id = "1564515";
@@ -37,9 +37,9 @@ namespace Demo
         private void QueryWeChatPayOrder()
         {
             PaymentSetting querySetting = new PaymentSetting(GatewayType.WeChatPay);
-            querySetting.SetGatewayParameterValue("appid", "wx000000000000000");
-            querySetting.Merchant.UserName = "000000000000000";
-            querySetting.Merchant.Key = "0000000000000000000000000000000000000000";
+            querySetting.SetGatewayParameterValue("appid", "wx000000000000000");    // 公众号APPID
+            querySetting.Merchant.UserName = "000000000000000"; // 微信支付商户号
+            querySetting.Merchant.Key = "0000000000000000000000000000000000000000"; // API密钥
 
             // 查询时需要设置订单的Id与金额，在查询结果中将会核对订单的Id与金额，如果不相符会返回查询失败。
             querySetting.Order.Id = "20";
@@ -58,8 +58,8 @@ namespace Demo
         private void QueryTenpayOrder()
         {
             PaymentSetting querySetting = new PaymentSetting(GatewayType.Tenpay);
-            querySetting.Merchant.UserName = "000000000000000";
-            querySetting.Merchant.Key = "0000000000000000000000000000000000000000";
+            querySetting.Merchant.UserName = "000000000000000"; // 商户号
+            querySetting.Merchant.Key = "0000000000000000000000000000000000000000"; // 密钥
 
             // 查询时需要设置订单的Id与金额，在查询结果中将会核对订单的Id与金额，如果不相符会返回查询失败。
             querySetting.Order.Id = "885";
