@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -54,19 +55,19 @@ namespace ICanPay
         /// <summary>
         /// 网关返回的支付通知验证失败时触发
         /// </summary>
-        public event PaymentFailedEventHandler PaymentFailed;
+        public event EventHandler<PaymentFailedEventArgs> PaymentFailed;
 
 
         /// <summary>
         /// 网关返回的支付通知验证成功时触发
         /// </summary>
-        public event PaymentSucceedEventHandler PaymentSucceed;
+        public event EventHandler<PaymentSucceedEventArgs> PaymentSucceed;
 
 
         /// <summary>
         /// 返回通知消息的网关无法识别时触发
         /// </summary>
-        public event UnknownGatewayEventHandler UnknownGateway;
+        public event EventHandler<UnknownGatewayEventArgs> UnknownGateway;
 
         #endregion
 
@@ -75,7 +76,7 @@ namespace ICanPay
 
         protected virtual void OnPaymentFailed(PaymentFailedEventArgs e)
         {
-            PaymentFailedEventHandler handler = PaymentFailed;
+            EventHandler<PaymentFailedEventArgs> handler = PaymentFailed;
             if (handler != null)
             {
                 handler(this, e);
@@ -85,7 +86,7 @@ namespace ICanPay
 
         protected virtual void OnPaymentSucceed(PaymentSucceedEventArgs e)
         {
-            PaymentSucceedEventHandler handler = PaymentSucceed;
+            EventHandler<PaymentSucceedEventArgs> handler = PaymentSucceed;
             if (handler != null)
             {
                 handler(this, e);
@@ -95,7 +96,7 @@ namespace ICanPay
 
         protected virtual void OnUnknownGateway(UnknownGatewayEventArgs e)
         {
-            UnknownGatewayEventHandler handler = UnknownGateway;
+            EventHandler<UnknownGatewayEventArgs> handler = UnknownGateway;
             if (handler != null)
             {
                 handler(this, e);
@@ -167,32 +168,4 @@ namespace ICanPay
         #endregion
 
     }
-
-    #region 委托
-
-    /// <summary>
-    /// 支付成功时引发事件
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    public delegate void PaymentFailedEventHandler(object sender, PaymentFailedEventArgs e);
-
-
-    /// <summary>
-    /// 支付失败时引发事件
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    public delegate void PaymentSucceedEventHandler(object sender, PaymentSucceedEventArgs e);
-
-
-    /// <summary>
-    /// 无法识别的网关时引发事件
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    public delegate void UnknownGatewayEventHandler(object sender, UnknownGatewayEventArgs e);
-
-    #endregion
-
 }
