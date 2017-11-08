@@ -17,8 +17,8 @@ namespace Demo
         private void CreateYeepayOrder()
         {
             PaymentSetting paymentSetting = new PaymentSetting(GatewayType.Yeepay);
-            paymentSetting.Merchant.UserName = "000000000000000";
-            paymentSetting.Merchant.Key = "000000000000000000000000000000000000000000";
+            paymentSetting.Merchant.UserName = "000000000000000";   // 商户编号
+            paymentSetting.Merchant.Key = "000000000000000000000000000000000000000000"; // 商户密钥
             paymentSetting.Merchant.NotifyUrl = new Uri("http://yourwebsite.com/Notify.aspx");
 
             paymentSetting.Order.Amount = 0.01;
@@ -32,8 +32,8 @@ namespace Demo
         private void CreateTenpayOrder()
         {
             PaymentSetting paymentSetting = new PaymentSetting(GatewayType.Tenpay);
-            paymentSetting.Merchant.UserName = "000000000000000";
-            paymentSetting.Merchant.Key = "000000000000000000000000000000000000000000";
+            paymentSetting.Merchant.UserName = "000000000000000";   // 商户号
+            paymentSetting.Merchant.Key = "000000000000000000000000000000000000000000"; // 密钥
             paymentSetting.Merchant.NotifyUrl = new Uri("http://yourwebsite.com/Notify.aspx");
 
             paymentSetting.Order.Amount = 0.01;
@@ -50,9 +50,9 @@ namespace Demo
         private void CreateAlipayOrder()
         {
             PaymentSetting paymentSetting = new PaymentSetting(GatewayType.Alipay);
-            paymentSetting.SetGatewayParameterValue("seller_email", "yourname@address.com");
-            paymentSetting.Merchant.UserName = "000000000000000";
-            paymentSetting.Merchant.Key = "000000000000000000000000000000000000000000";
+            paymentSetting.SetGatewayParameterValue("seller_email", "yourname@address.com");    // 支付宝的注册邮箱
+            paymentSetting.Merchant.UserName = "000000000000000";   // 合作伙伴身份（PID）
+            paymentSetting.Merchant.Key = "000000000000000000000000000000000000000000"; // MD5密钥
             paymentSetting.Merchant.NotifyUrl = new Uri("http://yourwebsite.com/Notify.aspx");
 
             paymentSetting.Order.Amount = 0.01;
@@ -69,9 +69,9 @@ namespace Demo
         private void CreateWeChatPayOrder()
         {
             PaymentSetting paymentSetting = new PaymentSetting(GatewayType.WeChatPay);
-            paymentSetting.SetGatewayParameterValue("appid", "wx000000000000000");
-            paymentSetting.Merchant.UserName = "000000000000000";
-            paymentSetting.Merchant.Key = "000000000000000000000000000000000000000000";
+            paymentSetting.SetGatewayParameterValue("appid", "wx000000000000000");  // 公众号APPID
+            paymentSetting.Merchant.UserName = "000000000000000";   // 微信支付商户号
+            paymentSetting.Merchant.Key = "000000000000000000000000000000000000000000"; // API密钥
             paymentSetting.Merchant.NotifyUrl = new Uri("http://yourwebsite.com/Notify.aspx");
 
             paymentSetting.Order.Amount = 0.01;
