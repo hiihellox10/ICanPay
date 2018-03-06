@@ -5,26 +5,12 @@ namespace ICanPay
     /// <summary>
     /// 向网关发送或接收到的网关的数据的请求方式类型
     /// </summary>
-    [Flags]
     public enum GatewayParameterRequestMethod
     {
+        None,
 
-        /// <summary>
-        /// Get
-        /// </summary>
-        Get = 1,
+        Get,
 
-
-        /// <summary>
-        /// Post
-        /// </summary>
-        Post = 2,
-
-
-        /// <summary>
-        /// Get 和 Post
-        /// </summary>
-        Both = Get | Post
-
+        Post
     }
 }

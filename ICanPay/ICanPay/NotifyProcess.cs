@@ -22,7 +22,7 @@ namespace ICanPay
         static string[] yeepayGatewayVerifyParmaNames = { "r0_Cmd", "r1_Code", "r2_TrxId", "r3_Amt", "r4_Cur", "r5_Pid", "r6_Order" };
         static string[] tenpayGatewayVerifyParmaNames = { "trade_mode", "trade_state", "transaction_id", "notify_id", "total_fee", "fee_type" };
         static string[] alipayGatewayVerifyParmaNames = { "notify_type", "notify_id", "notify_time", "sign", "sign_type" };
-        static string[] weixinpayGatewayVerifyParmaNames = { "return_code", "appid", "mch_id", "nonce_str", "result_code" };
+        static string[] weChatPayGatewayVerifyParmaNames = { "return_code", "appid", "mch_id", "nonce_str", "result_code" };
 
         #endregion
 
@@ -40,7 +40,7 @@ namespace ICanPay
                 return new AlipayGateway(gatewayParameterData);
             }
 
-            if (IsWeixinpayGateway(gatewayParameterData))
+            if (IsWeChatPayGateway(gatewayParameterData))
             {
                 return new WeChatPayGataway(gatewayParameterData);
             }
@@ -89,9 +89,9 @@ namespace ICanPay
         /// <summary>
         /// 是否是微信支付网关
         /// </summary>
-        private static bool IsWeixinpayGateway(List<GatewayParameter> gatewayParameterData)
+        private static bool IsWeChatPayGateway(List<GatewayParameter> gatewayParameterData)
         {
-            return ExistParameter(weixinpayGatewayVerifyParmaNames, gatewayParameterData);
+            return ExistParameter(weChatPayGatewayVerifyParmaNames, gatewayParameterData);
         }
 
 
@@ -128,7 +128,7 @@ namespace ICanPay
             List<GatewayParameter> gatewayParameters = new List<GatewayParameter>();
             ReadQueryString(gatewayParameters);
             ReadForm(gatewayParameters);
-            ReadWeixinpayXml(gatewayParameters);
+            ReadWeChatPayXml(gatewayParameters);
 
             return gatewayParameters;
         }
@@ -197,9 +197,9 @@ namespace ICanPay
         /// 读取微信支付的通知
         /// </summary>
         /// <param name="gatewayParameterList">网关通知的参数列表</param>
-        private static void ReadWeixinpayXml(List<GatewayParameter> gatewayParameterList)
+        private static void ReadWeChatPayXml(List<GatewayParameter> gatewayParameterList)
         {
-            if (IsWeixinpayNotify())
+            if (IsWeChatPayNotify())
             {
                 XmlDocument xmlDocument = new XmlDocument();
                 try
@@ -224,7 +224,7 @@ namespace ICanPay
         /// 是否是微信支付的通知
         /// </summary>
         /// <returns></returns>
-        private static bool IsWeixinpayNotify()
+        private static bool IsWeChatPayNotify()
         {
             if (string.Compare(HttpContext.Current.Request.RequestType, "POST") == 0 &&
                 string.Compare(HttpContext.Current.Request.ContentType, "text/xml") == 0 &&

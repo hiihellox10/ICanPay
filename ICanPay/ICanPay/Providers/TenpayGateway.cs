@@ -221,8 +221,7 @@ namespace ICanPay.Providers
         private bool ValidateNotifyId()
         {
             string resultXml = Utility.ReadPage(GetValidateNotifyUrl(), pageEncoding);
-            // 需要先备份并清除之前接收到的网关的通知的数据，否者会对数据的验证造成干扰。
-            List<GatewayParameter> gatewayParameterData = BackupAndClearGatewayParameter();
+            List<GatewayParameter> gatewayParameterData = BackupAndClearGatewayParameter(); // 需要先备份并清除之前接收到的网关的通知的数据，否者会对数据的验证造成干扰。
             ReadResultXml(resultXml);
             bool result = ValidateNotifyParameter();
             RestoreGatewayParameter(gatewayParameterData);   // 验证通知Id后还原之前的通知的数据。
@@ -310,7 +309,8 @@ namespace ICanPay.Providers
         /// <param name="gatewayParameterData">网关的数据的集合</param>
         private void RestoreGatewayParameter(List<GatewayParameter> gatewayParameterData)
         {
-            foreach(GatewayParameter item in gatewayParameterData)
+            GatewayParameterData.Clear();
+            foreach (GatewayParameter item in gatewayParameterData)
             {
                 SetGatewayParameterValue(item.Name, item.Value, item.RequestMethod);
             }
