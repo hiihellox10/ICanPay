@@ -38,9 +38,9 @@ namespace ICanPay.Providers
         /// <summary>
         /// 初始化微信支付网关
         /// </summary>
-        /// <param name="gatewayParameterData">网关通知的数据集合</param>
-        public WeChatPayGataway(List<GatewayParameter> gatewayParameterData)
-            : base(gatewayParameterData)
+        /// <param name="gatewayParameterList">网关通知的数据集合</param>
+        public WeChatPayGataway(Dictionary<string, GatewayParameter> gatewayParameterList)
+            : base(gatewayParameterList)
         {
         }
 
@@ -228,7 +228,7 @@ namespace ICanPay.Providers
         private string GetWeixinPaymentUrl(string resultXml)
         {
             // 需要先清除之前创建订单的参数，否则会对接收到的参数造成干扰。
-            ClearGatewayParameterData();
+            ClearAllGatewayParameter();
             ReadResultXml(resultXml);
             if (IsSuccessResult())
             {
@@ -288,7 +288,7 @@ namespace ICanPay.Providers
         private bool CheckQueryResult(string resultXml)
         {
             // 需要先清除之前查询订单的参数，否则会对接收到的参数造成干扰。
-            ClearGatewayParameterData();
+            ClearAllGatewayParameter();
             ReadResultXml(resultXml);
             if (IsSuccessResult())
             {
@@ -312,16 +312,7 @@ namespace ICanPay.Providers
             SetGatewayParameterValue("nonce_str", GenerateNonceString());
             SetGatewayParameterValue("sign", GetSign());    // 签名需要在最后设置，以免缺少参数。
         }
-
-
-        /// <summary>
-        /// 清除网关的数据
-        /// </summary>
-        private void ClearGatewayParameterData()
-        {
-            GatewayParameterData.Clear();
-        }
-
+        
         
         /// <summary>
         /// 初始化表示已成功接收到支付通知的数据
@@ -335,7 +326,7 @@ namespace ICanPay.Providers
         public override void WriteSucceedFlag()
         {
             // 需要先清除之前接收到的通知的参数，否则会对生成标志成功接收到通知的XML造成干扰。
-            ClearGatewayParameterData();
+            ClearAllGatewayParameter();
             InitProcessSuccessParameter();
             HttpContext.Current.Response.Write(ConvertGatewayParameterDataToXml());
         }

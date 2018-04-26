@@ -35,9 +35,9 @@ namespace ICanPay.Providers
         /// <summary>
         /// 初始化财付通网关
         /// </summary>
-        /// <param name="gatewayParameterData">网关通知的数据集合</param>
-        public TenpayGateway(List<GatewayParameter> gatewayParameterData)
-            : base(gatewayParameterData)
+        /// <param name="gatewayParameterList">网关通知的数据集合</param>
+        public TenpayGateway(Dictionary<string, GatewayParameter> gatewayParameterList)
+            : base(gatewayParameterList)
         {
         }
 
@@ -298,7 +298,7 @@ namespace ICanPay.Providers
         private List<GatewayParameter> BackupAndClearGatewayParameter()
         {
             List<GatewayParameter> gatewayParameterData = new List<GatewayParameter>(GatewayParameterData);
-            GatewayParameterData.Clear();
+            ClearAllGatewayParameter();
             return gatewayParameterData;
         }
 
@@ -309,10 +309,10 @@ namespace ICanPay.Providers
         /// <param name="gatewayParameterData">网关的数据的集合</param>
         private void RestoreGatewayParameter(List<GatewayParameter> gatewayParameterData)
         {
-            GatewayParameterData.Clear();
+            ClearAllGatewayParameter();
             foreach (GatewayParameter item in gatewayParameterData)
             {
-                SetGatewayParameterValue(item.Name, item.Value, item.RequestMethod);
+                SetGatewayParameterValue(item.Name, item.Value, item.HttpMethod);
             }
         }
 

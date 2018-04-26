@@ -37,9 +37,9 @@ namespace ICanPay.Providers
         /// <summary>
         /// 初始化支付宝网关
         /// </summary>
-        /// <param name="gatewayParameterData">网关通知的数据集合</param>
-        public AlipayGateway(List<GatewayParameter> gatewayParameterData)
-            : base(gatewayParameterData)
+        /// <param name="gatewayParameterList">网关通知的数据集合</param>
+        public AlipayGateway(Dictionary<string, GatewayParameter> gatewayParameterList)
+            : base(gatewayParameterList)
         {
         }
 

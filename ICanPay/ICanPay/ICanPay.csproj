@@ -74,7 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GatewayParameter.cs" />
-    <Compile Include="GatewayParameterRequestMethod.cs" />
+    <Compile Include="HttpMethod.cs" />
     <Compile Include="GatewayType.cs" />
     <Compile Include="IPaymentForm.cs" />
     <Compile Include="IPaymentQRCode.cs" />

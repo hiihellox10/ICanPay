@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ICanPay.Providers
 {
@@ -22,9 +21,9 @@ namespace ICanPay.Providers
         /// <summary>
         /// 初始化未知网关
         /// </summary>
-        /// <param name="gatewayParameterData">网关通知的数据集合</param>
-        public NullGateway(List<GatewayParameter> gatewayParameterData)
-            : base(gatewayParameterData)
+        /// <param name="gatewayParameterList">网关通知的数据集合</param>
+        public NullGateway(Dictionary<string, GatewayParameter> gatewayParameterList)
+            : base(gatewayParameterList)
         {
         }
 

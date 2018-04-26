@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Web;
 
@@ -34,9 +33,9 @@ namespace ICanPay.Providers
         /// <summary>
         /// 初始化易宝网关
         /// </summary>
-        /// <param name="gatewayParameterData">网关通知的数据集合</param>
-        public YeepayGateway(List<GatewayParameter> gatewayParameterData)
-            : base(gatewayParameterData)
+        /// <param name="gatewayParameterList">网关通知的数据集合</param>
+        public YeepayGateway(Dictionary<string, GatewayParameter> gatewayParameterList)
+            : base(gatewayParameterList)
         {
         }
 
@@ -176,13 +175,13 @@ namespace ICanPay.Providers
         private string GetNotifySignParameterValue()
         {
             StringBuilder valueBuilder = new StringBuilder();
-            GatewayParameter parameter;
+            string parameterValue;
             foreach (string item in notifyParmaName)
             {
-                parameter = GatewayParameterData.SingleOrDefault(p => string.Compare(p.Name, item) == 0);
-                if (parameter != null)
+                parameterValue = GetGatewayParameterValue(item);
+                if (!string.IsNullOrEmpty(parameterValue))
                 {
-                    valueBuilder.Append(parameter.Value);
+                    valueBuilder.Append(parameterValue);
                 }
             }
 

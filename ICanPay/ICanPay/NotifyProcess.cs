@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
-using System.Linq;
 using System.Web;
 using System.Xml;
 
@@ -34,64 +33,64 @@ namespace ICanPay
         /// </summary>
         public static GatewayBase GetGateway()
         {
-            List<GatewayParameter> gatewayParameterData = ReadNotifyData();
-            if (IsAlipayGateway(gatewayParameterData))
+            Dictionary<string, GatewayParameter> gatewayParameterList = ReadNotifyData();
+            if (IsAlipayGateway(gatewayParameterList))
             {
-                return new AlipayGateway(gatewayParameterData);
+                return new AlipayGateway(gatewayParameterList);
             }
 
-            if (IsWeChatPayGateway(gatewayParameterData))
+            if (IsWeChatPayGateway(gatewayParameterList))
             {
-                return new WeChatPayGataway(gatewayParameterData);
+                return new WeChatPayGataway(gatewayParameterList);
             }
 
-            if (IsTenpayGateway(gatewayParameterData))
+            if (IsTenpayGateway(gatewayParameterList))
             {
-                return new TenpayGateway(gatewayParameterData);
+                return new TenpayGateway(gatewayParameterList);
             }
 
-            if (IsYeepayGateway(gatewayParameterData))
+            if (IsYeepayGateway(gatewayParameterList))
             {
-                return new YeepayGateway(gatewayParameterData);
+                return new YeepayGateway(gatewayParameterList);
             }
 
-            return new NullGateway(gatewayParameterData);
+            return new NullGateway(gatewayParameterList);
         }
 
 
         /// <summary>
         /// 验证是否是易宝网关
         /// </summary>
-        private static bool IsYeepayGateway(List<GatewayParameter> gatewayParameterData)
+        private static bool IsYeepayGateway(Dictionary<string, GatewayParameter> gatewayParameterList)
         {
-            return ExistParameter(yeepayGatewayVerifyParmaNames, gatewayParameterData);
+            return ExistParameter(yeepayGatewayVerifyParmaNames, gatewayParameterList);
         }
 
 
         /// <summary>
         /// 是否是财付通网关
         /// </summary>
-        private static bool IsTenpayGateway(List<GatewayParameter> gatewayParameterData)
+        private static bool IsTenpayGateway(Dictionary<string, GatewayParameter> gatewayParameterList)
         {
-            return ExistParameter(tenpayGatewayVerifyParmaNames, gatewayParameterData);
+            return ExistParameter(tenpayGatewayVerifyParmaNames, gatewayParameterList);
         }
 
 
         /// <summary>
         /// 是否是支付宝网关
         /// </summary>
-        private static bool IsAlipayGateway(List<GatewayParameter> gatewayParameterData)
+        private static bool IsAlipayGateway(Dictionary<string, GatewayParameter> gatewayParameterList)
         {
-            return ExistParameter(alipayGatewayVerifyParmaNames, gatewayParameterData);
+            return ExistParameter(alipayGatewayVerifyParmaNames, gatewayParameterList);
         }
 
 
         /// <summary>
         /// 是否是微信支付网关
         /// </summary>
-        private static bool IsWeChatPayGateway(List<GatewayParameter> gatewayParameterData)
+        private static bool IsWeChatPayGateway(Dictionary<string, GatewayParameter> gatewayParameterList)
         {
-            return ExistParameter(weChatPayGatewayVerifyParmaNames, gatewayParameterData);
+            return ExistParameter(weChatPayGatewayVerifyParmaNames, gatewayParameterList);
         }
 
 
@@ -99,13 +98,13 @@ namespace ICanPay
         /// 网关参数数据项中是否存在指定的所有参数名
         /// </summary>
         /// <param name="parmaName">参数名数组</param>
-        /// <param name="gatewayParameterData">数据项</param>
-        public static bool ExistParameter(string[] parmaName, List<GatewayParameter> gatewayParameterData)
+        /// <param name="gatewayParameterList">数据项</param>
+        public static bool ExistParameter(string[] parmaName, Dictionary<string, GatewayParameter> gatewayParameterList)
         {
             int compareCount = 0;
             foreach (string item in parmaName)
             {
-                if (gatewayParameterData.Exists(p => string.Compare(item, p.Name) == 0))
+                if (gatewayParameterList.ContainsKey(item))
                 {
                     compareCount++;
                 }
@@ -123,14 +122,14 @@ namespace ICanPay
         /// 读取网关发回的数据。Get方式传入QueryString的值均为未解码
         /// </summary>
         /// <returns></returns>
-        public static List<GatewayParameter> ReadNotifyData()
+        public static Dictionary<string, GatewayParameter> ReadNotifyData()
         {
-            List<GatewayParameter> gatewayParameters = new List<GatewayParameter>();
-            ReadQueryString(gatewayParameters);
-            ReadForm(gatewayParameters);
-            ReadWeChatPayXml(gatewayParameters);
+            Dictionary<string, GatewayParameter> gatewayParameterList = new Dictionary<string, GatewayParameter>();
+            ReadQueryString(gatewayParameterList);
+            ReadForm(gatewayParameterList);
+            ReadWeChatPayXml(gatewayParameterList);
 
-            return gatewayParameters;
+            return gatewayParameterList;
         }
 
 
@@ -140,27 +139,25 @@ namespace ICanPay
         /// <param name="gatewayParameterList">保存网关参数的集合</param>
         /// <param name="gatewayParameterName">网关的参数名称</param>
         /// <param name="gatewayParameterValue">网关的参数值</param>
-        /// <param name="gatewayParameterRequestMethod">网关的参数的请求方式的类型</param>
-        private static void SetGatewayParameterValue(List<GatewayParameter> gatewayParameterList, string gatewayParameterName,
-            string gatewayParameterValue, GatewayParameterRequestMethod gatewayParameterRequestMethod)
+        /// <param name="httpMethod">网关参数的请求方法的类型</param>
+        private static void SetGatewayParameterValue(Dictionary<string, GatewayParameter> gatewayParameterList, string gatewayParameterName,
+            string gatewayParameterValue, HttpMethod httpMethod)
         {
-            GatewayParameter existsParam = gatewayParameterList.SingleOrDefault(p => string.Compare(p.Name, gatewayParameterName) == 0);
-            if (existsParam == null)
+
+            if (gatewayParameterList.ContainsKey(gatewayParameterName))
             {
-                GatewayParameter param = new GatewayParameter(gatewayParameterName, gatewayParameterValue, gatewayParameterRequestMethod);
-                gatewayParameterList.Add(param);
+                GatewayParameter gatewayParameter = gatewayParameterList[gatewayParameterName];
+                if (string.Compare(gatewayParameter.Value, gatewayParameterValue) != 0 ||
+                                   gatewayParameter.HttpMethod != httpMethod)
+                {
+                    gatewayParameter.HttpMethod = httpMethod;
+                    gatewayParameter.Value = gatewayParameterValue;
+                }
             }
             else
             {
-                if (string.Compare(existsParam.Value, gatewayParameterValue) == 0)
-                {
-                    existsParam.RequestMethod = existsParam.RequestMethod | gatewayParameterRequestMethod;
-                }
-                else
-                {
-                    existsParam.RequestMethod = gatewayParameterRequestMethod;
-                    existsParam.Value = gatewayParameterValue;
-                }
+                GatewayParameter gatewayParameter = new GatewayParameter(gatewayParameterName, gatewayParameterValue, httpMethod);
+                gatewayParameterList.Add(gatewayParameterName, gatewayParameter);
             }
         }
 
@@ -169,12 +166,12 @@ namespace ICanPay
         /// 读取GET提交的查询字符串中的数据
         /// </summary>
         /// <param name="gatewayParameterList">网关通知的参数列表</param>
-        private static void ReadQueryString(List<GatewayParameter> gatewayParameterList)
+        private static void ReadQueryString(Dictionary<string, GatewayParameter> gatewayParameterList)
         {
             NameValueCollection queryString = HttpContext.Current.Request.QueryString;
             foreach (string item in queryString.AllKeys)
             {
-                SetGatewayParameterValue(gatewayParameterList, item, queryString[item], GatewayParameterRequestMethod.Get);
+                SetGatewayParameterValue(gatewayParameterList, item, queryString[item], HttpMethod.Get);
             }
         }
 
@@ -183,12 +180,12 @@ namespace ICanPay
         /// 读取POST提交的Form表单的数据
         /// </summary>
         /// <param name="gatewayParameterList">网关通知的参数列表</param>
-        private static void ReadForm(List<GatewayParameter> gatewayParameterList)
+        private static void ReadForm(Dictionary<string, GatewayParameter> gatewayParameterList)
         {
             NameValueCollection form = HttpContext.Current.Request.Form;
             foreach (string item in form.AllKeys)
             {
-                SetGatewayParameterValue(gatewayParameterList, item, form[item], GatewayParameterRequestMethod.Post);
+                SetGatewayParameterValue(gatewayParameterList, item, form[item], HttpMethod.Post);
             }
         }
 
@@ -197,7 +194,7 @@ namespace ICanPay
         /// 读取微信支付的通知
         /// </summary>
         /// <param name="gatewayParameterList">网关通知的参数列表</param>
-        private static void ReadWeChatPayXml(List<GatewayParameter> gatewayParameterList)
+        private static void ReadWeChatPayXml(Dictionary<string, GatewayParameter> gatewayParameterList)
         {
             if (IsWeChatPayNotify())
             {
@@ -213,7 +210,7 @@ namespace ICanPay
                 {
                     foreach (XmlNode item in xmlDocument.FirstChild.ChildNodes)
                     {
-                        SetGatewayParameterValue(gatewayParameterList, item.Name, item.InnerText, GatewayParameterRequestMethod.Post);
+                        SetGatewayParameterValue(gatewayParameterList, item.Name, item.InnerText, HttpMethod.Post);
                     }
                 }
             }

@@ -3,7 +3,7 @@
 namespace ICanPay
 {
     /// <summary>
-    /// 支付网关的Get与Post的数据
+    /// 支付网关的Get或Post的数据参数
     /// </summary>
     public class GatewayParameter
     {
@@ -22,11 +22,11 @@ namespace ICanPay
         }
 
 
-        public GatewayParameter(string parameterName, string parameterValue, GatewayParameterRequestMethod parameterType)
+        public GatewayParameter(string parameterName, string parameterValue, HttpMethod httpMethod)
         {
             Name = parameterName;
             Value = parameterValue;
-            RequestMethod = parameterType;
+            HttpMethod = httpMethod;
         }
 
         #endregion
@@ -63,9 +63,9 @@ namespace ICanPay
 
 
         /// <summary>
-        /// 参数的请求方法的类型
+        /// 向网关发送或接收数据的方法类型
         /// </summary>
-        public GatewayParameterRequestMethod RequestMethod { get; set; }
+        public HttpMethod HttpMethod { get; set; }
 
         #endregion
 

@@ -77,10 +77,10 @@ namespace ICanPay
         /// 获得网关的参数值。没有参数值时返回空字符串，Get方式的值均为未解码。
         /// </summary>
         /// <param name="gatewayParameterName">网关的参数名称</param>
-        /// <param name="gatewayParameterRequestMethod">网关的数据的请求方法的类型</param>
-        public string GetGatewayParameterValue(string gatewayParameterName, GatewayParameterRequestMethod gatewayParameterRequestMethod)
+        /// <param name="httpMethod">网关的参数的请求方法的类型</param>
+        public string GetGatewayParameterValue(string gatewayParameterName, HttpMethod httpMethod)
         {
-            return gateway.GetGatewayParameterValue(gatewayParameterName, gatewayParameterRequestMethod);
+            return gateway.GetGatewayParameterValue(gatewayParameterName, httpMethod);
         }
 
         #endregion
