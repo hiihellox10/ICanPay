@@ -25,10 +25,10 @@ namespace ICanPay
 
 
 
-        public Order(string id, double orderAmount)
+        public Order(string id, double amount)
         {
-            this.id = id;
-            this.amount = orderAmount;
+            Id = id;
+            Amount = amount;
         }
 
         #endregion
@@ -72,7 +72,7 @@ namespace ICanPay
             {
                 if (string.IsNullOrEmpty(id))
                 {
-                    throw new ArgumentNullException("OrderId", "订单订单编号没有设置");
+                    throw new ArgumentNullException("Id", "订单编号没有设置");
                 }
 
                 return id;
@@ -82,7 +82,7 @@ namespace ICanPay
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentNullException("OrderId", "订单订单编号不能为空");
+                    throw new ArgumentNullException("Id", "订单编号不能为空");
                 }
 
                 id = value;

@@ -22,8 +22,7 @@ namespace ICanPay
         /// <summary>
         /// 初始化接受阅读反馈的PaymentNotify
         /// </summary>
-        public PaymentNotify() :
-            this(new List<Merchant>())
+        public PaymentNotify() : this(new List<Merchant>())
         {
         }
 
@@ -31,9 +30,8 @@ namespace ICanPay
         /// 初始化接受阅读反馈的PaymentNotify
         /// </summary>
         /// <param name="merchant">商户数据</param>
-        public PaymentNotify(Merchant merchant)
+        public PaymentNotify(Merchant merchant) : this()
         {
-            merchantList = new List<Merchant>();
             AddMerchant(merchant);
         }
 

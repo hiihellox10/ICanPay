@@ -26,9 +26,9 @@ namespace ICanPay
 
         public Merchant(string userName, string key, Uri notifyUrl, GatewayType gatewayType)
         {
-            this.userName = userName;
-            this.key = key;
-            this.notifyUrl = notifyUrl;
+            UserName = userName;
+            Key = key;
+            NotifyUrl = notifyUrl;
             GatewayType = gatewayType;
         }
 
