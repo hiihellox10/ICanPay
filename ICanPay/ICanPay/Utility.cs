@@ -2,6 +2,7 @@
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using System.Xml;
 
 namespace ICanPay
 {
@@ -87,6 +88,24 @@ namespace ICanPay
             }
 
             return string.Empty;
+        }
+
+
+        /// <summary>
+        /// 创建可避免 XXS 漏洞的 XmlDocument
+        /// </summary>
+        /// <remarks>
+        /// 在 .NET Framework 4.5.2 以上版本，XmlDocument 的 XmlResolver 属性的默认值为 null，不存在 XXS 漏洞。
+        /// 之前的版本需要将 XmlResolver 属性设置为 null。
+        /// 更多说明见 https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Prevention_Cheat_Sheet#.NET
+        /// </remarks>
+        /// <returns></returns>
+        public static XmlDocument CreateXmlSafeDocument()
+        {
+            XmlDocument xmlDocument = new XmlDocument();
+            xmlDocument.XmlResolver = null;
+
+            return xmlDocument;
         }
 
         #endregion

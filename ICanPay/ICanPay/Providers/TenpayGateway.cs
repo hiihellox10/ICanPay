@@ -275,7 +275,7 @@ namespace ICanPay.Providers
         /// <returns></returns>
         private void ReadResultXml(string xml)
         {
-            XmlDocument xmlDocument = new XmlDocument();
+            XmlDocument xmlDocument = Utility.CreateXmlSafeDocument();
             try
             {
                 xmlDocument.LoadXml(xml);

@@ -70,7 +70,7 @@ namespace ICanPay.Providers
 
         public string GetPaymentQRCodeContent()
         {
-            return GetWeixinPaymentUrl(CreateOrder());
+            return GetWeChatPayUrl(CreateOrder());
         }
 
         private string CreateOrder()
@@ -225,7 +225,7 @@ namespace ICanPay.Providers
         /// </summary>
         /// <param name="resultXml">创建订单返回的数据</param>
         /// <returns></returns>
-        private string GetWeixinPaymentUrl(string resultXml)
+        private string GetWeChatPayUrl(string resultXml)
         {
             // 需要先清除之前创建订单的参数，否则会对接收到的参数造成干扰。
             ClearAllGatewayParameter();
@@ -245,7 +245,7 @@ namespace ICanPay.Providers
         /// <returns></returns>
         private void ReadResultXml(string xml)
         {
-            XmlDocument xmlDocument = new XmlDocument();
+            XmlDocument xmlDocument = Utility.CreateXmlSafeDocument();
             try
             {
                 xmlDocument.LoadXml(xml);

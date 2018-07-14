@@ -198,7 +198,7 @@ namespace ICanPay
         {
             if (IsWeChatPayNotify())
             {
-                XmlDocument xmlDocument = new XmlDocument();
+                XmlDocument xmlDocument = Utility.CreateXmlSafeDocument();
                 try
                 {
                     StreamReader reader = new StreamReader(HttpContext.Current.Request.InputStream);
