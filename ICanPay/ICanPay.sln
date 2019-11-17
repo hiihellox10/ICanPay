@@ -1,16 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICanPay", "ICanPay\ICanPay.csproj", "{8CC9F719-2537-4B54-BAD7-268057B946FA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "Demo\Demo.csproj", "{1A3D9970-3E5C-4B9B-ABC9-D39767C861F1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{F0990141-3DB7-4F5D-9622-27CDB72D4736}"
 	ProjectSection(SolutionItems) = preProject
 		References\ThoughtWorks.QRCode.dll = References\ThoughtWorks.QRCode.dll
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcDemo", "MvcDemo\MvcDemo.csproj", "{75F9792F-24E9-4FDC-B526-64ECC5C77E45}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,13 +22,16 @@ Global
 		{8CC9F719-2537-4B54-BAD7-268057B946FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CC9F719-2537-4B54-BAD7-268057B946FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CC9F719-2537-4B54-BAD7-268057B946FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1A3D9970-3E5C-4B9B-ABC9-D39767C861F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1A3D9970-3E5C-4B9B-ABC9-D39767C861F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1A3D9970-3E5C-4B9B-ABC9-D39767C861F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1A3D9970-3E5C-4B9B-ABC9-D39767C861F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75F9792F-24E9-4FDC-B526-64ECC5C77E45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75F9792F-24E9-4FDC-B526-64ECC5C77E45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75F9792F-24E9-4FDC-B526-64ECC5C77E45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75F9792F-24E9-4FDC-B526-64ECC5C77E45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D1BF5DEE-0D8C-4EB7-8190-68A6897E25F6}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = PostWriting2.vsmdi
