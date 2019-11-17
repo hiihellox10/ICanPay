@@ -9,10 +9,10 @@ namespace ICanPay
     public abstract class PaymentEventArgs : EventArgs
     {
 
-        #region 私有字段
+        #region 字段
 
-        protected GatewayBase gateway;
-        string notifyServerHostAddress;
+        private string _notifyServerHostAddress;
+        protected GatewayBase _gateway;
 
         #endregion
 
@@ -25,8 +25,8 @@ namespace ICanPay
         /// <param name="gateway">支付网关</param>
         public PaymentEventArgs(GatewayBase gateway)
         {
-            this.gateway = gateway;
-            notifyServerHostAddress = System.Web.HttpContext.Current.Request.UserHostAddress;
+            this._gateway = gateway;
+            _notifyServerHostAddress = System.Web.HttpContext.Current.Request.UserHostAddress;
         }
 
 
@@ -42,7 +42,7 @@ namespace ICanPay
         {
             get
             {
-                return notifyServerHostAddress;
+                return _notifyServerHostAddress;
             }
         }
 
@@ -54,7 +54,7 @@ namespace ICanPay
         {
             get
             {
-                return gateway.GatewayParameterData;
+                return _gateway.GatewayParameterData;
             }
         }
 
@@ -64,24 +64,47 @@ namespace ICanPay
         #region 方法
 
         /// <summary>
-        /// 获得网关的参数值。没有参数值时返回空字符串，Get方式的值均为未解码。
+        /// 获得网关的参数值，参数不存在时返回空字符串。
         /// </summary>
-        /// <param name="gatewayParameterName">网关的参数名称</param>
+        /// <param name="gatewayParameterName">网关参数的名称</param>
         public string GetGatewayParameterValue(string gatewayParameterName)
         {
-            return gateway.GetGatewayParameterValue(gatewayParameterName);
+            return _gateway.GetGatewayParameterValue(gatewayParameterName);
         }
 
 
         /// <summary>
-        /// 获得网关的参数值。没有参数值时返回空字符串，Get方式的值均为未解码。
+        /// 获得网关的参数值，参数不存在时返回空字符串。
         /// </summary>
-        /// <param name="gatewayParameterName">网关的参数名称</param>
+        /// <param name="gatewayParameterName">网关参数的名称</param>
         /// <param name="httpMethod">网关的参数的请求方法的类型</param>
         public string GetGatewayParameterValue(string gatewayParameterName, HttpMethod httpMethod)
         {
-            return gateway.GetGatewayParameterValue(gatewayParameterName, httpMethod);
+            return _gateway.GetGatewayParameterValue(gatewayParameterName, httpMethod);
         }
+
+        /// <summary>
+        /// 获得网关的参数值，参数不存在时返回空字符串。
+        /// </summary>
+        /// <typeparam name="T">返回的数据类型</typeparam>
+        /// <param name="gatewayParameterName">网关参数的名称</param>
+        public T GetGatewayParameterValue<T>(string gatewayParameterName)
+        {
+            return _gateway.GetGatewayParameterValue<T>(gatewayParameterName);
+        }
+
+
+        /// <summary>
+        /// 获得网关的参数值，参数不存在时返回空字符串。
+        /// </summary>
+        /// <typeparam name="T">返回的数据类型</typeparam>
+        /// <param name="gatewayParameterName">网关参数的名称</param>
+        /// <param name="httpMethod">网关数据请求方法的类型</param>
+        public T GetGatewayParameterValue<T>(string gatewayParameterName, HttpMethod httpMethod)
+        {
+            return _gateway.GetGatewayParameterValue<T>(gatewayParameterName, httpMethod);
+        }
+
 
         #endregion
 

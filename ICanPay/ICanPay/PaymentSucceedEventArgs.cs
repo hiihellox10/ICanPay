@@ -30,7 +30,7 @@ namespace ICanPay
         {
             get
             {
-                return gateway.Order;
+                return _gateway.Order;
             }
         }
 
@@ -41,7 +41,7 @@ namespace ICanPay
         {
             get
             {
-                return gateway.GatewayType;
+                return _gateway.GatewayType;
             }
         }
 
@@ -61,7 +61,7 @@ namespace ICanPay
         {
             get
             {
-                return gateway.PaymentNotifyMethod;
+                return _gateway.PaymentNotifyMethod;
             }
         }
 

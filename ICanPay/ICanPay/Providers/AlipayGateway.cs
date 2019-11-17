@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Web;
 
 namespace ICanPay.Providers
@@ -17,9 +16,7 @@ namespace ICanPay.Providers
 
         #region 私有字段
 
-        const string payGatewayUrl = "https://mapi.alipay.com/gateway.do";
-        const string emailRegexString = @"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";
-        static Encoding pageEncoding = Encoding.GetEncoding("gb2312");
+        private const string PayGatewayUrl = "https://mapi.alipay.com/gateway.do";
 
         #endregion
 
@@ -73,6 +70,30 @@ namespace ICanPay.Providers
         }
 
 
+        protected override Encoding PageEncoding
+        {
+            get
+            {
+                return Encoding.GetEncoding("GB2312");
+            }
+        }
+
+
+        private AlipayMerchant AlipayMerchant
+        {
+            get
+            {
+                AlipayMerchant alipayMerchant = Merchant as AlipayMerchant;
+                if (alipayMerchant == null)
+                {
+                    throw new ArgumentException("商户数据类型不是支付宝商户，请将 Merchant 属性设置为 AlipayMerchant 类型", "Merchant");
+                }
+
+                return alipayMerchant;
+            }
+        }
+
+
         #endregion
 
 
@@ -80,10 +101,9 @@ namespace ICanPay.Providers
 
         public string BuildPaymentForm()
         {
-            ValidatePaymentOrderParameter();
             InitOrderParameter();
 
-            return GetFormHtml(payGatewayUrl);
+            return GetFormHtml(PayGatewayUrl);
         }
 
 
@@ -96,6 +116,7 @@ namespace ICanPay.Providers
             SetGatewayParameterValue("partner", Merchant.UserName);
             SetGatewayParameterValue("notify_url", Merchant.NotifyUrl);
             SetGatewayParameterValue("return_url", Merchant.NotifyUrl);
+            SetGatewayParameterValue("seller_email", AlipayMerchant.SellerEmail);
             SetGatewayParameterValue("sign_type", "MD5");
             SetGatewayParameterValue("subject", Order.Subject);
             SetGatewayParameterValue("out_trade_no", Order.Id);
@@ -108,59 +129,34 @@ namespace ICanPay.Providers
 
         public string BuildPaymentUrl()
         {
-            ValidatePaymentOrderParameter();
             InitOrderParameter();
 
-            return string.Format("{0}?{1}", payGatewayUrl, GetPaymentQueryString());
+            return string.Format("{0}?{1}", PayGatewayUrl, GetPaymentQueryString());
         }
 
 
         private string GetPaymentQueryString()
         {
-            StringBuilder urlBuilder = new StringBuilder();
-            foreach (KeyValuePair<string, string> item in GetSortedGatewayParameter())
-            {
-                urlBuilder.AppendFormat("{0}={1}&", item.Key, item.Value);
-            }
-
-            return urlBuilder.ToString().TrimEnd('&');
+            return BuildQueryString(GetSortedGatewayParameter());
         }
 
 
         /// <summary>
-        /// 获得用于签名的参数字符串
+        /// 获得用于签名的参数
         /// </summary>
-        private string GetSignParameter()
+        private IDictionary<string, string> GetSignParameter()
         {
-            StringBuilder signBuilder = new StringBuilder();
+            SortedDictionary<string, string> result = new SortedDictionary<string, string>();
             foreach(KeyValuePair<string, string> item in GetSortedGatewayParameter())
             {
+                // 参数名为 sign，sign_type 的参数不用于签名。
                 if (string.Compare("sign", item.Key) != 0 && string.Compare("sign_type", item.Key) != 0)
                 {
-                    signBuilder.AppendFormat("{0}={1}&", item.Key, item.Value);
+                    result.Add(item.Key, item.Value);
                 }
             }
 
-            return signBuilder.ToString().TrimEnd('&');
-        }
-
-
-
-        /// <summary>
-        /// 验证支付订单的参数设置
-        /// </summary>
-        private void ValidatePaymentOrderParameter()
-        {
-            if (string.IsNullOrEmpty(GetGatewayParameterValue("seller_email")))
-            {
-                throw new ArgumentNullException("seller_email", "订单缺少seller_email参数，seller_email是卖家支付宝账号的邮箱。" +
-                                                "你需要使用PaymentSetting.SetGatewayParameterValue(\"seller_email\", \"yourname@email.com\")方法设置卖家支付宝账号的邮箱。");
-            }
-
-            if (!IsEmail(GetGatewayParameterValue("seller_email")))
-            {
-                throw new ArgumentException("Email格式不正确", "seller_email");
-            }
+            return result;
         }
 
 
@@ -181,7 +177,7 @@ namespace ICanPay.Providers
         /// </summary>
         private void ReadNotifyOrder()
         {
-            Order.Amount = double.Parse(GetGatewayParameterValue("total_fee"));
+            Order.Amount = GetGatewayParameterValue<double>("total_fee");
             Order.Id = GetGatewayParameterValue("out_trade_no");
         }
 
@@ -213,8 +209,8 @@ namespace ICanPay.Providers
             // 支付状态是否为成功。
             // TRADE_FINISHED（普通即时到账的交易成功状态）
             // TRADE_SUCCESS（开通了高级即时到账或机票分销产品后的交易成功状态）
-            if (string.Compare(GetGatewayParameterValue("trade_status"), "TRADE_FINISHED") == 0 ||
-                string.Compare(GetGatewayParameterValue("trade_status"), "TRADE_SUCCESS") == 0)
+            if (CompareGatewayParameterValue("trade_status", "TRADE_FINISHED") ||
+                CompareGatewayParameterValue("trade_status", "TRADE_SUCCESS"))
             {
                 return true;
             }
@@ -229,7 +225,7 @@ namespace ICanPay.Providers
         private bool ValidateNotifySign()
         {
             // 验证通知的签名
-            if (string.Compare(GetGatewayParameterValue("sign"), GetOrderSign()) == 0)
+            if (CompareGatewayParameterValue("sign", GetOrderSign()))
             {
                 return true;
             }
@@ -259,8 +255,8 @@ namespace ICanPay.Providers
         /// </summary>
         private string GetOrderSign()
         {
-            // 获得MD5值时需要使用GB2312编码，否则主题中有中文时会提示签名异常，并且MD5值必须为小写。
-            return Utility.GetMD5(GetSignParameter() + Merchant.Key, pageEncoding).ToLower();
+            // 获得 MD5 值时需要使用 GB2312 编码，否则主题中有中文时会提示签名异常，并且 MD5 值必须为小写。
+            return Utility.GetMD5(BuildQueryString(GetSignParameter()) + Merchant.Key, PageEncoding).ToLower();
         }
 
 
@@ -294,23 +290,8 @@ namespace ICanPay.Providers
         /// </summary>
         private string GetValidateNotifyUrl()
         {
-            return string.Format("{0}?service=notify_verify&partner={1}&notify_id={2}", payGatewayUrl, Merchant.UserName,
+            return string.Format("{0}?service=notify_verify&partner={1}&notify_id={2}", PayGatewayUrl, Merchant.UserName,
                                  GetGatewayParameterValue("notify_id"));
-        }
-
-
-        /// <summary>
-        /// 是否是正确格式的Email地址
-        /// </summary>
-        /// <param name="emailAddress">Email地址</param>
-        private bool IsEmail(string emailAddress)
-        {
-            if (string.IsNullOrEmpty(emailAddress))
-            {
-                return false;
-            }
-
-            return Regex.IsMatch(emailAddress, emailRegexString);
         }
 
         #endregion

@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Web;
 
 namespace ICanPay
 {
@@ -11,10 +13,10 @@ namespace ICanPay
 
         #region 私有字段
 
-        Merchant merchant;
-        Order order;
-        Dictionary<string, GatewayParameter> gatewayParameterList;
-        const string formItem = "<input type='hidden' name='{0}' value='{1}'>";
+        private Merchant _merchant;
+        private Order _order;
+        private Dictionary<string, GatewayParameter> _gatewayParameterList;
+        private const string FormItem = "<input type='hidden' name='{0}' value='{1}'>";
 
         #endregion
 
@@ -29,7 +31,9 @@ namespace ICanPay
 
         protected GatewayBase(Dictionary<string, GatewayParameter> gatewayParameterList)
         {
-            this.gatewayParameterList = gatewayParameterList;
+            InitHttpContextEncoding();
+
+            _gatewayParameterList = gatewayParameterList;
         }
 
         #endregion
@@ -45,17 +49,17 @@ namespace ICanPay
         {
             get
             {
-                if (merchant == null)
+                if (_merchant == null)
                 {
-                    merchant = new Merchant();
+                    _merchant = new Merchant();
                 }
 
-                return merchant;
+                return _merchant;
             }
 
             set
             {
-                merchant = value;
+                _merchant = value;
             }
         }
 
@@ -67,17 +71,17 @@ namespace ICanPay
         {
             get
             {
-                if (order == null)
+                if (_order == null)
                 {
-                    order = new Order();
+                    _order = new Order();
                 }
 
-                return order;
+                return _order;
             }
 
             set
             {
-                order = value;
+                _order = value;
             }
         }
 
@@ -110,13 +114,28 @@ namespace ICanPay
 
 
         /// <summary>
-        /// 支付网关的Get、Post数据的集合，Get方式传入QueryString的值均为未解码。
+        /// 支付网关的Get、Post数据的集合。
         /// </summary>
         public ICollection<GatewayParameter> GatewayParameterData
         {
             get
             {
-                return gatewayParameterList.Values;
+                return _gatewayParameterList.Values;
+            }
+        }
+
+
+        /// <summary>
+        /// 支付网关所使用的编码
+        /// </summary>
+        /// <remarks>
+        /// 请阅读支付网关文档设置正确的编码，默认为 UTF8。错误的编码会导致出现乱码。
+        /// </remarks>
+        protected virtual Encoding PageEncoding
+        {
+            get
+            {
+                return Encoding.UTF8;
             }
         }
 
@@ -126,6 +145,19 @@ namespace ICanPay
 
         #region 方法
 
+        /// <summary>
+        /// 初始化 HttpContext 的编码，创建、查询订单，接收网关通知的页面将使用设置的编码。
+        /// </summary>
+        /// <remarks>
+        /// 支付平台所使用的编码请阅读支付平台的开发文档，设置 HttpContext 的目的是为了解决不同支付平台的编码不一致的问题。
+        /// 如果没有正确设置支付平台所使用的编码会导致出现乱码。
+        /// </remarks>
+        private void InitHttpContextEncoding()
+        {
+            HttpContext.Current.Request.ContentEncoding = PageEncoding;
+            HttpContext.Current.Response.ContentEncoding = PageEncoding;
+        }
+
 
         /// <summary>
         /// 创建Form HTML代码
@@ -133,23 +165,23 @@ namespace ICanPay
         /// <param name="url">网关的Url</param>
         protected string GetFormHtml(string url)
         {
-            StringBuilder html = new StringBuilder();
-            html.AppendLine("<body>");
-            html.AppendLine(string.Format("<form name='Gateway' method='post' action ='{0}'>", url));
+            StringBuilder htmlBuilder = new StringBuilder();
+            htmlBuilder.AppendLine("<body>");
+            htmlBuilder.AppendLine(string.Format("<form name='Gateway' method='post' action ='{0}'>", url));
             foreach (GatewayParameter item in GatewayParameterData)
             {
                 if (item.HttpMethod == HttpMethod.None || item.HttpMethod  == HttpMethod.Post)
                 {
-                    html.AppendLine(string.Format(formItem, item.Name, item.Value));
+                    htmlBuilder.AppendLine(string.Format(FormItem, item.Name, item.Value));
                 }
             }
-            html.AppendLine("</form>");
-            html.AppendLine("<script language='javascript' type='text/javascript'>");
-            html.AppendLine("document.Gateway.submit();");
-            html.AppendLine("</script>");
-            html.AppendLine("</body>");
+            htmlBuilder.AppendLine("</form>");
+            htmlBuilder.AppendLine("<script language='javascript' type='text/javascript'>");
+            htmlBuilder.AppendLine("document.Gateway.submit();");
+            htmlBuilder.AppendLine("</script>");
+            htmlBuilder.AppendLine("</body>");
 
-            return html.ToString();
+            return htmlBuilder.ToString();
         }
 
 
@@ -169,6 +201,39 @@ namespace ICanPay
         }
 
 
+
+        /// <summary>
+        /// 创建网关参数的查询字符串。
+        /// </summary>
+        /// <param name="parameterList">网关参数的集合</param>
+        protected string BuildQueryString(ICollection<GatewayParameter> parameterList)
+        {
+            StringBuilder queryStringBuilder = new StringBuilder();
+            foreach (GatewayParameter item in parameterList)
+            {
+                queryStringBuilder.AppendFormat("{0}={1}&", item.Name, item.Value);
+            }
+
+            return queryStringBuilder.ToString().TrimEnd('&');
+        }
+
+
+        /// <summary>
+        /// 创建网关参数的查询字符串。
+        /// </summary>
+        /// <param name="parameterDictionary">网关参数的 Dictionary</param>
+        protected string BuildQueryString(IDictionary<string, string> parameterDictionary)
+        {
+            StringBuilder queryStringBuilder = new StringBuilder();
+            foreach (var item in parameterDictionary)
+            {
+                queryStringBuilder.AppendFormat("{0}={1}&", item.Key, item.Value);
+            }
+
+            return queryStringBuilder.ToString().TrimEnd('&');
+        }
+
+
         /// <summary>
         /// 检验网关返回的通知，验证订单是否支付成功。
         /// </summary>
@@ -184,9 +249,9 @@ namespace ICanPay
         /// <summary>
         /// 设置网关的数据
         /// </summary>
-        /// <param name="gatewayParameterName">网关的参数名称</param>
+        /// <param name="gatewayParameterName">网关参数的名称</param>
         /// <param name="gatewayParameterValue">网关的参数值</param>
-        public void SetGatewayParameterValue(string gatewayParameterName, object gatewayParameterValue)
+        protected void SetGatewayParameterValue(string gatewayParameterName, object gatewayParameterValue)
         {
             SetGatewayParameterValue(gatewayParameterName, gatewayParameterValue, HttpMethod.None);
         }
@@ -195,9 +260,9 @@ namespace ICanPay
         /// <summary>
         /// 设置网关的数据
         /// </summary>
-        /// <param name="gatewayParameterName">网关的参数名称</param>
+        /// <param name="gatewayParameterName">网关参数的名称</param>
         /// <param name="gatewayParameterValue">网关的参数值</param>
-        public void SetGatewayParameterValue(string gatewayParameterName, string gatewayParameterValue)
+        protected void SetGatewayParameterValue(string gatewayParameterName, string gatewayParameterValue)
         {
             SetGatewayParameterValue(gatewayParameterName, gatewayParameterValue, HttpMethod.None);
         }
@@ -206,10 +271,10 @@ namespace ICanPay
         /// <summary>
         /// 设置网关的数据
         /// </summary>
-        /// <param name="gatewayParameterName">网关的参数名称</param>
+        /// <param name="gatewayParameterName">网关参数的名称</param>
         /// <param name="gatewayParameterValue">网关的参数值</param>
         /// <param name="httpMethod">网关的参数的请求方法的类型</param>
-        public void SetGatewayParameterValue(string gatewayParameterName, object gatewayParameterValue, HttpMethod httpMethod)
+        protected void SetGatewayParameterValue(string gatewayParameterName, object gatewayParameterValue, HttpMethod httpMethod)
         {
             SetGatewayParameterValue(gatewayParameterName, gatewayParameterValue.ToString(), httpMethod);
         }
@@ -218,16 +283,16 @@ namespace ICanPay
         /// <summary>
         /// 设置网关的数据
         /// </summary>
-        /// <param name="gatewayParameterName">网关的参数名称</param>
+        /// <param name="gatewayParameterName">网关参数的名称</param>
         /// <param name="gatewayParameterValue">网关的参数值</param>
         /// <param name="httpMethod">网关的参数的请求方法的类型</param>
-        public void SetGatewayParameterValue(string gatewayParameterName, string gatewayParameterValue, HttpMethod httpMethod)
+        protected void SetGatewayParameterValue(string gatewayParameterName, string gatewayParameterValue, HttpMethod httpMethod)
         {
-            if (gatewayParameterList.ContainsKey(gatewayParameterName))
+            if (_gatewayParameterList.ContainsKey(gatewayParameterName))
             {
-                GatewayParameter gatewayParameter = gatewayParameterList[gatewayParameterName];
+                GatewayParameter gatewayParameter = _gatewayParameterList[gatewayParameterName];
                 if (string.Compare(gatewayParameter.Value, gatewayParameterValue) != 0 ||
-                                   gatewayParameter.HttpMethod != httpMethod)
+                    gatewayParameter.HttpMethod != httpMethod)
                 {
                     gatewayParameter.HttpMethod = httpMethod;
                     gatewayParameter.Value = gatewayParameterValue;
@@ -236,39 +301,89 @@ namespace ICanPay
             else
             {
                 GatewayParameter gatewayParameter = new GatewayParameter(gatewayParameterName, gatewayParameterValue, httpMethod);
-                gatewayParameterList.Add(gatewayParameterName, gatewayParameter);
+                _gatewayParameterList.Add(gatewayParameterName, gatewayParameter);
             }
         }
 
 
         /// <summary>
-        /// 获得网关的参数值。没有参数值时返回空字符串，Get方式的值均为未解码。
+        /// 获得网关的参数值，参数不存在时返回空字符串。
         /// </summary>
-        /// <param name="gatewayParameterName">网关的参数名称</param>
+        /// <param name="gatewayParameterName">网关参数的名称</param>
         public string GetGatewayParameterValue(string gatewayParameterName)
         {
-            return GetGatewayParameterValue(gatewayParameterName, HttpMethod.None);
+            return GetGatewayParameterValue<string>(gatewayParameterName, HttpMethod.None);
         }
 
 
         /// <summary>
-        /// 获得网关的参数值。没有参数值时返回空字符串，Get方式的值均为未解码。
+        /// 获得网关的参数值，参数不存在时返回空字符串。
         /// </summary>
-        /// <param name="gatewayParameterName">网关的参数名称</param>
-        /// <param name="httpMethod">网关的数据的请求方法的类型</param>
+        /// <param name="gatewayParameterName">网关参数的名称</param>
+        /// <param name="httpMethod">网关数据请求方法的类型</param>
         public string GetGatewayParameterValue(string gatewayParameterName, HttpMethod httpMethod)
         {
-            if (gatewayParameterList.ContainsKey(gatewayParameterName))
+            return GetGatewayParameterValue<string>(gatewayParameterName, httpMethod);
+        }
+
+
+        /// <summary>
+        /// 获得网关的参数值，参数不存在时返回空字符串。
+        /// </summary>
+        /// <typeparam name="T">返回的数据类型</typeparam>
+        /// <param name="gatewayParameterName">网关参数的名称</param>
+        public T GetGatewayParameterValue<T>(string gatewayParameterName)
+        {
+            return GetGatewayParameterValue<T>(gatewayParameterName, HttpMethod.None);
+        }
+
+
+        /// <summary>
+        /// 获得网关的参数值，参数不存在时返回空字符串。
+        /// </summary>
+        /// <typeparam name="T">返回的数据类型</typeparam>
+        /// <param name="gatewayParameterName">网关参数的名称</param>
+        /// <param name="httpMethod">网关数据请求方法的类型</param>
+        public T GetGatewayParameterValue<T>(string gatewayParameterName, HttpMethod httpMethod)
+        {
+            string gatewayParameterValue = string.Empty;
+            if (_gatewayParameterList.ContainsKey(gatewayParameterName))
             {
-                GatewayParameter gatewayParameter = gatewayParameterList[gatewayParameterName];
+                GatewayParameter gatewayParameter = _gatewayParameterList[gatewayParameterName];
                 if (httpMethod == HttpMethod.None || httpMethod == gatewayParameter.HttpMethod)
                 {
-                    return gatewayParameter.Value;
+                    gatewayParameterValue = gatewayParameter.Value;
                 }
-
             }
 
-            return string.Empty;
+            return (T)Convert.ChangeType(gatewayParameterValue, typeof(T));
+        }
+
+
+        /// <summary>
+        /// 比较网关参数的值与指定的值是否一致
+        /// </summary>
+        /// <typeparam name="T">比较的值的类型</typeparam>
+        /// <param name="gatewayParameterName">网关参数的名称</param>
+        /// <param name="compareValue">比较的值</param>
+        protected bool CompareGatewayParameterValue<T>(string gatewayParameterName, T compareValue)
+        {
+            return CompareGatewayParameterValue(gatewayParameterName, HttpMethod.None, compareValue);
+        }
+
+
+        /// <summary>
+        /// 比较网关参数的值与指定的值是否一致
+        /// </summary>
+        /// <typeparam name="T">比较的值的类型</typeparam>
+        /// <param name="gatewayParameterName">网关参数的名称</param>
+        /// <param name="httpMethod">网关数据请求方法的类型</param>
+        /// <param name="compareValue">比较的值</param>
+        protected bool CompareGatewayParameterValue<T>(string gatewayParameterName, HttpMethod httpMethod, T compareValue)
+        {
+            T gatewayParameterValue = GetGatewayParameterValue<T>(gatewayParameterName, httpMethod);
+
+            return gatewayParameterValue.Equals(compareValue);
         }
 
 
@@ -277,8 +392,9 @@ namespace ICanPay
         /// </summary>
         protected void ClearAllGatewayParameter()
         {
-            gatewayParameterList.Clear();
+            _gatewayParameterList.Clear();
         }
+
 
         #endregion
 

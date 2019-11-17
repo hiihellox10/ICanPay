@@ -2,7 +2,7 @@
 namespace ICanPay
 {
     /// <summary>
-    /// 向支付网关查询url发送需要查询的订单数据，支付网关在查询url页面输出查询结果
+    /// 向支付平台的订单查询接口查询的订单的状态，支付平台立即输出返回查询结果。
     /// </summary>
     interface IQueryNow
     {
@@ -10,7 +10,7 @@ namespace ICanPay
         /// 查询订单是否支付成功。
         /// </summary>
         /// <remarks>
-        /// 服务器在查询url页面输出返回查询数据
+        /// 支付平台的查询接口输出返回查询数据。
         /// </remarks>
         bool QueryNow();
     }

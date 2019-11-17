@@ -10,9 +10,9 @@ namespace ICanPay
 
         #region 私有字段
 
-        double amount;
-        string id;
-        string subject;
+        private double _amount;
+        private string _id;
+        private string _subject;
 
         #endregion
 
@@ -43,12 +43,12 @@ namespace ICanPay
         {
             get
             {
-                if (amount < 0.01)
+                if (_amount < 0.01)
                 {
                     throw new ArgumentOutOfRangeException("Amount", "订单金额没有设置");
                 }
 
-                return amount;
+                return _amount;
             }
 
             set
@@ -58,7 +58,7 @@ namespace ICanPay
                     throw new ArgumentOutOfRangeException("Amount", "订单金额必须大于或等于0.01");
                 }
 
-                amount = value;
+                _amount = value;
             }
         }
 
@@ -70,12 +70,12 @@ namespace ICanPay
         {
             get
             {
-                if (string.IsNullOrEmpty(id))
+                if (string.IsNullOrEmpty(_id))
                 {
                     throw new ArgumentNullException("Id", "订单编号没有设置");
                 }
 
-                return id;
+                return _id;
             }
 
             set
@@ -85,7 +85,7 @@ namespace ICanPay
                     throw new ArgumentNullException("Id", "订单编号不能为空");
                 }
 
-                id = value;
+                _id = value;
             }
         }
 
@@ -97,17 +97,17 @@ namespace ICanPay
         {
             get
             {
-                if(string.IsNullOrEmpty(subject))
+                if(string.IsNullOrEmpty(_subject))
                 {
-                    return id;
+                    return _id;
                 }
 
-                return subject;
+                return _subject;
             }
 
             set
             {
-                subject = value;
+                _subject = value;
             }
         }
 

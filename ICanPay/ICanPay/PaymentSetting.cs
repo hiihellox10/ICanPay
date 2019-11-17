@@ -82,6 +82,9 @@ namespace ICanPay
         }
 
 
+        /// <summary>
+        /// 是否支持查询订单状态，订单的支付结果将会通过通知返回。
+        /// </summary>
         public bool CanQueryNotify
         {
             get
@@ -96,6 +99,9 @@ namespace ICanPay
         }
 
 
+        /// <summary>
+        /// 是否支持立即查询订单支付状态。
+        /// </summary>
         public bool CanQueryNow
         {
             get
@@ -108,7 +114,6 @@ namespace ICanPay
 
 
         #region 方法
-
 
         private GatewayBase CreateGateway(GatewayType gatewayType)
         {
@@ -143,10 +148,10 @@ namespace ICanPay
 
 
         /// <summary>
-        /// 创建订单的支付Url、Form表单、二维码。
+        /// 创建订单。
         /// </summary>
         /// <remarks>
-        /// 如果创建的是订单的Url或Form表单将跳转到相应网关支付，如果是二维码将输出二维码图片。
+        /// 如果创建的是订单的Url或Form表单将跳转到相应支付平台，如果是二维码将在当前页面输出二维码图片。
         /// </remarks>
         public void Payment()
         {
@@ -167,7 +172,7 @@ namespace ICanPay
             IPaymentQRCode paymentQRCode = gateway as IPaymentQRCode;
             if (paymentQRCode != null)
             {
-                BuildQRCodeImage(paymentQRCode.GetPaymentQRCodeContent());
+                WriteQRCodeImage(paymentQRCode.GetPaymentQRCodeContent());
                 return;
             }
 
@@ -176,7 +181,7 @@ namespace ICanPay
 
 
         /// <summary>
-        /// 查询订单，订单的查询通知数据通过跟支付通知一样的形式反回。用处理网关通知一样的方法接受查询订单的数据。
+        /// 查询订单。订单的查询通知数据与支付通知一样的形式返回，用处理支付平台通知一样的方法接收、处理查询订单的数据。
         /// </summary>
         public void QueryNotify()
         {
@@ -194,12 +199,12 @@ namespace ICanPay
                 return;
             }
 
-            throw new NotSupportedException(gateway.GatewayType + " 没有实现 IQueryUrl 或 IQueryForm 查询接口");
+            throw new NotSupportedException(gateway.GatewayType + " 没有实现查询接口 IQueryUrl 或 IQueryForm");
         }
 
         
         /// <summary>
-        /// 查询订单，立即获得订单的查询结果
+        /// 查询订单，立即获得订单的查询结果。
         /// </summary>
         /// <returns></returns>
         public bool QueryNow()
@@ -210,34 +215,35 @@ namespace ICanPay
                 return queryNow.QueryNow();
             }
 
-            throw new NotSupportedException(gateway.GatewayType + " 没有实现 IQueryNow 查询接口");
+            throw new NotSupportedException(gateway.GatewayType + " 没有实现查询接口 IQueryNow");
         }
 
 
         /// <summary>
-        /// 设置网关的数据
-        /// </summary>
-        /// <param name="gatewayParameterName">网关的参数名称</param>
-        /// <param name="gatewayParameterValue">网关的参数值</param>
-        public void SetGatewayParameterValue(string gatewayParameterName, string gatewayParameterValue)
-        {
-            gateway.SetGatewayParameterValue(gatewayParameterName, gatewayParameterValue);
-        }
-
-
-        /// <summary>
-        /// 生成并输出二维码图片
+        /// 在当前页面输出二维码图片
         /// </summary>
         /// <param name="qrCodeContent">二维码内容</param>
-        private void BuildQRCodeImage(string qrCodeContent)
+        private void WriteQRCodeImage(string qrCodeContent)
+        {
+            Bitmap image = BuildQRCodeImage(qrCodeContent);
+            MemoryStream ms = new MemoryStream();
+            image.Save(ms, ImageFormat.Png);
+
+            HttpContext.Current.Response.ContentType = "image/x-png";
+            HttpContext.Current.Response.BinaryWrite(ms.GetBuffer());
+        }
+
+
+        /// <summary>
+        /// 创建二维码图片
+        /// </summary>
+        /// <param name="qrCodeContent">二维码内容</param>
+        private Bitmap BuildQRCodeImage(string qrCodeContent)
         {
             QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
             qrCodeEncoder.QRCodeScale = 4;  // 二维码大小
-            Bitmap image = qrCodeEncoder.Encode(qrCodeContent, Encoding.Default);
-            MemoryStream ms = new MemoryStream();
-            image.Save(ms, ImageFormat.Png);
-            HttpContext.Current.Response.ContentType = "image/x-png";
-            HttpContext.Current.Response.BinaryWrite(ms.GetBuffer());
+
+            return qrCodeEncoder.Encode(qrCodeContent, Encoding.Default);
         }
 
         #endregion

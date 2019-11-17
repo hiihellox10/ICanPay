@@ -14,8 +14,8 @@ namespace ICanPay.Providers
 
         #region Ë½ÓÐ×Ö¶Î
 
-        const string payGatewayUrl = "https://www.yeepay.com/app-merchant-proxy/node";
-        static string[] notifyParmaName = new string[] { "p1_MerId", "r0_Cmd", "r1_Code", "r2_TrxId", "r3_Amt", "r4_Cur", "r5_Pid", "r6_Order", "r7_Uid", "r8_MP", "r9_BType" };
+        private const string PayGatewayUrl = "https://www.yeepay.com/app-merchant-proxy/node";
+        private static string[] _notifyParmaName = new string[] { "p1_MerId", "r0_Cmd", "r1_Code", "r2_TrxId", "r3_Amt", "r4_Cur", "r5_Pid", "r6_Order", "r7_Uid", "r8_MP", "r9_BType" };
 
         #endregion
 
@@ -51,7 +51,7 @@ namespace ICanPay.Providers
         public string BuildPaymentForm()
         {
             InitOrderParameter();
-            return GetFormHtml(payGatewayUrl);
+            return GetFormHtml(PayGatewayUrl);
         }
 
 
@@ -62,7 +62,7 @@ namespace ICanPay.Providers
         public string BuildPaymentUrl()
         {
             InitOrderParameter();
-            return string.Format("{0}?{1}", payGatewayUrl, GetPaymentQueryString());
+            return string.Format("{0}?{1}", PayGatewayUrl, GetPaymentQueryString());
         }
 
 
@@ -88,9 +88,9 @@ namespace ICanPay.Providers
         /// <returns></returns>
         private bool IsSuccessResult()
         {
-            if (string.Compare(GetGatewayParameterValue("r1_Code"), "1") == 0 &&
-                string.Compare(GetGatewayParameterValue("r4_Cur"), "RMB") == 0 &&
-                string.Compare(GetGatewayParameterValue("hmac"), NotifySign()) == 0)
+            if (CompareGatewayParameterValue("r1_Code", "1") &&
+                CompareGatewayParameterValue("r4_Cur", "RMB") &&
+                CompareGatewayParameterValue("hmac", NotifySign()))
             {
                 return true;
             }
@@ -104,7 +104,7 @@ namespace ICanPay.Providers
         /// </summary>
         private void ReadNotifyOrder()
         {
-            Order.Amount = Convert.ToDouble(GetGatewayParameterValue("r3_Amt"));
+            Order.Amount = GetGatewayParameterValue<double>("r3_Amt");
             Order.Id = GetGatewayParameterValue("r6_Order");
         }
 
@@ -115,32 +115,26 @@ namespace ICanPay.Providers
         /// <returns></returns>
         private string GetOrderSign()
         {
-            StringBuilder signBuilder = new StringBuilder();
+            StringBuilder orderSignBuilder = new StringBuilder();
             foreach (GatewayParameter item in GatewayParameterData)
             {
-                signBuilder.Append(item.Value);
+                orderSignBuilder.Append(item.Value);
             }
 
-            return YeepayHmacMD5.HmacSign(signBuilder.ToString(), Merchant.Key);
+            return YeepayHmacMD5.HmacSign(orderSignBuilder.ToString(), Merchant.Key);
         }
 
 
         private string GetPaymentQueryString()
         {
-            StringBuilder builder = new StringBuilder();
-            foreach (KeyValuePair<string, string> item in GetSortedGatewayParameter())
-            {
-                builder.AppendFormat("{0}={1}&", item.Key, item.Value);
-            }
-
-            return builder.ToString().TrimEnd('&');
+            return BuildQueryString(GetSortedGatewayParameter());
         }
 
 
         private string GetQueryOrderUrl()
         {
             string hmac = YeepayHmacMD5.HmacSign("QueryOrdDetail" + Merchant.UserName + Order.Id, Merchant.Key);
-            return string.Format("{0}?p0_Cmd=QueryOrdDetail&p1_MerId={1}&p2_Order={2}&hmac={3}", payGatewayUrl, Merchant.UserName, Order.Id, hmac);
+            return string.Format("{0}?p0_Cmd=QueryOrdDetail&p1_MerId={1}&p2_Order={2}&hmac={3}", PayGatewayUrl, Merchant.UserName, Order.Id, hmac);
         }
 
 
@@ -174,18 +168,17 @@ namespace ICanPay.Providers
         /// </summary>
         private string GetNotifySignParameterValue()
         {
-            StringBuilder valueBuilder = new StringBuilder();
-            string parameterValue;
-            foreach (string item in notifyParmaName)
+            StringBuilder parameterValueBuilder = new StringBuilder();
+            foreach (string item in _notifyParmaName)
             {
-                parameterValue = GetGatewayParameterValue(item);
+                string parameterValue = GetGatewayParameterValue(item);
                 if (!string.IsNullOrEmpty(parameterValue))
                 {
-                    valueBuilder.Append(parameterValue);
+                    parameterValueBuilder.Append(parameterValue);
                 }
             }
 
-            return valueBuilder.ToString();
+            return parameterValueBuilder.ToString();
         }
 
 
@@ -217,10 +210,10 @@ namespace ICanPay.Providers
 
         private bool ValidateQuery()
         {
-             if(string.Compare(GetGatewayParameterValue("r1_Code"), "1") == 0 && 
-                string.Compare(GetGatewayParameterValue("rb_PayStatus"), "SUCCESS") == 0 && 
-                string.Compare(GetGatewayParameterValue("r6_Order"), Order.Id) == 0 && 
-                Order.Amount == Convert.ToDouble(GetGatewayParameterValue("r3_Amt")))
+             if(CompareGatewayParameterValue("r1_Code", "1") &&
+                CompareGatewayParameterValue("rb_PayStatus", "SUCCESS") &&
+                CompareGatewayParameterValue("r6_Order", Order.Id) &&
+                CompareGatewayParameterValue("r3_Amt", Order.Amount))
              {
                  return true;
              }

@@ -10,9 +10,9 @@ namespace ICanPay
 
         #region 私有字段
 
-        string userName;
-        string key;
-        Uri notifyUrl;
+        private string _userName;
+        private string _key;
+        private Uri _notifyUrl;
 
         #endregion
 
@@ -44,12 +44,12 @@ namespace ICanPay
         {
             get
             {
-                if (string.IsNullOrEmpty(userName))
+                if (string.IsNullOrEmpty(_userName))
                 {
                     throw new ArgumentNullException("UserName", "商户帐号没有设置");
                 }
 
-                return userName;
+                return _userName;
             }
 
             set
@@ -59,7 +59,7 @@ namespace ICanPay
                     throw new ArgumentNullException("UserName", "商户帐号不能为空");
                 }
 
-                userName = value;
+                _userName = value;
             }
         }
 
@@ -71,12 +71,12 @@ namespace ICanPay
         {
             get
             {
-                if (string.IsNullOrEmpty(key))
+                if (string.IsNullOrEmpty(_key))
                 {
                     throw new ArgumentNullException("Key", "商户密钥没有设置");
                 }
 
-                return key;
+                return _key;
             }
 
             set
@@ -86,7 +86,7 @@ namespace ICanPay
                     throw new ArgumentNullException("Key", "商户密钥不能为空");
                 }
 
-                key = value;
+                _key = value;
             }
         }
 
@@ -98,12 +98,12 @@ namespace ICanPay
         {
             get
             {
-                if (notifyUrl == null)
+                if (_notifyUrl == null)
                 {
                     throw new ArgumentNullException("NotifyUrl", "网关通知Url没有设置");
                 }
 
-                return notifyUrl;
+                return _notifyUrl;
             }
 
             set
@@ -113,7 +113,7 @@ namespace ICanPay
                     throw new ArgumentNullException("NotifyUrl", "网关通知Url不能为空");
                 }
 
-                notifyUrl = value;
+                _notifyUrl = value;
             }
         }
 

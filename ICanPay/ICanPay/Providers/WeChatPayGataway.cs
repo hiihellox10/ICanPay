@@ -19,8 +19,8 @@ namespace ICanPay.Providers
 
         #region 私有字段
 
-        const string payGatewayUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
-        const string queryGatewayUrl = "https://api.mch.weixin.qq.com/pay/orderquery";
+        private const string PayGatewayUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+        private const string QueryGatewayUrl = "https://api.mch.weixin.qq.com/pay/orderquery";
 
         #endregion
 
@@ -57,6 +57,21 @@ namespace ICanPay.Providers
             get { return PaymentNotifyMethod.ServerNotify; }
         }
 
+        private WeChatPayMerchant WeChatPayMerchant
+        {
+            get
+            {
+                WeChatPayMerchant weChatPayMerchant = Merchant as WeChatPayMerchant;
+                if (weChatPayMerchant == null)
+                {
+                    throw new ArgumentException("商户数据类型不是微信支付商户，请将 Merchant 属性设置为 WeChatPayMerchant 类型", "Merchant");
+                }
+
+                return weChatPayMerchant;
+            }
+        }
+            
+
         public override bool ValidateNotify()
         {
             if (IsSuccessResult())
@@ -70,24 +85,30 @@ namespace ICanPay.Providers
 
         public string GetPaymentQRCodeContent()
         {
-            return GetWeChatPayUrl(CreateOrder());
+            string createOrderXml = CreateOrder();
+            return GetWeChatPayUrl(createOrderXml);
         }
 
         private string CreateOrder()
         {
             InitPaymentOrderParameter();
-            return PostOrder(ConvertGatewayParameterDataToXml(), payGatewayUrl);
+            string paymentOrderXml = ConvertGatewayParameterDataToXml();
+
+            return PostRequest(paymentOrderXml, PayGatewayUrl);
         }
 
         public bool QueryNow()
         {
-            return CheckQueryResult(QueryOrder());
+            string queryOrderResultXml = QueryOrder();
+            return CheckQueryResult(queryOrderResultXml);
         }
 
         private string QueryOrder()
         {
             InitQueryOrderParameter();
-            return PostOrder(ConvertGatewayParameterDataToXml(), queryGatewayUrl);
+            string queryOrderXml = ConvertGatewayParameterDataToXml();
+
+            return PostRequest(queryOrderXml, QueryGatewayUrl);
         }
 
 
@@ -97,6 +118,7 @@ namespace ICanPay.Providers
         private void InitPaymentOrderParameter()
         {
             SetGatewayParameterValue("mch_id", Merchant.UserName);
+            SetGatewayParameterValue("appid", WeChatPayMerchant.AppId);
             SetGatewayParameterValue("nonce_str", GenerateNonceString());
             SetGatewayParameterValue("body", Order.Subject);
             SetGatewayParameterValue("out_trade_no", Order.Id);
@@ -115,7 +137,7 @@ namespace ICanPay.Providers
         private void ReadNotifyOrder()
         {
             Order.Id = GetGatewayParameterValue("out_trade_no");
-            Order.Amount = Convert.ToInt32(GetGatewayParameterValue("total_fee")) * 0.01;
+            Order.Amount = GetGatewayParameterValue<int>("total_fee") * 0.01;
         }
 
 
@@ -177,14 +199,14 @@ namespace ICanPay.Providers
 
 
         /// <summary>
-        /// 提交订单
+        /// 提交请求
         /// </summary>
-        /// <param name="orderXml">订单的XML内容</param>
+        /// <param name="requestXml">请求的XML内容</param>
         /// <param name="gatewayUrl">网关URL</param>
         /// <returns></returns>
-        private string PostOrder(string orderXml, string gatewayUrl)
+        private string PostRequest(string requestXml, string gatewayUrl)
         {
-            byte[] dataByte = Encoding.UTF8.GetBytes(orderXml);
+            byte[] dataByte = Encoding.UTF8.GetBytes(requestXml);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(gatewayUrl);
             request.Method = "POST";
             request.ContentType = "text/xml";
@@ -251,8 +273,7 @@ namespace ICanPay.Providers
                 xmlDocument.LoadXml(xml);
             }
             catch (XmlException) { }
-
-            SortedDictionary<string, string> parma = new SortedDictionary<string, string>();
+            
             if (xmlDocument.FirstChild != null && xmlDocument.FirstChild.ChildNodes != null)
             {
                 foreach (XmlNode item in xmlDocument.FirstChild.ChildNodes)
@@ -269,9 +290,9 @@ namespace ICanPay.Providers
         /// <returns></returns>
         private bool IsSuccessResult()
         {
-            if (string.Compare(GetGatewayParameterValue("return_code"), "SUCCESS") == 0 &&
-                string.Compare(GetGatewayParameterValue("result_code"), "SUCCESS") == 0 &&
-                string.Compare(GetGatewayParameterValue("sign"), GetSign()) == 0)
+            if (CompareGatewayParameterValue("return_code", "SUCCESS")&&
+                CompareGatewayParameterValue("result_code", "SUCCESS")&&
+                CompareGatewayParameterValue("sign", GetSign()))
             {
                 return true;
             }
@@ -292,8 +313,8 @@ namespace ICanPay.Providers
             ReadResultXml(resultXml);
             if (IsSuccessResult())
             {
-               if(string.Compare(Order.Id, GetGatewayParameterValue("out_trade_no")) == 0 &&
-                  Order.Amount == int.Parse(GetGatewayParameterValue("total_fee")) / 100.0)
+               if(CompareGatewayParameterValue("out_trade_no", Order.Id) &&
+                  CompareGatewayParameterValue("total_fee", Order.Amount * 100))
                {
                    return true;
                }
@@ -307,6 +328,7 @@ namespace ICanPay.Providers
         /// </summary>
         private void InitQueryOrderParameter()
         {
+            SetGatewayParameterValue("appid", WeChatPayMerchant.AppId);
             SetGatewayParameterValue("mch_id", Merchant.UserName);
             SetGatewayParameterValue("out_trade_no", Order.Id);
             SetGatewayParameterValue("nonce_str", GenerateNonceString());

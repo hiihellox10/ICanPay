@@ -14,10 +14,9 @@ namespace ICanPay.Providers
 
         #region 私有字段
 
-        const string payGatewayUrl = "https://gw.tenpay.com/gateway/pay.htm";
-        const string verifyNotifyGatewayUrl = "https://gw.tenpay.com/gateway/verifynotifyid.xml";
-        const string queryGatewayUrl = "https://gw.tenpay.com/gateway/normalorderquery.xml";
-        static Encoding pageEncoding = Encoding.GetEncoding("GB2312");
+        private const string PayGatewayUrl = "https://gw.tenpay.com/gateway/pay.htm";
+        private const string VerifyNotifyGatewayUrl = "https://gw.tenpay.com/gateway/verifynotifyid.xml";
+        private const string QueryGatewayUrl = "https://gw.tenpay.com/gateway/normalorderquery.xml";
 
         #endregion
 
@@ -73,6 +72,15 @@ namespace ICanPay.Providers
             }
         }
 
+
+        protected override Encoding PageEncoding
+        {
+            get
+            {
+                return Encoding.GetEncoding("GB2312");
+            }
+        }
+
         #endregion
 
 
@@ -84,14 +92,14 @@ namespace ICanPay.Providers
         public string BuildPaymentUrl()
         {
             InitOrderParameter();
-            return string.Format("{0}?{1}", payGatewayUrl, GetPaymentQueryString());
+            return string.Format("{0}?{1}", PayGatewayUrl, GetPaymentQueryString());
         }
 
 
         public string BuildPaymentForm()
         {
             InitOrderParameter();
-            return GetFormHtml(payGatewayUrl);
+            return GetFormHtml(PayGatewayUrl);
         }
 
 
@@ -115,30 +123,31 @@ namespace ICanPay.Providers
 
         private string GetPaymentQueryString()
         {
-            StringBuilder url = new StringBuilder();
-            foreach (GatewayParameter item in GatewayParameterData)
-            {
-                url.AppendFormat("{0}={1}&", item.Name, item.Value);
-            }
-
-            return url.ToString().TrimEnd('&');
+            return BuildQueryString(GatewayParameterData);
         }
 
 
         private string GetOrderSign()
         {
-            StringBuilder signParameterBuilder = new StringBuilder();
+            string orderSignQueryString = BuildQueryString(GetOrderSignParameter());
+
+            return BuildQueryStringSign(orderSignQueryString);
+        }
+
+
+        private SortedDictionary<string, string> GetOrderSignParameter()
+        {
+            SortedDictionary<string, string> result = new SortedDictionary<string, string>();
             foreach (KeyValuePair<string, string> item in GetSortedGatewayParameter())
             {
-                // 空值的参数跟sign签名参数不参加签名
+                // 参数的值为空、参数名为 sign 的参数不参加签名
                 if (!string.IsNullOrEmpty(item.Value) && string.Compare(item.Key, "sign") != 0)
                 {
-                    signParameterBuilder.AppendFormat("{0}={1}&", item.Key, item.Value);
+                    result.Add(item.Key, item.Value);
                 }
             }
 
-            // 获得MD5值时需要使用GB2312编码，否则主题中有中文时会提示签名异常
-            return Utility.GetMD5(signParameterBuilder.Append("key=" + Merchant.Key).ToString(), pageEncoding);
+            return result;
         }
 
 
@@ -182,10 +191,10 @@ namespace ICanPay.Providers
         /// <returns></returns>
         private bool ValidateNotifyParameter()
         {
-            if (string.Compare(GetGatewayParameterValue("trade_state"), "0") == 0 &&
-                string.Compare(GetGatewayParameterValue("trade_mode"), "1") == 0 &&
-                string.Compare(GetGatewayParameterValue("fee_type"), "1") == 0 &&
-                string.Compare(GetGatewayParameterValue("sign"), GetOrderSign()) == 0)
+            if (CompareGatewayParameterValue("trade_state", "0")&&
+                CompareGatewayParameterValue("trade_mode", "1")&&
+                CompareGatewayParameterValue("fee_type", "1")&&
+                CompareGatewayParameterValue("sign", GetOrderSign()))
             {
                 return true;
             }
@@ -199,7 +208,7 @@ namespace ICanPay.Providers
         /// </summary>
         private void ReadNotifyOrder()
         {
-            Order.Amount = Convert.ToDouble(GetGatewayParameterValue("total_fee")) * 0.01;
+            Order.Amount = GetGatewayParameterValue<double>("total_fee") * 0.01;
             Order.Id = GetGatewayParameterValue("out_trade_no");
         }
 
@@ -220,7 +229,7 @@ namespace ICanPay.Providers
         /// <returns></returns>
         private bool ValidateNotifyId()
         {
-            string resultXml = Utility.ReadPage(GetValidateNotifyUrl(), pageEncoding);
+            string resultXml = Utility.ReadPage(GetValidateNotifyUrl(), PageEncoding);
             List<GatewayParameter> gatewayParameterData = BackupAndClearGatewayParameter(); // 需要先备份并清除之前接收到的网关的通知的数据，否者会对数据的验证造成干扰。
             ReadResultXml(resultXml);
             bool result = ValidateNotifyParameter();
@@ -236,8 +245,8 @@ namespace ICanPay.Providers
         /// <returns></returns>
         private bool ValidateOrder()
         {
-            if(Order.Amount == Convert.ToDouble(GetGatewayParameterValue("total_fee")) * 0.01 &&
-               string.Compare(Order.Id , GetGatewayParameterValue("out_trade_no")) == 0)
+            if(CompareGatewayParameterValue("total_fee", Order.Amount * 100) &&
+               CompareGatewayParameterValue("out_trade_no", Order.Id))
             {
                 return true;
             }
@@ -253,8 +262,9 @@ namespace ICanPay.Providers
 
         private string GetValidateNotifyUrl()
         {
-            return string.Format("{0}?{1}&sign={2}", verifyNotifyGatewayUrl, GetValidateNotifyQueryString(),
-                                 Utility.GetMD5(GetValidateNotifyQueryString() + "&key=" + Merchant.Key, pageEncoding));
+            string validateNotifyQueryString = GetValidateNotifyQueryString();
+
+            return string.Format("{0}?{1}&sign={2}", VerifyNotifyGatewayUrl, validateNotifyQueryString, BuildQueryStringSign(validateNotifyQueryString));
         }
 
 
@@ -319,7 +329,7 @@ namespace ICanPay.Providers
 
         public bool QueryNow()
         {
-            ReadResultXml(Utility.ReadPage(GetQueryOrderUrl(), pageEncoding));
+            ReadResultXml(Utility.ReadPage(GetQueryOrderUrl(), PageEncoding));
             if (ValidateNotifyParameter() && ValidateOrder())
             {
                 return true;
@@ -335,8 +345,9 @@ namespace ICanPay.Providers
         /// <returns></returns>
         private string GetQueryOrderUrl()
         {
-            return string.Format("{0}?{1}&sign={2}", queryGatewayUrl, GetQueryOrderQueryString(),
-                                 Utility.GetMD5(GetQueryOrderQueryString() + "&key=" + Merchant.Key, pageEncoding));
+            string queryOrderQueryString = GetQueryOrderQueryString();
+
+            return string.Format("{0}?{1}&sign={2}", QueryGatewayUrl, queryOrderQueryString, BuildQueryStringSign(queryOrderQueryString));
         }
 
 
@@ -347,6 +358,26 @@ namespace ICanPay.Providers
         private string GetQueryOrderQueryString()
         {
             return string.Format("out_trade_no={0}&partner={1}", Order.Id, Merchant.UserName);
+        }
+
+
+        /// <summary>
+        /// 创建查询字符串的签名
+        /// </summary>
+        /// <param name="queryString">查询字符串</param>
+        private string BuildQueryStringSign(string queryString)
+        {
+            return Utility.GetMD5(GetSignQueryString(queryString), PageEncoding);    // 获得MD5值时需要使用GB2312编码，否则主题中有中文时会提示签名异常。
+        }
+
+
+        /// <summary>
+        /// 获得用于签名的查询字符串
+        /// </summary>
+        /// <param name="queryString">查询字符串</param>
+        private string GetSignQueryString(string queryString)
+        {
+            return string.Format("{0}&key={1}", queryString, Merchant.Key);
         }
 
 
